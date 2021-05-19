@@ -1,0 +1,30 @@
+{
+  "name": "360-shopping",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "cd backend && npm start",
+    "start:dev": "cd frontend && npm start",
+    "install": "cd backend && npm i && cd ../frontend && npm i",
+    "seed": "cd backend && npm run seed",
+    "build": "cd frontend && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeeJung-AWS/360-shopping.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeeJung-AWS/360-shopping/issues"
+  },
+  "homepage": "https://github.com/LeeJung-AWS/360-shopping#readme",
+  "dependencies": {
+    "concurrently": "^6.1.0",
+    "if-env": "^1.0.4"
+  }
+}
