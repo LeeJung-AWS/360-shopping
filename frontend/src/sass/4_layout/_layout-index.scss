@@ -1,0 +1,9 @@
+// Layout: contains all styles involved with the layout of your project. 
+// Such as styles for your header, footer, navigation and the grid system.
+
+@import "navigation";        // Navigation            
+@import "grid";              // Grid system   
+@import "header";            // Header
+@import "footer";            // Footer
+@import "sidebar";           // Sidebar
+@import "forms";             // Forms
