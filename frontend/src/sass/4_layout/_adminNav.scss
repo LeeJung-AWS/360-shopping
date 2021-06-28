@@ -1,0 +1,94 @@
+.adminNav-header {
+    padding: 2% 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: 0 5px 35px rgba(0, 0, 0, 0.1);
+}
+
+.adminNav-header h5 {
+    color: $text-color;
+    background-color: $info;
+    padding: 0.5rem 1% 0.5rem 6%;
+    margin: 0;
+}
+
+/* Mobile Menu */
+.adminNav-mobile{
+    padding-right: 6%;
+}
+
+.adminNav-mobile a{
+    font-size: 2.5rem;
+    color: black;
+}
+
+/* Desktop Menu */
+.adminNav-desktop {
+    display: none;
+}
+
+.adminNav-desktop ul{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+}
+
+.adminNav-desktop li{
+    height: 6rem;
+    padding: 2.5rem 0;
+}
+
+.adminNav-desktop a {
+    text-decoration: none;
+    padding: 5px 10px;
+    color: black;
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+.adminNav-desktop ul li:hover {
+  border-bottom: 0.2rem solid rgb(100, 100, 100);
+}
+  
+.adminNav-desktop a:last-child {
+  margin-right: 0;
+}
+
+
+/* 768px and Greater than 768px */
+@media screen and (min-width: 768px) {
+    .adminNav-header {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .adminNav-header h5 {
+        width: 100%;
+        text-align: center;
+    }
+
+    .adminNav-desktop {
+        display: block;
+    }
+
+    .adminNav-mobile{
+        display: none;
+    }
+}
+
+/* 992px and Greater than 992px */
+@media screen and (min-width: 992px) {
+    .adminNav-header {
+        padding: 0 6% 0 0;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .adminNav-header h5 {
+        width: fit-content;
+    }
+}
