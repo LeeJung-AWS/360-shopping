@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.scss';
 
+import Footer from './components/Footer';
+
 function App() {
   return (
     <div>
-      TEST
+      <Footer />
     </div>
   );
 }
