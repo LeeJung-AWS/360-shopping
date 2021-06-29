@@ -7,10 +7,10 @@ const Footer: React.FC = () => {
             <div className = "footer-column">
                 <p className="footer-title">SNS</p>
                 <div className="sns-link">
-                <a href="#"><i className="fab fa-instagram"></i></a>
-                <a href="#"><i className="fab fa-facebook-square"></i></a>
-                <a href="#"><i className="fab fa-youtube"></i></a>
-                <a href="#"><i className="fab fa-twitter"></i></a>
+                <a href="#test"><i className="fab fa-instagram"></i></a>
+                <a href="#test"><i className="fab fa-facebook-square"></i></a>
+                <a href="#test"><i className="fab fa-youtube"></i></a>
+                <a href="#test"><i className="fab fa-twitter"></i></a>
             </div>
             </div>
         </div>
