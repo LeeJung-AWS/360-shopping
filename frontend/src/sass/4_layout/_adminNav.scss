@@ -1,28 +1,7 @@
-.adminNav-header {
-    padding: 2% 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    box-shadow: 0 5px 35px rgba(0, 0, 0, 0.1);
-}
-
-.adminNav-header h5 {
-    color: $text-color;
-    background-color: $info;
-    padding: 0.5rem 1% 0.5rem 6%;
-    margin: 0;
-}
-
 /* Mobile Menu */
-.adminNav-mobile{
-    padding-right: 6%;
-}
-
 .adminNav-mobile a{
     font-size: 2.5rem;
-    color: black;
+    color: $text-color;
 }
 
 /* Desktop Menu */
@@ -39,25 +18,19 @@
 
 .adminNav-desktop li{
     height: 6rem;
-    padding: 2.5rem 0;
+    padding: 2.0rem 0;
 }
 
 .adminNav-desktop a {
     text-decoration: none;
     padding: 5px 10px;
-    color: black;
-    margin-right: 10px;
+    color: $text-color;
     font-size: 1.1rem;
 }
 
 .adminNav-desktop ul li:hover {
   border-bottom: 0.2rem solid rgb(100, 100, 100);
 }
-  
-.adminNav-desktop a:last-child {
-  margin-right: 0;
-}
-
 
 /* 768px and Greater than 768px */
 @media screen and (min-width: 768px) {
@@ -69,6 +42,7 @@
     .adminNav-header h5 {
         width: 100%;
         text-align: center;
+        font-size: 1.5rem;
     }
 
     .adminNav-desktop {

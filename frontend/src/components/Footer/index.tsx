@@ -13,8 +13,8 @@ const Footer: React.FC = () => {
                 <a href="#test"><i className="fab fa-twitter"></i></a>
             </div>
             </div>
-        </div>
-        <div className="footer-row">
+        {/* </div> */}
+        {/* <div className="footer-row"> */}
             <div className = "footer-column company-info">&#169; 2021 360-Shopping All Rights Reserved</div>
             <div className = "footer-column">
                 <p className="footer-title">Payment</p>
