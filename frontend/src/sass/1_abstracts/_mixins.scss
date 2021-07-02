@@ -1,9 +1,12 @@
 // Sass Mixins
-@mixin inputStyle {
-    
-} input[type="text"]{
-    width: 100%;
-    padding: 5px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
+
+@mixin formButtons {
+  width: auto;
+  height: auto;
+  margin-top: 20px !important ;
+  background-color: lightgray;
+  cursor: pointer;
+  &:hover{
+    background-color: hotpink;
   }
+}

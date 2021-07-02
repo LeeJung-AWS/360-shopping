@@ -1,12 +1,3 @@
 // Buttons
-@import "../1_abstracts/variables";
 
-button{
-    width: auto;
-    height: auto;
-    margin-top: 20px !important ;
-    background-color: $info;
-    &:hover{
-        background-color: blue;
-    }
-}
+

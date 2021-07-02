@@ -1,26 +1,18 @@
-.container-A {
-    background-color: white;
-    width: 80%;
-    height: 50%;
-    padding-bottom: 10px;
-    margin: auto;
-    margin-top: 50px;
-    display: flex;
-    align-items: center;
+@import "../1_abstracts/abstracts-index";
+@import "../3_components/container";
+
+
+form {
+  margin: auto;
+  padding: 20px;
+  padding-top: 40px;
+  input {
+    width: 100%;
+    padding: 5px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
   }
-  
-  form {
-    margin: auto;
-    padding: 20px;
-    input {
-      width: 100%;
-      padding: 5px 20px;
-      margin: 8px 0;
-      box-sizing: border-box;
-    }
-    button {
-  
-    }
-  
+  button {
+    @include formButtons();
   }
-  
+}
