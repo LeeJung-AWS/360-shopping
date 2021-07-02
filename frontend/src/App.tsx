@@ -1,10 +1,12 @@
 import React from 'react';
+import DashContainer from './pages/DashContainer';
 import './App.scss';
 
-function App() {
+
+function App(){
   return (
     <div>
-      TEST
+      <DashContainer/>
     </div>
   );
 }
