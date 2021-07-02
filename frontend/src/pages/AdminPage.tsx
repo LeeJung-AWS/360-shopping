@@ -6,17 +6,41 @@ const AdminPage: React.FC = () => {
 
     return <>
         <AdminNav />
-        <section className="adminPage-row">
-            <h4>Sales</h4>
-        </section>
-        <section className="adminPage-row">
-            <div className="adminPage-col">
-                <h4>Awaiting Shipments</h4>
-            </div>
-            <div className="adminPage-col">
-                <h4>Messages</h4>
-            </div>
-        </section>
+        <main className="adminPage-row">
+            <section className="adminPage-col card">
+                <div className="card-header">
+                    <h4>Sales</h4>
+                </div>
+                <div className="card-body">
+                    <p>Tab Button</p>
+                    <p>Graph</p>
+                    <p>Graph</p>
+                    <p>Graph</p>
+                    {/* <p>Graph</p>
+                    <p>Graph</p>
+                    <p>Graph</p>
+                    <p>Graph</p> */}
+                </div>
+            </section>
+            <section className="adminPage-col card">
+                <div className="card-header">
+                    <h4>Awaiting Shipments</h4>
+                </div>
+                <div className="card-body">
+                    <p>Shipments information</p>
+                </div>
+            </section>
+            <section className="adminPage-col card">
+                <div className="card-header">
+                    <h4>Messages</h4>
+                </div>
+                <div className="card-body">
+                    <p>Messages</p>
+                    <p>Messages</p>
+                    <p>Messages</p>
+                </div>
+            </section>
+        </main>
 
         </>
 }
