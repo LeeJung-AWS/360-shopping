@@ -10,3 +10,25 @@
     background-color: hotpink;
   }
 }
+// Column Mixin
+@mixin col($cols, $padding-v:false, $padding-h:false) {
+    $offset: 0%;
+    
+    @if $padding-v {
+     padding-bottom: #{$padding-v};
+     padding-top: #{$padding-v};
+    }
+    
+    @if $padding-h {
+     $offset: #{$padding-h * 2};
+     
+     padding-left: #{$padding-h};
+     padding-right: #{$padding-h};
+    }
+    
+    @if $cols {
+     width: calc(#{100 / $cols}% - #{$offset});
+    } @else {
+     width: calc(#{100 / 4}% - #{$offset});
+    }
+   }
