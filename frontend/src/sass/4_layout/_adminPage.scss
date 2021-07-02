@@ -1,0 +1,18 @@
+.adminPage-row {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.adminPage-col{
+    flex: 0 1 100%;
+}
+
+/* 768px and Greater than 768px */
+@media screen and (min-width: 768px) {
+    .adminPage-col:first-child {
+        flex: 0 1 100%;
+    }
+    .adminPage-col {
+        flex: 1 0 40%;
+    }
+}
