@@ -1,0 +1,63 @@
+.adminPage-row {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.adminPage-col{
+    flex: 0 1 100%;
+}
+
+.admin-tab{
+    display: flex;
+    border: 1px solid rgb(230, 230, 230);
+    border-bottom: 0;
+
+    button {
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 17px;
+    }
+
+    button:hover{
+        background-color: rgba(220, 220, 220, 0.8);
+    }
+    button.active{
+        background-color: white; 
+    }
+    button:focus{
+        background-color: white; 
+    }
+    .admin-tablinks{
+        flex-grow: 1;
+    }
+}
+
+.admin-tab-body{
+    border: 1px solid rgb(230, 230, 230);
+    border-top: 0;
+    padding: 0.5rem;
+}
+
+#units-sold-tab{
+    display: none;
+}
+#orders-tab{
+    display: none;
+}
+#aov-tab{
+    display: none;
+}
+
+
+/* 768px and Greater than 768px */
+@media screen and (min-width: 768px) {
+    .adminPage-col:first-child {
+        flex: 0 1 100%;
+    }
+    .adminPage-col {
+        flex: 1 0 40%;
+    }
+}
