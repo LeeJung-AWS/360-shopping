@@ -24,10 +24,7 @@
     button:hover{
         background-color: rgba(220, 220, 220, 0.8);
     }
-    button.active{
-        background-color: white; 
-    }
-    button:focus{
+    button.tabmenu-active{
         background-color: white; 
     }
     .admin-tablinks{
@@ -41,13 +38,13 @@
     padding: 0.5rem;
 }
 
-#units-sold-tab{
+#units-sold-content{
     display: none;
 }
-#orders-tab{
+#orders-content{
     display: none;
 }
-#aov-tab{
+#aov-content{
     display: none;
 }
 
