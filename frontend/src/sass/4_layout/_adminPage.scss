@@ -48,6 +48,25 @@
     display: none;
 }
 
+.tabcontent-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 1rem;
+
+    padding:1rem 0;
+
+    select {
+        border:none;
+    }
+}
+
+#range-date{
+    font-size: 0.7rem;
+    color: grey;
+}
+
 
 /* 768px and Greater than 768px */
 @media screen and (min-width: 768px) {
