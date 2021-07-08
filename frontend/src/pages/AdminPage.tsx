@@ -1,6 +1,5 @@
-// import { useState } from 'react';
-
 import AdminNav from '../components/AdminNav';
+import SalesGraph from '../components/SalesGraph';
 
 const AdminPage: React.FC = () => {
     const amdinTabMenuClick = (event: any) => {
@@ -49,9 +48,24 @@ const AdminPage: React.FC = () => {
                     </div>
                     <div className="admin-tab-body">
                         <div id="revenue-content" className="tabcontent">
-                            <p>Revenue Graph</p>
-                            <p>Revenue Graph</p>
-                            <p>Revenue Graph</p>
+                            <div className="row">
+                                <div className="tabcontent-title">
+                                    <div>
+                                        <div>Revenue</div>
+                                        <div id="range-date">Jan 01 ~ Dec 31, 2021 $23,950.00</div>
+                                    </div>
+                                    <div>
+                                    <select id="select-date" name="date">
+                                        <option value="daily">Daily</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <SalesGraph />
+                                </div>
+                            </div>
                         </div>
                         <div id="units-sold-content" className="tabcontent">
                             <p>Units Sold Graph</p>
