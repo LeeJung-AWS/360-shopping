@@ -12,10 +12,13 @@ const SalesGraph: React.FC = () => {
     const data = [
         {
             marker: {
-                color: 'rgb(16, 32, 77)'
+                symbol:'circle',
+                color: 'rgb(16, 32, 77)',
+                size: 10,
             },
             type: 'scatter',
-            // mode: 'lines',
+            // mode: 'lines-markers',
+            
             x: months,
             y: yAxis
         },

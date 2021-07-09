@@ -5,12 +5,17 @@
 
 .adminPage-col{
     flex: 0 1 100%;
+
+    // .card-header h4{
+    //     padding: 1rem;
+    // }
 }
 
 .admin-tab{
     display: flex;
     border: 1px solid rgb(230, 230, 230);
     border-bottom: 0;
+    
 
     button {
         border: none;
@@ -26,10 +31,23 @@
     }
     button.tabmenu-active{
         background-color: white; 
+        color: black;
     }
     .admin-tablinks{
         flex-grow: 1;
+        color: gray;
+        padding: 1rem 1rem 2rem 1rem;
+        text-align: left;
     }
+
+    .admin-tablinks-title{
+        font-size: 0.7rem;
+    }
+    
+    .admin-tablinks-price{
+        font-size: 1.5rem;
+    }
+    
 }
 
 .admin-tab-body{
@@ -66,6 +84,7 @@
     font-size: 0.7rem;
     color: grey;
 }
+
 
 
 /* 768px and Greater than 768px */
