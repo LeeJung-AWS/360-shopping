@@ -27,7 +27,8 @@ const DashNav: React.FC = () => {
         <ul>
           <li></li>
           <li>
-            <a href="#test">Link</a>
+          <a href="#mobile-Links02">Login</a>
+        <a href="#mobile-Links03">Contact Us</a>
           </li>
         </ul>
       </nav>
