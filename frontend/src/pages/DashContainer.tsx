@@ -1,12 +1,19 @@
+import Carousel from "../components/Carousel";
+import DashNav from "../components/DashNav";
+import DashShopItems1 from "../components/DashShopItems1";
+import DashShopItems2 from "../components/DashShopItems2";
 
-import Login from '../components/Login';
-import "../sass/4_layout/_forms.scss"
+export const DashContainer: React.FC = () => {
+  return (
+    <>
+      <DashNav />
 
+      <Carousel />
 
-export default function DashContainer(){
-    return (
-        <div className="container">
-            <Login/>
-        </div>
-    )
-}
+      <DashShopItems1 />
+
+      <DashShopItems2/>
+    </>
+  );
+};
+export default DashContainer;
