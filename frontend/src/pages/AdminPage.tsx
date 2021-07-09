@@ -19,8 +19,9 @@ const AdminPage: React.FC = () => {
           }
         
         // Checking the tab and Create ID for content
-        // console.log(event.currentTarget.textContent.toLowerCase().replace(" ","-") + "-content");
-        const seletedContentId = event.currentTarget.textContent.toLowerCase().replace(" ","-") + "-content";
+        // console.log(event.currentTarget.children[0].textContent.toLowerCase())
+        console.log(event.currentTarget.children[0].textContent.toLowerCase().replace(" ","-") + "-content");
+        const seletedContentId = event.currentTarget.children[0].textContent.toLowerCase().replace(" ","-") + "-content";
 
         // Display seletedContent
         const seletedContent = document.getElementById(`${seletedContentId}`)!;
@@ -41,10 +42,22 @@ const AdminPage: React.FC = () => {
                 </div>
                 <div className="admin-tab-card-body">
                     <div className="admin-tab">
-                        <button className="admin-tablinks tabmenu-active" onClick={amdinTabMenuClick}>REVENUE</button>
-                        <button className="admin-tablinks" onClick={amdinTabMenuClick}>UNITS SOLD</button>
-                        <button className="admin-tablinks" onClick={amdinTabMenuClick}>ORDERS</button>
-                        <button className="admin-tablinks" onClick={amdinTabMenuClick}>AOV</button>
+                        <button className="admin-tablinks tabmenu-active" onClick={amdinTabMenuClick}>
+                            <div className="admin-tablinks-title">REVENUE</div>
+                            <div className="admin-tablinks-price">$23.4K</div>
+                        </button>
+                        <button className="admin-tablinks" onClick={amdinTabMenuClick}>
+                            <div className="admin-tablinks-title">UNITS SOLD</div>
+                            <div className="admin-tablinks-price">74</div>
+                        </button>
+                        <button className="admin-tablinks" onClick={amdinTabMenuClick}>
+                            <div className="admin-tablinks-title">ORDERS</div>
+                            <div className="admin-tablinks-price">47</div>
+                        </button>
+                        <button className="admin-tablinks" onClick={amdinTabMenuClick}>
+                            <div className="admin-tablinks-title">AOV</div>
+                            <div className="admin-tablinks-price">$350</div>
+                        </button>
                     </div>
                     <div className="admin-tab-body">
                         <div id="revenue-content" className="tabcontent">
