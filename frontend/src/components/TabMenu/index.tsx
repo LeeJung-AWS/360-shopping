@@ -1,6 +1,8 @@
+import {  ReactNode } from 'react';
+
 interface ChildProps {
     header: string;
-    tablinksButton: Array<{title: string; secondRow: number}>;
+    tablinksButton: Array<{title: string; secondRow: number; contents: ReactNode}>;
 }
 
 const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
@@ -54,9 +56,9 @@ const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
             </div>
             <div className="admin-tab-body">
                 {
-                    tablinksButton.map(button => {
-                        return (<div id={`${button.title.split(" ").join("-").toLowerCase()}-content`} className="tabcontent">
-                            <p>{button.title} Graph</p>
+                    tablinksButton.map((button, index) => {
+                        return (<div key={index} id={`${button.title.split(" ").join("-").toLowerCase()}-content`} className="tabcontent">
+                            <p>{button.contents} {button.title}</p>
                         </div>)
                     })
                 }
