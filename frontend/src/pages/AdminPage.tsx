@@ -1,4 +1,5 @@
 import AdminNav from '../components/AdminNav';
+import Tabmenu from '../components/TabMenu';
 import SalesGraph from '../components/SalesGraph';
 
 const AdminPage: React.FC = () => {
@@ -32,9 +33,28 @@ const AdminPage: React.FC = () => {
 
     }
 
+    const tablinksButton = [
+        { 
+            title: 'REVENUE',
+            secondRow: 23400
+        },
+        { 
+            title: 'UNITS SOLD',
+            secondRow: 74
+        },
+        { 
+            title: 'ORDERS',
+            secondRow: 47
+        },
+        { 
+            title: 'AOV',
+            secondRow: 350
+        }
+    ]
 
     return <>
         <AdminNav />
+        <Tabmenu header="Sales" tablinksButton={tablinksButton}/>
         <main className="adminPage-row">
             <section className="adminPage-col card">
                 <div className="card-header">
