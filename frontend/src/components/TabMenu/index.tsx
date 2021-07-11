@@ -46,8 +46,6 @@ const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
         <div className="admin-tab-card-body">
             <div className="admin-tab">
                 {tablinksButton.map((button, index) => {
-                    
-                    // console.log(button.secondRowUnit)
                     return(index===0?<button key={index} className="admin-tablinks tabmenu-active" onClick={amdinTabMenuClick}>
                         <div className="admin-tablinks-title">{button.title}</div>
                         {button.secondRowUnit? <div className="admin-tablinks-price">{button.secondRowUnit+NumberComma(button.secondRow)}</div>:

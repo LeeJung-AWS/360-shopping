@@ -1,6 +1,3 @@
-import React from 'react';
-import './App.scss';
-
 import AdminPage from './pages/AdminPage';
 import Footer from './components/Footer';
 
