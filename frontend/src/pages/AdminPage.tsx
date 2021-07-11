@@ -1,50 +1,37 @@
 import AdminNav from '../components/AdminNav';
 import Tabmenu from '../components/TabMenu';
+import ContentsTopMenu from '../components/TabMenu/ContentsTopMenu';
 import SalesGraph from '../components/SalesGraph';
 
 const AdminPage: React.FC = () => {
-
-    const revenuContent = () => {
-        return (<div className="row">
-        <div className="tabcontent-title">
-            <div>
-                <div>Revenue</div>
-                <div id="range-date">Jan 01 ~ Dec 31, 2021 $23,950.00</div>
-            </div>
-            <div>
-            <select id="select-date" name="date">
-                <option value="daily">Daily</option>
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
-            </select>
-            </div>
-        </div>
-        <div>
-            <SalesGraph />
-        </div>
-    </div>)
-    }
 
     const tablinksButton = [
         { 
             title: 'REVENUE',
             secondRow: 23400,
-            contents: <SalesGraph />
+            secondRowUnit: '$',
+            contentsTopMenu: <ContentsTopMenu title={'Revenue'} />,
+            contents: <SalesGraph />,
         },
         { 
             title: 'UNITS SOLD',
             secondRow: 74,
-            contents: <SalesGraph />
+            contentsTopMenu: <ContentsTopMenu title={'Units Sold'} />,
+            contents: <SalesGraph />,
+
         },
         { 
             title: 'ORDERS',
             secondRow: 47,
-            contents: <SalesGraph />
+            contentsTopMenu: <ContentsTopMenu title={'Orders'} />,
+            contents: <SalesGraph />,
         },
         { 
             title: 'AOV',
             secondRow: 350,
-            contents: <SalesGraph />
+            secondRowUnit: '$',
+            contentsTopMenu: <ContentsTopMenu title={'Average Order Value'} />,
+            contents: <SalesGraph />,
         }
     ]
 
