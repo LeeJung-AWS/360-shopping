@@ -1,12 +1,13 @@
 import {  ReactNode } from 'react';
+import NumberComma from '../NumberComma';
 
 interface ChildProps {
     header: string;
-    tablinksButton: Array<{title: string; secondRow: number; contents: ReactNode; contentBody?: ReactNode; }>;
+    tablinksButton: Array<{title: string; secondRow: number; secondRowUnit?: string; contentsTopMenu?: ReactNode; contents: ReactNode; }>;
 }
 
 const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
-
+    
     const amdinTabMenuClick = (event: any) => {
         // The exclamation mark means a developer knows there is a button element.( The value is not null )
         const adminTablinks = document.querySelectorAll('.admin-tablinks')!;
@@ -45,12 +46,16 @@ const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
         <div className="admin-tab-card-body">
             <div className="admin-tab">
                 {tablinksButton.map((button, index) => {
+                    
+                    // console.log(button.secondRowUnit)
                     return(index===0?<button key={index} className="admin-tablinks tabmenu-active" onClick={amdinTabMenuClick}>
                         <div className="admin-tablinks-title">{button.title}</div>
-                        <div className="admin-tablinks-price">{button.secondRow}</div>
+                        {button.secondRowUnit? <div className="admin-tablinks-price">{button.secondRowUnit+NumberComma(button.secondRow)}</div>:
+                        <div className="admin-tablinks-price">{button.secondRow}</div>}
                     </button>:<button key={index} className="admin-tablinks" onClick={amdinTabMenuClick}>
                         <div className="admin-tablinks-title">{button.title}</div>
-                        <div className="admin-tablinks-price">{button.secondRow}</div>
+                        {button.secondRowUnit? <div className="admin-tablinks-price">{button.secondRowUnit+NumberComma(button.secondRow)}</div>:
+                        <div className="admin-tablinks-price">{button.secondRow}</div>}
                     </button>)
                 })}
             </div>
@@ -58,8 +63,8 @@ const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
                 {
                     tablinksButton.map((button, index) => {
                         return (<div key={index} id={`${button.title.split(" ").join("-").toLowerCase()}-content`} className="tabcontent">
-                                    {button.contentBody}
-                                    <p>{button.contents}</p>
+                                    {button.contentsTopMenu}
+                                    {button.contents}
                                 </div>)
                     })
                 }

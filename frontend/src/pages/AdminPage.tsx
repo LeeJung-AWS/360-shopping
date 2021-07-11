@@ -1,6 +1,6 @@
 import AdminNav from '../components/AdminNav';
 import Tabmenu from '../components/TabMenu';
-import TabMenuBody from '../components/TabMenu/TabMenuBody';
+import ContentsTopMenu from '../components/TabMenu/ContentsTopMenu';
 import SalesGraph from '../components/SalesGraph';
 
 const AdminPage: React.FC = () => {
@@ -9,27 +9,29 @@ const AdminPage: React.FC = () => {
         { 
             title: 'REVENUE',
             secondRow: 23400,
+            secondRowUnit: '$',
+            contentsTopMenu: <ContentsTopMenu title={'Revenue'} />,
             contents: <SalesGraph />,
-            contentBody: <TabMenuBody />
         },
         { 
             title: 'UNITS SOLD',
             secondRow: 74,
+            contentsTopMenu: <ContentsTopMenu title={'Units Sold'} />,
             contents: <SalesGraph />,
-            // contentBody: contentsHTML
 
         },
         { 
             title: 'ORDERS',
             secondRow: 47,
+            contentsTopMenu: <ContentsTopMenu title={'Orders'} />,
             contents: <SalesGraph />,
-            // contentBody: contentsHTML
         },
         { 
             title: 'AOV',
             secondRow: 350,
+            secondRowUnit: '$',
+            contentsTopMenu: <ContentsTopMenu title={'Average Order Value'} />,
             contents: <SalesGraph />,
-            // contentBody: contentsHTML
         }
     ]
 
