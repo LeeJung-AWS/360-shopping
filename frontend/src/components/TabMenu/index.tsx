@@ -2,7 +2,7 @@ import {  ReactNode } from 'react';
 
 interface ChildProps {
     header: string;
-    tablinksButton: Array<{title: string; secondRow: number; contents: ReactNode}>;
+    tablinksButton: Array<{title: string; secondRow: number; contents: ReactNode; contentBody?: ReactNode; }>;
 }
 
 const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
@@ -58,8 +58,9 @@ const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
                 {
                     tablinksButton.map((button, index) => {
                         return (<div key={index} id={`${button.title.split(" ").join("-").toLowerCase()}-content`} className="tabcontent">
-                            <p>{button.contents} {button.title}</p>
-                        </div>)
+                                    {button.contentBody}
+                                    <p>{button.contents}</p>
+                                </div>)
                     })
                 }
                 {/* <div id="revenue-content" className="tabcontent">
