@@ -1,19 +1,30 @@
-import {  ReactNode } from 'react';
+import { ReactNode } from 'react';
 import NumberComma from '../NumberComma';
+import SalesGraph from '../SalesGraph';
+
+interface tabMenuInformation {
+    title: string; 
+    secondRow: number; 
+    secondRowUnit?: string; 
+    contentsTopMenu?: ReactNode; 
+    contents: {months: Array<string>, yAxis: Array<number>, yAixsTickprefix: string};
+}
 
 interface ChildProps {
     header: string;
-    tablinksButton: Array<{title: string; secondRow: number; secondRowUnit?: string; contentsTopMenu?: ReactNode; contents: ReactNode; }>;
+    tabMenuInformation: Array<tabMenuInformation>;
 }
 
-const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
+const TabMenu: React.FC<ChildProps> = ({header, tabMenuInformation}) => {
     
+
+
     const amdinTabMenuClick = (event: any) => {
         // The exclamation mark means a developer knows there is a button element.( The value is not null )
         const adminTablinks = document.querySelectorAll('.admin-tablinks')!;
+        // In order to use style property, use HTMLCollectionOf<HTMLElement>
         const tabcontent = document.getElementsByClassName("tabcontent") as HTMLCollectionOf<HTMLElement>;
 
-        // console.log(tabcontent);
         // All contents none-display
         for (let i = 0; i < tabcontent.length; i++) {
             tabcontent[i].style.display = "none";
@@ -25,8 +36,7 @@ const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
           }
         
         // Checking the tab and Create ID for content
-        // console.log(event.currentTarget.children[0].textContent.toLowerCase())
-        console.log(event.currentTarget.children[0].textContent.toLowerCase().replace(" ","-") + "-content");
+        // console.log(event.currentTarget.children[0].textContent.toLowerCase().replace(" ","-") + "-content");
         const seletedContentId = event.currentTarget.children[0].textContent.toLowerCase().replace(" ","-") + "-content";
 
         // Display seletedContent
@@ -45,53 +55,31 @@ const TabMenu: React.FC<ChildProps> = ({header, tablinksButton}) => {
         </div>
         <div className="admin-tab-card-body">
             <div className="admin-tab">
-                {tablinksButton.map((button, index) => {
-                    return(index===0?<button key={index} className="admin-tablinks tabmenu-active" onClick={amdinTabMenuClick}>
-                        <div className="admin-tablinks-title">{button.title}</div>
-                        {button.secondRowUnit? <div className="admin-tablinks-price">{button.secondRowUnit+NumberComma(button.secondRow)}</div>:
-                        <div className="admin-tablinks-price">{button.secondRow}</div>}
-                    </button>:<button key={index} className="admin-tablinks" onClick={amdinTabMenuClick}>
-                        <div className="admin-tablinks-title">{button.title}</div>
-                        {button.secondRowUnit? <div className="admin-tablinks-price">{button.secondRowUnit+NumberComma(button.secondRow)}</div>:
-                        <div className="admin-tablinks-price">{button.secondRow}</div>}
-                    </button>)
+                {tabMenuInformation.map((tabMenu, index) => {
+                    return(
+                        /* ternary operator to check if the index is first, then add tabmenu-active class */
+                        index===0 ? <button key={index} className="admin-tablinks tabmenu-active" onClick={amdinTabMenuClick}>
+                        <div className="admin-tablinks-title">{tabMenu.title}</div>
+                        {/* ternary operator to check Unit, ex) $  */}
+                        {tabMenu.secondRowUnit ? <div className="admin-tablinks-price">{tabMenu.secondRowUnit+NumberComma(tabMenu.secondRow)}</div>:
+                        <div className="admin-tablinks-price">{tabMenu.secondRow}</div>}</button> 
+                        : <button key={index} className="admin-tablinks" onClick={amdinTabMenuClick}> <div className="admin-tablinks-title">{tabMenu.title}</div>
+                        {tabMenu.secondRowUnit ? <div className="admin-tablinks-price">{tabMenu.secondRowUnit+NumberComma(tabMenu.secondRow)}</div>:
+                        <div className="admin-tablinks-price">{tabMenu.secondRow}</div>}</button>
+                    )
                 })}
             </div>
             <div className="admin-tab-body">
                 {
-                    tablinksButton.map((button, index) => {
-                        return (<div key={index} id={`${button.title.split(" ").join("-").toLowerCase()}-content`} className="tabcontent">
-                                    {button.contentsTopMenu}
-                                    {button.contents}
-                                </div>)
+                    tabMenuInformation.map((tabMenu, index) => {
+                        return (<div key={index} id={`${tabMenu.title.split(" ").join("-").toLowerCase()}-content`} className="tabcontent">
+                                    {tabMenu.contentsTopMenu}
+                                </div>
+                        )
                     })
                 }
-                {/* <div id="revenue-content" className="tabcontent">
-                    <div className="row">
-                        <div className="tabcontent-title">
-                            <div>
-                                <div>Revenue</div>
-                                <div id="range-date">Jan 01 ~ Dec 31, 2021 $23,950.00</div>
-                            </div>
-                            <div>
-                            <select id="select-date" name="date">
-                                <option value="daily">Daily</option>
-                                <option value="monthly">Monthly</option>
-                                <option value="yearly">Yearly</option>
-                            </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="units-sold-content" className="tabcontent">
-                    <p>Units Sold Graph</p>
-                </div>
-                <div id="orders-content" className="tabcontent">
-                    <p>Orders Graph</p>
-                </div>
-                <div id="aov-content" className="tabcontent">
-                    <p>AOV Graph</p>
-                </div> */}
+                {/* Add Graph for Content */ console.log(tabMenuInformation[0].contents)}
+                <SalesGraph months={tabMenuInformation[1].contents.months} yAxis={tabMenuInformation[1].contents.yAxis} yAixsTickprefix={tabMenuInformation[1].contents.yAixsTickprefix} />
             </div>
         </div>
     </section>

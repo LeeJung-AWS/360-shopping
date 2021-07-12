@@ -1,20 +1,25 @@
+import NumberComma from '../../NumberComma';
+
 interface ChildProps {
     title: string;
+    rangeDate: string;
+    secondRowUnit?: string;
+    secondRow: number;
 }
 
-const ContentsTopMenu: React.FC<ChildProps> = ({ title }) => {
+const ContentsTopMenu: React.FC<ChildProps> = ({ title, rangeDate, secondRow, secondRowUnit }) => {
         
         return(<div className="row">
             <div className="tabcontent-title">
                 <div>
                     <div>{title}</div>
-                    <div id="range-date">Jan 01 ~ Dec 31, 2021 $23,950.00</div>
+                    {secondRowUnit? <div id="range-date">{rangeDate} / ${NumberComma(secondRow)}</div> : <div id="range-date">{rangeDate} / {secondRow}</div>}
+                    
                 </div>
                 <div>
                 <select id="select-date" name="date">
                     <option value="daily">Daily</option>
                     <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
                 </select>
                 </div>
             </div>
