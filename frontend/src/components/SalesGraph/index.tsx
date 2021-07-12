@@ -1,14 +1,24 @@
 import React from 'react';
 import PlotlyChart from 'react-plotlyjs-ts';
 
-const SalesGraph: React.FC = () => {
-    const handleClick = (evt: any) => alert('click');
-    const handleHover = (evt: any) => alert('hover');
+interface ChildProps {
+    months: Array<string>;
+    yAxis: Array<number>;
+    yAixsTickprefix: string;
+}
 
-    // Dummy Graph Data
-    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-    const yAxis = ['2500', '1500', '4530', '4510', '1500', '1500', '4550', '3500', '5500', '2500', '3600', '2500'];
-    
+const SalesGraph: React.FC<ChildProps> = ( { months, yAxis, yAixsTickprefix }) => {
+    // const handleClick = (evt: any) => alert('click');
+    // const handleHover = (evt: any) => alert('hover');
+
+    const monthsGraph = months;
+    const yAxisGraph = yAxis;
+    const yAixsTickprefixGraph = yAixsTickprefix;
+
+    console.log(monthsGraph);
+    console.log(yAxisGraph);
+    console.log(yAixsTickprefixGraph);
+
     const data = [
         {
             marker: {
@@ -19,13 +29,13 @@ const SalesGraph: React.FC = () => {
             type: 'scatter',
             // mode: 'lines-markers',
             
-            x: months,
-            y: yAxis
+            x: monthsGraph,
+            y: yAxisGraph
         },
     ];
     const layout = {
         yaxis: {
-            tickprefix: '$',
+            tickprefix: yAixsTickprefixGraph,
         },
         xaxis: {
             showgrid: false
@@ -48,8 +58,8 @@ const SalesGraph: React.FC = () => {
         <PlotlyChart data={data}
                     layout={layout}
                     config={config}
-                    onClick={handleClick}
-                    onHover={handleHover}
+                    // onClick={handleClick}
+                    // onHover={handleHover}
             />
     </div>
 }
