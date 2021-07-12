@@ -11,80 +11,81 @@
     // }
 }
 
-.admin-tab{
-    display: flex;
-    border: 1px solid rgb(230, 230, 230);
-    border-bottom: 0;
+// Move this tab style to components tabmenu.scss
+// .admin-tab{
+//     display: flex;
+//     border: 1px solid rgb(230, 230, 230);
+//     border-bottom: 0;
     
 
-    button {
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 14px 16px;
-        transition: 0.3s;
-        font-size: 17px;
-    }
+//     button {
+//         border: none;
+//         outline: none;
+//         cursor: pointer;
+//         padding: 14px 16px;
+//         transition: 0.3s;
+//         font-size: 17px;
+//     }
 
-    button:hover{
-        background-color: rgba(220, 220, 220, 0.8);
-    }
-    button.tabmenu-active{
-        background-color: white; 
-        color: black;
-    }
-    .admin-tablinks{
-        flex-grow: 1;
-        color: gray;
-        padding: 1rem 1rem 2rem 1rem;
-        text-align: left;
-    }
+//     button:hover{
+//         background-color: rgba(220, 220, 220, 0.8);
+//     }
+//     button.tabmenu-active{
+//         background-color: white; 
+//         color: black;
+//     }
+//     .admin-tablinks{
+//         flex-grow: 1;
+//         color: gray;
+//         padding: 1rem 1rem 2rem 1rem;
+//         text-align: left;
+//     }
 
-    .admin-tablinks-title{
-        font-size: 0.7rem;
-    }
+//     .admin-tablinks-title{
+//         font-size: 0.7rem;
+//     }
     
-    .admin-tablinks-price{
-        font-size: 1.5rem;
-    }
+//     .admin-tablinks-price{
+//         font-size: 1.5rem;
+//     }
     
-}
+// }
 
-.admin-tab-body{
-    border: 1px solid rgb(230, 230, 230);
-    border-top: 0;
-    padding: 0.5rem;
-    min-height: 34rem;
-}
+// .admin-tab-body{
+//     border: 1px solid rgb(230, 230, 230);
+//     border-top: 0;
+//     padding: 0.5rem;
+//     min-height: 34rem;
+// }
 
-#units-sold-content{
-    display: none;
-}
-#orders-content{
-    display: none;
-}
-#aov-content{
-    display: none;
-}
+// #units-sold-content{
+//     display: none;
+// }
+// #orders-content{
+//     display: none;
+// }
+// #aov-content{
+//     display: none;
+// }
 
-.tabcontent-title{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+// .tabcontent-title{
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
 
-    font-size: 1rem;
+//     font-size: 1rem;
 
-    padding:1rem 0;
+//     padding:1rem 0;
 
-    select {
-        border:none;
-    }
-}
+//     select {
+//         border:none;
+//     }
+// }
 
-#range-date{
-    font-size: 0.7rem;
-    color: grey;
-}
+// #range-date{
+//     font-size: 0.7rem;
+//     color: grey;
+// }
 
 
 
