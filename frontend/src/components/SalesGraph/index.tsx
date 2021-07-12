@@ -15,9 +15,9 @@ const SalesGraph: React.FC<ChildProps> = ( { months, yAxis, yAixsTickprefix }) =
     const yAxisGraph = yAxis;
     const yAixsTickprefixGraph = yAixsTickprefix;
 
-    console.log(monthsGraph);
-    console.log(yAxisGraph);
-    console.log(yAixsTickprefixGraph);
+    // console.log(monthsGraph);
+    // console.log(yAxisGraph);
+    // console.log(yAixsTickprefixGraph);
 
     const data = [
         {
