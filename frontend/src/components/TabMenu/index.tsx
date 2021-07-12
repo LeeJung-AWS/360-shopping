@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import NumberComma from '../NumberComma';
 import SalesGraph from '../SalesGraph';
 
@@ -17,6 +17,13 @@ interface ChildProps {
 
 const TabMenu: React.FC<ChildProps> = ({header, tabMenuInformation}) => {
     
+    const [ graphContent, setGraphContent ] = useState<{months: Array<string>; yAixsTickprefix: string; yAxis: Array<number>}>(
+        {
+            months: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+            yAxis: [4500, 1500, 4350, 4510, 1500, 1500, 4550, 3500, 5500, 2500, 3600, 4300],
+            yAixsTickprefix: '$'
+        }
+    );
 
 
     const amdinTabMenuClick = (event: any) => {
@@ -46,6 +53,17 @@ const TabMenu: React.FC<ChildProps> = ({header, tabMenuInformation}) => {
         // Add tabmenu-active ClassName
         event.currentTarget.className += ' tabmenu-active';
 
+        // Update Graph contents Information
+        // console.log(event.currentTarget.children[0].textContent);
+        for(let i = 0; i < tabMenuInformation.length; i++){
+            if(event.currentTarget.children[0].textContent === tabMenuInformation[i].title){
+                // console.log(tabMenuInformation[i].contents);
+                setGraphContent(tabMenuInformation[i].contents)
+            }
+
+        }
+       
+        
     }
 
 
@@ -78,8 +96,8 @@ const TabMenu: React.FC<ChildProps> = ({header, tabMenuInformation}) => {
                         )
                     })
                 }
-                {/* Add Graph for Content */ console.log(tabMenuInformation[0].contents)}
-                <SalesGraph months={tabMenuInformation[1].contents.months} yAxis={tabMenuInformation[1].contents.yAxis} yAixsTickprefix={tabMenuInformation[1].contents.yAixsTickprefix} />
+                {/* Add Graph for Content console.log(tabMenuInformation) */ }
+                <SalesGraph months={graphContent.months} yAxis={graphContent.yAxis} yAixsTickprefix={graphContent.yAixsTickprefix} />
             </div>
         </div>
     </section>
