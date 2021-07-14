@@ -95,6 +95,9 @@ const AdminPage: React.FC = () => {
                 <Route exact path="/adminPage/orderHistory">
                     <p>orderHistory Page</p>
                 </Route>
+                <Route exact path="/adminPage/messages">
+                    <p>messages Page</p>
+                </Route>
                 <Route exact path="/adminPage/printReports">
                     <p>printReports Page</p>
                 </Route>
