@@ -39,23 +39,51 @@ const AddNewProduct: React.FC = () => {
                     <input onChange={onChange} className="addNewProduct-description" placeholder="Add description..." value={addNewProductDescription} />
                 </div>
                 <div className="addNewProduct-body-item addNewProduct-img-box">
-                    <div></div>
-                    <div>ADD IMAGES</div>
+                    <div className="addNewProduct-img-border">
+                        <div><i className="fas fa-upload"></i></div>
+                        <div>ADD IMAGES</div>
+                    </div>
                 </div>
                 <div className="addNewProduct-body-item">
                     <p>Pricing</p>
-                    <div>Price</div>
-                    <div>On Sale</div>
-                    <div>Sale Price</div>
+                    <div className="addNewProduct-body-item-body">
+                        <div className="addNewProduct-body-item-body-items">
+                            <label>Price</label>
+                            <input placeholder='$0.00' />
+                        </div>
+                        <div className="addNewProduct-body-item-body-items">
+                            <label>On Sale</label>
+                            <label className="switch">
+                                <input type="checkbox" />
+                                <span className="slider round"></span>
+                            </label>
+                        </div>
+                        <div className="addNewProduct-body-item-body-items">
+                            <label>Sale Price</label>
+                            <input placeholder='$0.00' />
+                        </div>
+                    </div>
                 </div>
                 <div  className="addNewProduct-body-item">
                     <p>Inventory</p>
-                    <div>Quantity</div>
-                    <div>SKU</div>
+                    <div className="addNewProduct-body-item-body">
+                        <div className="addNewProduct-body-item-body-items">
+                            <label>Quantity</label>
+                            <input placeholder='0' type='number'/>
+                        </div>
+                        <div className="addNewProduct-body-item-body-items">
+                            <label>SKU</label>
+                            <input placeholder='SQ910011' />
+                        </div>
+                    </div>
                 </div>
                 <div  className="addNewProduct-body-item">
                     <p>Categories</p>
-                    <button>Add...</button>
+                    <div className="addNewProduct-body-item-body">
+                        <div className="addNewProduct-body-item-body-items">
+                            <button>ADD</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
