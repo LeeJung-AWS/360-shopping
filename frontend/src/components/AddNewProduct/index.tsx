@@ -15,6 +15,23 @@ const AddNewProduct: React.FC = () => {
     //     }
     // }
 
+    const checkBox = () =>{
+        const checkBox = document.getElementById('toggleCheckbox')!;
+        const originalPrice = document.querySelector<HTMLElement>('.original-price')!;
+        const salePrice = document.getElementById('sale-price')!;
+
+        console.log(checkBox.dataset.check);
+        if(checkBox.dataset.check === 'checked'){
+            checkBox.dataset.check = '';
+            originalPrice.style.textDecoration = '';
+            salePrice.style.display = 'none';
+        }else{
+            checkBox.dataset.check = 'checked';
+            originalPrice.style.textDecoration = 'line-through';
+            salePrice.style.display = 'flex';
+        }
+    }
+
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if(e.target.className === 'addNewProduct-title'){
             setAddNewProductTitle(e.target.value);
@@ -49,16 +66,16 @@ const AddNewProduct: React.FC = () => {
                     <div className="addNewProduct-body-item-body">
                         <div className="addNewProduct-body-item-body-items">
                             <label>Price</label>
-                            <input placeholder='$0.00' />
+                            <input className="original-price" placeholder='$0.00' />
                         </div>
                         <div className="addNewProduct-body-item-body-items">
                             <label>On Sale</label>
                             <label className="switch">
-                                <input type="checkbox" />
+                                <input id="toggleCheckbox" type="checkbox" data-check="" onClick={checkBox} />
                                 <span className="slider round"></span>
                             </label>
                         </div>
-                        <div className="addNewProduct-body-item-body-items">
+                        <div className="addNewProduct-body-item-body-items" id="sale-price">
                             <label>Sale Price</label>
                             <input placeholder='$0.00' />
                         </div>
