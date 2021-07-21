@@ -4,16 +4,8 @@ const AddNewProduct: React.FC = () => {
     const [addNewProductTitle, setAddNewProductTitle] = useState('');
     const [addNewProductDescription, setAddNewProductDescription] = useState('');
 
-    // const onFocus = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     console.log(e.target.className)
-    //     if(e.target.className === 'addNewProduct-title' && addNewProductTitle === 'Add Product Name'){
-    //         setAddNewProductTitle('');
-    //     }
-
-    //     if(e.target.className === 'addNewProduct-description' && addNewProductDescription === 'Add description...'){
-    //         setAddNewProductDescription('');
-    //     }
-    // }
+   //Dummy Data for Categories
+   const [categories, setCategories] = useState(['Men', 'Clothing', 'Shirts']);
 
     const checkBox = () =>{
         const checkBox = document.getElementById('toggleCheckbox')!;
@@ -98,6 +90,9 @@ const AddNewProduct: React.FC = () => {
                     <p>Categories</p>
                     <div className="addNewProduct-body-item-body">
                         <div className="addNewProduct-body-item-body-items">
+                            {categories? 
+                                categories.map((category, index) => <p className="addNewProduct-categories-item" key={index}>{category}</p>) :""
+                            }
                             <button>ADD</button>
                         </div>
                     </div>
