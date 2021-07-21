@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import ModalBoxAdmin from './ModalBoxAdmin';
+
 const AddNewProduct: React.FC = () => {
     const [addNewProductTitle, setAddNewProductTitle] = useState('');
     const [addNewProductDescription, setAddNewProductDescription] = useState('');
@@ -33,7 +35,13 @@ const AddNewProduct: React.FC = () => {
         }
     }
 
+    function clickModalBtn() {
+        const modalEl = document.getElementById('admin-modal')!;
+        modalEl.style.display = 'block';
+    }
+
     return (
+        <>
         <div className="card">
             <div className="card-header addNewProduct-header">
                 <button>Save</button>
@@ -89,16 +97,18 @@ const AddNewProduct: React.FC = () => {
                 <div  className="addNewProduct-body-item">
                     <p>Categories</p>
                     <div className="addNewProduct-body-item-body">
-                        <div className="addNewProduct-body-item-body-items">
+                        <div className="addNewProduct-body-item-body-items addNewProduct-body-item-body-items-last-child">
                             {categories? 
                                 categories.map((category, index) => <p className="addNewProduct-categories-item" key={index}>{category}</p>) :""
                             }
-                            <button>ADD</button>
+                            <button onClick={clickModalBtn}>ADD</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <ModalBoxAdmin />
+        </>
     )
 };
 
