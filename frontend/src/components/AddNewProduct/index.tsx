@@ -1,19 +1,30 @@
 import { useState } from 'react';
 
+import ModalBoxAdmin from './ModalBoxAdmin';
+
 const AddNewProduct: React.FC = () => {
     const [addNewProductTitle, setAddNewProductTitle] = useState('');
     const [addNewProductDescription, setAddNewProductDescription] = useState('');
 
-    // const onFocus = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     console.log(e.target.className)
-    //     if(e.target.className === 'addNewProduct-title' && addNewProductTitle === 'Add Product Name'){
-    //         setAddNewProductTitle('');
-    //     }
+   //Dummy Data for Categories
+   const [categories, setCategories] = useState(['Men', 'Clothing', 'Shirts']);
 
-    //     if(e.target.className === 'addNewProduct-description' && addNewProductDescription === 'Add description...'){
-    //         setAddNewProductDescription('');
-    //     }
-    // }
+    const checkBox = () =>{
+        const checkBox = document.getElementById('toggleCheckbox')!;
+        const originalPrice = document.querySelector<HTMLElement>('.original-price')!;
+        const salePrice = document.getElementById('sale-price')!;
+
+        console.log(checkBox.dataset.check);
+        if(checkBox.dataset.check === 'checked'){
+            checkBox.dataset.check = '';
+            originalPrice.style.textDecoration = '';
+            salePrice.style.display = 'none';
+        }else{
+            checkBox.dataset.check = 'checked';
+            originalPrice.style.textDecoration = 'line-through';
+            salePrice.style.display = 'flex';
+        }
+    }
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if(e.target.className === 'addNewProduct-title'){
@@ -24,7 +35,13 @@ const AddNewProduct: React.FC = () => {
         }
     }
 
+    function clickModalBtn() {
+        const modalEl = document.getElementById('admin-modal')!;
+        modalEl.style.display = 'block';
+    }
+
     return (
+        <>
         <div className="card">
             <div className="card-header addNewProduct-header">
                 <button>Save</button>
@@ -49,16 +66,16 @@ const AddNewProduct: React.FC = () => {
                     <div className="addNewProduct-body-item-body">
                         <div className="addNewProduct-body-item-body-items">
                             <label>Price</label>
-                            <input placeholder='$0.00' />
+                            <input className="original-price" placeholder='$0.00' />
                         </div>
                         <div className="addNewProduct-body-item-body-items">
                             <label>On Sale</label>
                             <label className="switch">
-                                <input type="checkbox" />
+                                <input id="toggleCheckbox" type="checkbox" data-check="" onClick={checkBox} />
                                 <span className="slider round"></span>
                             </label>
                         </div>
-                        <div className="addNewProduct-body-item-body-items">
+                        <div className="addNewProduct-body-item-body-items" id="sale-price">
                             <label>Sale Price</label>
                             <input placeholder='$0.00' />
                         </div>
@@ -80,13 +97,18 @@ const AddNewProduct: React.FC = () => {
                 <div  className="addNewProduct-body-item">
                     <p>Categories</p>
                     <div className="addNewProduct-body-item-body">
-                        <div className="addNewProduct-body-item-body-items">
-                            <button>ADD</button>
+                        <div className="addNewProduct-body-item-body-items addNewProduct-body-item-body-items-last-child">
+                            {categories? 
+                                categories.map((category, index) => <p className="addNewProduct-categories-item" key={index}>{category}</p>) :""
+                            }
+                            <button onClick={clickModalBtn}>ADD</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <ModalBoxAdmin />
+        </>
     )
 };
 

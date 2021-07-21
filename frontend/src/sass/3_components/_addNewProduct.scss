@@ -101,10 +101,28 @@
             background-color: white;
             cursor: pointer;
             padding: 0 1rem;
+            margin-bottom: 0.4rem;
             transition: all 0.3s ease-in-out;
         }
         button:hover{
             background-color: rgb(230, 230, 230);
         }
+
+        .addNewProduct-categories-item{
+            background-color: rgb(230, 230, 230);
+            font-size: 0.8rem;
+            padding:0.2rem 1rem 0.4rem 1rem;
+            margin-bottom: 0.4rem;
+            margin-right: 1rem;
+            border-radius: 2.5rem;
+        }
+    }
+
+    .addNewProduct-body-item-body-items-last-child{
+        justify-content: start;
+    }
+
+    #sale-price{
+        display: none;
     }
 }
