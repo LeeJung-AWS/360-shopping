@@ -7,7 +7,7 @@ const AddNewProduct: React.FC = () => {
     const [addNewProductDescription, setAddNewProductDescription] = useState('');
 
    //Dummy Data for Categories
-   const [categories, setCategories] = useState(['Men', 'Clothing', 'Shirts']);
+   const [categories, setCategories] = useState<string[] | undefined>(undefined);
 
     // TODO: Build useEffect to fetch categories data from DB (Categories). and Pass Categories to ModalBox to display.
     // TODO: When categories are checked in ModalBox, then Add the categories into setCategories State.
@@ -46,6 +46,15 @@ const AddNewProduct: React.FC = () => {
     function clickModalBtn() {
         const modalEl = document.getElementById('admin-modal')!;
         modalEl.style.display = 'block';
+    }
+
+    function pullCategories(pullCategories: string, checked: boolean) {
+        console.log(pullCategories);
+        if(checked){
+            categories ? setCategories([...categories, pullCategories]) : setCategories([pullCategories]);
+        }else{
+            //TODO: Remove unchecked Category
+        }
     }
 
     return (
@@ -115,7 +124,7 @@ const AddNewProduct: React.FC = () => {
                 </div>
             </div>
         </div>
-        <ModalBoxAdmin />
+        <ModalBoxAdmin pullCategories={pullCategories}/>
         </>
     )
 };
