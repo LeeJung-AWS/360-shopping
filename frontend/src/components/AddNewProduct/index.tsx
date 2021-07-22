@@ -9,6 +9,14 @@ const AddNewProduct: React.FC = () => {
    //Dummy Data for Categories
    const [categories, setCategories] = useState(['Men', 'Clothing', 'Shirts']);
 
+    // TODO: Build useEffect to fetch categories data from DB (Categories). and Pass Categories to ModalBox to display.
+    // TODO: When categories are checked in ModalBox, then Add the categories into setCategories State.
+    // TODO: When clicking Save, then take all information of product and post the infomation in DB(Products).
+    // TODO: When clicking cancel, Display Warning, if yes, go to Main of Admin Page, if No, keeping the page.
+    // TODO: Set up DynamoDB for Categories, Products
+    // TODO: Set up AWS S3 to store IMGs
+
+
     const checkBox = () =>{
         const checkBox = document.getElementById('toggleCheckbox')!;
         const originalPrice = document.querySelector<HTMLElement>('.original-price')!;
