@@ -1,3 +1,6 @@
+// Create dot(.) every third numbers
+// ex) if receiving 123123, then return 123.123
+
 function NumberComma( num: number ) {
     // console.log("In currencyComma")
     var str = num.toString().split('.');
