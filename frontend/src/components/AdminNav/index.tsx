@@ -1,14 +1,14 @@
+// Style: sass/layout/_adminNav.scss
+
 import { Link } from "react-router-dom";
 
 const AdminNav: React.FC = () => {
 
+    // In Mobile Size, display or hide Navigation Menu
     const mobileNavClick = () => {
-        // The exclamation mark means a developer knows there is a button element.( The value is not null )
-        const mobileLinksEl = document.getElementById('mobile-Links')!;
-
+        const mobileLinksEl = document.getElementById('mobile-Links')!;  // The exclamation mark means a developer knows there is a button element.( The value is not null )
         if (mobileLinksEl.style.display === "block") {
             mobileLinksEl.style.display = "none";
-            
           } else {
             mobileLinksEl.style.display = "block";
           }
@@ -17,7 +17,6 @@ const AdminNav: React.FC = () => {
     return (
     <header className="adminNav-header">
         <Link id="admin-page-btn" to="/adminPage">Admin Page</Link>
-        {/* <h5>Admin Page</h5> */}
         <nav className="adminNav-mobile">
             <a href="#test" id="mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></a>
         </nav>
