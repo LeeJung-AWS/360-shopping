@@ -8,16 +8,22 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     // Display amount of seleted categories when checking them by using state.
     const [ amountOfCategory, setAmountOfCategory ] = useState(0);
 
+    // When clicking a category, Increase or Decrease amount of category on the top in this Modal
+    // Also pass Checked or Unchecked Categories to NewAddProduct Component(Parent) to add the category as a button in Categories Element
     function countCategories(event: any) {
         let amount: number = amountOfCategory;
         if(event.target.checked){
             amount++;
             setAmountOfCategory(amount);
-            // console.log(event.target.dataset.name);
+
+            // pass Checked Categories to NewAddProduct Component(Parent)
             pullCategories(event.target.dataset.name, event.target.checked);
         }else{
             amount--;
             setAmountOfCategory(amount);
+
+            // pass Unchecked Categories to NewAddProduct Component(Parent)
+            pullCategories(event.target.dataset.name, event.target.checked);
         }
     }
 
@@ -26,7 +32,6 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
         modalEl.style.display = 'none';
     }
 
-    // TODO: When clicking a category, then add the category as a button in Categories Element in New ADD Product
     // TODO: Search Function
     // TODO: When searching categories, if there is no the same category, then dispaly ADD button.
 

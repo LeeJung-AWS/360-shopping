@@ -6,7 +6,7 @@ const AddNewProduct: React.FC = () => {
     const [addNewProductTitle, setAddNewProductTitle] = useState('');
     const [addNewProductDescription, setAddNewProductDescription] = useState('');
 
-   //Dummy Data for Categories
+   //This for Categories buttons on Categories line
    const [categories, setCategories] = useState<string[] | undefined>(undefined);
 
     // TODO: Build useEffect to fetch categories data from DB (Categories). and Pass Categories to ModalBox to display.
@@ -48,12 +48,21 @@ const AddNewProduct: React.FC = () => {
         modalEl.style.display = 'block';
     }
 
+    // Set categories states after pulling status of categories from Modal ( checked or unchecked Categories )
     function pullCategories(pullCategories: string, checked: boolean) {
         console.log(pullCategories);
         if(checked){
+            //Add checked Category in categories state
             categories ? setCategories([...categories, pullCategories]) : setCategories([pullCategories]);
         }else{
-            //TODO: Remove unchecked Category
+            //Remove unchecked Category from categories state
+            let tempArr:string[] = categories!; // Use ! because categories has always value inside else statement
+            let removedIndex:number = tempArr.indexOf(pullCategories);
+
+            tempArr.splice(removedIndex, 1);
+
+            // set Categories state with new lists ( it is a trigger to rerender this component )
+            setCategories([...tempArr]);
         }
     }
 
