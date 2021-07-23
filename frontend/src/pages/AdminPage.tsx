@@ -1,5 +1,8 @@
+// Style : sass/layout/_adminpage.scss
+
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+// Components
 import AdminNav from '../components/AdminNav';
 import Tabmenu from '../components/TabMenu';
 import ContentsTopMenu from '../components/TabMenu/ContentsTopMenu';
@@ -7,6 +10,7 @@ import AddNewProduct from "../components/AddNewProduct";
 
 const AdminPage: React.FC = () => {
      // Dummy Graph Data
+     // TODO: retrieve data (DataType : Objects inside Array) for analyzing graph from DB
     const revenueContents = {
         months: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
         yAxis: [4500, 1500, 4350, 4510, 1500, 1500, 4550, 3500, 5500, 2500, 3600, 4300],
@@ -27,9 +31,10 @@ const AdminPage: React.FC = () => {
         yAxis: [450, 150, 435, 451, 150, 150, 455, 350, 550, 250, 360, 430],
         yAixsTickprefix: '$'
     }
-
     const dateRange = 'Jan 01 ~ Dec 31, 2021';
 
+    // AdminTab menu data
+    // TODO: Calculating secondRow ( Total amount depending on the range Date)
     const tabMenuInformation = [
         { 
             title: 'REVENUE',
