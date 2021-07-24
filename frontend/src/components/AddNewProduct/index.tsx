@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import ModalBoxAdmin from './ModalBoxAdmin';
 
+import NumberComma from '../NumberComma';
+
 const AddNewProduct: React.FC = () => {
     const [addNewProductTitle, setAddNewProductTitle] = useState('');
     const [addNewProductDescription, setAddNewProductDescription] = useState('');
@@ -9,6 +11,7 @@ const AddNewProduct: React.FC = () => {
    //This for Categories buttons on Categories line
    const [categories, setCategories] = useState<string[] | undefined>(undefined);
 
+   
     // TODO: Build useEffect to fetch categories data from DB (Categories). and Pass Categories to ModalBox to display.
     // TODO: When categories are checked in ModalBox, then Add the categories into setCategories State.
     // TODO: When clicking Save, then take all information of product and post the infomation in DB(Products).
@@ -22,7 +25,7 @@ const AddNewProduct: React.FC = () => {
         const originalPrice = document.querySelector<HTMLElement>('.original-price')!;
         const salePrice = document.getElementById('sale-price')!;
 
-        console.log(checkBox.dataset.check);
+        // console.log(checkBox.dataset.check);
         if(checkBox.dataset.check === 'checked'){
             checkBox.dataset.check = '';
             originalPrice.style.textDecoration = '';
@@ -66,6 +69,31 @@ const AddNewProduct: React.FC = () => {
         }
     }
 
+    // When click a input, 
+    function focusOnPriceInput(event: any){
+        // Remove $ sign at front of the price
+        let tempStr = event.target.value;
+        event.target.value = tempStr.slice(1, event.target.value.length);
+
+        // Select all value at once.
+        event.target.select();
+    }
+
+    // When Focusing out on Price Input, then Add $ sign at front and Put comma (Formatting Number)
+    function focusOutPriceInput(event: any){
+        event.target.value = '$'+ NumberComma(event.target.value);
+    }
+
+    // To block inputting characters for Price input element.
+    // TODO: Block input more than two dot(.) , if inputting second dot(.) move the cursor to end of the input element.
+    function handleInputeydown(event: any) {
+        if(['1','2','3','4','5','6','7','8','9','0','.'].indexOf(event.key) !== -1){
+            // console.log(event.target.value);
+        }else{
+            event.preventDefault();
+        }
+    }
+
     return (
         <>
         <div className="card">
@@ -92,7 +120,7 @@ const AddNewProduct: React.FC = () => {
                     <div className="addNewProduct-body-item-body">
                         <div className="addNewProduct-body-item-body-items">
                             <label>Price</label>
-                            <input className="original-price" placeholder='$0.00' />
+                            <input className="original-price" placeholder='$0.00' onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} />
                         </div>
                         <div className="addNewProduct-body-item-body-items">
                             <label>On Sale</label>
@@ -103,7 +131,7 @@ const AddNewProduct: React.FC = () => {
                         </div>
                         <div className="addNewProduct-body-item-body-items" id="sale-price">
                             <label>Sale Price</label>
-                            <input placeholder='$0.00' />
+                            <input placeholder='$0.00' onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} />
                         </div>
                     </div>
                 </div>
