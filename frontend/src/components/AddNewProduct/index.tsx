@@ -11,8 +11,6 @@ const AddNewProduct: React.FC = () => {
    //This for Categories buttons on Categories line
    const [categories, setCategories] = useState<string[] | undefined>(undefined);
 
-   
-    // TODO: Build useEffect to fetch categories data from DB (Categories). and Pass Categories to ModalBox to display.
     // TODO: When categories are checked in ModalBox, then Add the categories into setCategories State.
     // TODO: When clicking Save, then take all information of product and post the infomation in DB(Products).
     // TODO: When clicking cancel, Display Warning, if yes, go to Main of Admin Page, if No, keeping the page.
@@ -53,7 +51,7 @@ const AddNewProduct: React.FC = () => {
 
     // Set categories states after pulling status of categories from Modal ( checked or unchecked Categories )
     function pullCategories(pullCategories: string, checked: boolean) {
-        console.log(pullCategories);
+        // console.log(pullCategories);
         if(checked){
             //Add checked Category in categories state
             categories ? setCategories([...categories, pullCategories]) : setCategories([pullCategories]);
@@ -161,7 +159,7 @@ const AddNewProduct: React.FC = () => {
                 </div>
             </div>
         </div>
-        <ModalBoxAdmin pullCategories={pullCategories}/>
+        <ModalBoxAdmin pullCategories={pullCategories} />
         </>
     )
 };

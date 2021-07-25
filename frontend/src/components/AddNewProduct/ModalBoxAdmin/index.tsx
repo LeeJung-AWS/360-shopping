@@ -1,4 +1,6 @@
-import { useState } from 'react';
+// Style : sass/3_components/_modalBoxAdmin.scss
+
+import { useState, useEffect } from 'react';
 
 interface ChildProps{
     pullCategories: (pullCategories: string, checked: boolean) => void
@@ -7,6 +9,16 @@ interface ChildProps{
 const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     // Display amount of seleted categories when checking them by using state.
     const [ amountOfCategory, setAmountOfCategory ] = useState(0);
+
+     // To store categories list after Fetching them from DB
+   const [allCategories, setAllCategories] = useState<string[] | undefined>(undefined);
+   const [filteredAllCategories, setFilteredAllCategories] = useState<string[]>([]);
+
+     // TODO: Build useEffect to fetch categories data from DB (Categories). and Pass Categories to ModalBox to display.
+     useEffect(() => {
+        setAllCategories(['Men', 'Shirts', 'Clothing', 'Watches', 'Accessories', 'Shoes']);
+        setFilteredAllCategories(['Men', 'Shirts', 'Clothing', 'Watches', 'Accessories', 'Shoes']);
+    }, [])
 
     // When clicking a category, Increase or Decrease amount of category on the top in this Modal
     // Also pass Checked or Unchecked Categories to NewAddProduct Component(Parent) to add the category as a button in Categories Element
@@ -32,8 +44,28 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
         modalEl.style.display = 'none';
     }
 
-    // TODO: Search Function
-    // TODO: When searching categories, if there is no the same category, then dispaly ADD button.
+    // Search Function - Filter
+    function handleInputChange (event: any) {
+        const value = event.target.value.trim();
+        const originalCategoriesArr:string[]|undefined= allCategories?[...allCategories]:[];
+        
+        setFilteredAllCategories(
+            originalCategoriesArr.filter(category => {
+                // console.log(category);
+                return(category.toLowerCase().includes(value.toLowerCase()))
+            })
+        );
+    };
+    // When searching categories, if there is no the same category, then dispaly ADD button.
+    useEffect(() => {
+        // console.log(filteredAllCategories);
+        if(filteredAllCategories.length === 0){
+            document.getElementById('add-btn-category')!.style.display = "block";
+        }else{
+            document.getElementById('add-btn-category')!.style.display = "none";
+        }
+
+    }, [filteredAllCategories])
 
     return (
 
@@ -46,38 +78,22 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
                             : <div id="none-seleted-category">Select a Category</div>}
                         <form>
                             <div><i className="fas fa-search"></i></div>
-                            <input id="category-search-form" placeholder="Add or Search for a Category" />
+                            <input id="category-search-form" placeholder="Add or Search for a Category" onChange={handleInputChange} />
                             <div className="btn-outbox">
-                                <button>ADD</button>
+                                <button id="add-btn-category">ADD</button>
                             </div>
                         </form>
-
-                        <div className="modal-content-lists">
-                            <label>Men</label>
-                            <div className="checkbox">
-                                <input type="checkbox" data-name={'Men'} onClick={countCategories} />
+                        {filteredAllCategories? filteredAllCategories.map(category => {
+                            return (
+                            <div className="modal-content-lists" key={category}>
+                                <label>{category}</label>
+                                <div className="checkbox">
+                                <input type="checkbox" data-name={category} onClick={countCategories} />
                             </div>
                         </div>
-                        <div className="modal-content-lists">
-                            <label>Shirts</label>
-                            <input type="checkbox" data-name={'Shirts'} onClick={countCategories} />
-                        </div>
-                        <div className="modal-content-lists">
-                            <label>Clothing</label>
-                            <input type="checkbox" data-name={'Clothing'} onClick={countCategories} />
-                        </div>
-                        <div className="modal-content-lists">
-                            <label>Watches</label>
-                            <input type="checkbox" data-name={'Watches'} onClick={countCategories} />
-                        </div>
-                        <div className="modal-content-lists">
-                            <label>Accessories</label>
-                            <input type="checkbox" data-name={'Accessories'} onClick={countCategories} />
-                        </div>
-                        <div className="modal-content-lists">
-                            <label>Shoes</label>
-                            <input type="checkbox" data-name={'Shoes'} onClick={countCategories} />
-                        </div>
+                            )
+                        })
+                         : ""}
                     </div>
             </div>
         </div>
