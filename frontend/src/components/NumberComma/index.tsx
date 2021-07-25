@@ -12,6 +12,9 @@ function NumberComma( num: number ) {
         str[1] = str[1].replace(/(\d{3})/g, '$1 ');
     }
     // console.log(str);
+    if(!str[1]){
+        str[1] = '00';
+    }
     return str.join('.');
   }
 
