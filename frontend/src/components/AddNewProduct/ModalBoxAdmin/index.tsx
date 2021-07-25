@@ -13,7 +13,12 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
      // To store categories list after Fetching them from DB
    const [allCategories, setAllCategories] = useState<string[] | undefined>(undefined);
    const [filteredAllCategories, setFilteredAllCategories] = useState<string[]>([]);
+
+   // To store new categories list
    const [newCategories, setNewCategories] = useState<string[] | undefined>(undefined);
+
+   // To store the status of categories checked or unchecked
+   const [isChecked, setIsChecked] = useState<{[k: string]: boolean}>({});
 
     // To store UserInput from Search Form
     const [userInput, setUserInput] = useState<string>('');
@@ -32,6 +37,9 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
             amount++;
             setAmountOfCategory(amount);
 
+            // store the status of categories checked or unchecked
+            setIsChecked({...isChecked, [event.target.dataset.name]: event.target.checked})
+
             // pass Checked Categories to NewAddProduct Component(Parent)
             pullCategories(event.target.dataset.name, event.target.checked);
         }else{
@@ -40,6 +48,9 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
 
             // pass Unchecked Categories to NewAddProduct Component(Parent)
             pullCategories(event.target.dataset.name, event.target.checked);
+
+            // store the status of categories checked or unchecked
+            setIsChecked({...isChecked, [event.target.dataset.name]: event.target.checked})
         }
     }
 
@@ -104,7 +115,18 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
             document.getElementById('add-btn-category')!.style.display = "none";
         }
 
-    }, [filteredAllCategories])
+        // Check isChecked box to remain the checkbox status which is the same as before clicking ADD (category) Btn
+        const categoryInputCheckboxs = document.querySelectorAll<any>('.category-input-checkbox'); // querySelectorAll is generic so adding <HTMLElement> in the middle
+        for(const checkbox of categoryInputCheckboxs){  // Set the target compiler option in tsconfig.json to es6 or higher for NodeListOf<T> to be iterable.
+            let checkboxName: string | undefined = checkbox.dataset.name;
+            if(checkboxName !== undefined && isChecked[checkboxName]){
+                checkbox.checked = true;
+                // console.log(checkboxName + " in if statement");
+                // console.log(isChecked[checkboxName]);
+            }
+        }
+
+    }, [filteredAllCategories, isChecked])
 
     return (
         <div className="modal" id='admin-modal'>
@@ -126,7 +148,7 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
                             <div className="modal-content-lists" key={category}>
                                 <label>{category}</label>
                                 <div className="checkbox">
-                                <input type="checkbox" data-name={category} onClick={countCategories} />
+                                <input type="checkbox" className="category-input-checkbox" data-name={category} onClick={countCategories} />
                             </div>
                         </div>
                             )
