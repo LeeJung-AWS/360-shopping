@@ -13,6 +13,10 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
      // To store categories list after Fetching them from DB
    const [allCategories, setAllCategories] = useState<string[] | undefined>(undefined);
    const [filteredAllCategories, setFilteredAllCategories] = useState<string[]>([]);
+   const [newCategories, setNewCategories] = useState<string[] | undefined>(undefined);
+
+    // To store UserInput from Search Form
+    const [userInput, setUserInput] = useState<string>('');
 
      // TODO: Build useEffect to fetch categories data from DB (Categories). and Pass Categories to ModalBox to display.
      useEffect(() => {
@@ -39,14 +43,48 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
         }
     }
 
+    // Add a category on the lists 
+    function addCategoryBtn(event:any) {
+        event.preventDefault();
+        
+        // Updates categories state with new category
+        if(allCategories !== undefined){
+            setAllCategories([...allCategories, userInput]);
+            setFilteredAllCategories([...allCategories, userInput]);
+        }else{
+            setAllCategories([userInput]);
+            setFilteredAllCategories([userInput]);
+        }
+
+        // Collect new categories to store DB after clicking DONE btn
+        if(newCategories !== undefined){
+            setNewCategories([...newCategories, userInput]);
+        }else{
+            setNewCategories([userInput]);
+        }
+
+        // Make Input-value empty
+        const inputValue = document.getElementById('category-search-form') as HTMLInputElement  // ERROR FIX : The property 'value' does not exist on value of type 'HTMLElement'
+        inputValue.value = '';
+    }
+
+    // TODO: Delete a category function
+
+    // TODO: When Click DONE btn on Category Modal, if newCategories state has a new Category, Add the new category to DB 
     function clickDoneBtn() {
         const modalEl = document.getElementById('admin-modal')!;
         modalEl.style.display = 'none';
+
+        // Check if there is a newCategory
+        if(newCategories){
+            console.log('Add new Category to DB');
+        }
     }
 
     // Search Function - Filter
     function handleInputChange (event: any) {
         const value = event.target.value.trim();
+        setUserInput(value);
         const originalCategoriesArr:string[]|undefined= allCategories?[...allCategories]:[];
         
         setFilteredAllCategories(
@@ -56,6 +94,7 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
             })
         );
     };
+
     // When searching categories, if there is no the same category, then dispaly ADD button.
     useEffect(() => {
         // console.log(filteredAllCategories);
@@ -68,7 +107,6 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     }, [filteredAllCategories])
 
     return (
-
         <div className="modal" id='admin-modal'>
             <div className="modal-content">
                 <button onClick={clickDoneBtn}>DONE</button>
@@ -80,7 +118,7 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
                             <div><i className="fas fa-search"></i></div>
                             <input id="category-search-form" placeholder="Add or Search for a Category" onChange={handleInputChange} />
                             <div className="btn-outbox">
-                                <button id="add-btn-category">ADD</button>
+                                <button id="add-btn-category" onClick={addCategoryBtn}>ADD</button>
                             </div>
                         </form>
                         {filteredAllCategories? filteredAllCategories.map(category => {
