@@ -86,6 +86,10 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     function clickDoneBtn() {
         const modalEl = document.getElementById('admin-modal')!;
         modalEl.style.display = 'none';
+
+        // Active Scrollable Body
+        document.body.style.overflowY = 'auto';
+
     }
 
     // Search Function - Filter
