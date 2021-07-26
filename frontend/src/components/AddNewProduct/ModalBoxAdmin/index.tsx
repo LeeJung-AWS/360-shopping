@@ -55,6 +55,7 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     }
 
     // Add a category on the lists 
+    // TODO: Add the new category to DB 
     function addCategoryBtn(event:any) {
         event.preventDefault();
         
@@ -79,17 +80,10 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
         inputValue.value = '';
     }
 
-    // TODO: Delete a category function
-
-    // TODO: When Click DONE btn on Category Modal, if newCategories state has a new Category, Add the new category to DB 
+    // When Click DONE btn on Category Modal, close the modal
     function clickDoneBtn() {
         const modalEl = document.getElementById('admin-modal')!;
         modalEl.style.display = 'none';
-
-        // Check if there is a newCategory
-        if(newCategories){
-            console.log('Add new Category to DB');
-        }
     }
 
     // Search Function - Filter
@@ -128,7 +122,42 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
 
     }, [filteredAllCategories, isChecked])
 
-    return (
+    // Category Edit / Delete Button 
+    // TODO: Delete a category
+    // TODO: Delete the new category to DB 
+    function handleCategoryOnClick(event: any){
+        // Get the Category name that a user want to edit or delete
+        let categoryName = event.target.parentNode.childNodes[1].dataset.name;
+        console.log(event.target.parentNode.childNodes[1].dataset.name)
+
+        // Display Modal
+        const modalInCategoryEl = document.getElementById('modal-in-category')!;
+        modalInCategoryEl.style.display = 'block';
+
+        // Get current position
+        const modalInCategoryContentEl = document.getElementById('modal-in-category-content')!;
+        let intCoordX = event.clientX;   // -40px 
+        let intCoordY = event.clientY;   // +22px
+
+        // Assign ModalInCategoryContents position
+        modalInCategoryContentEl.style.left = (intCoordX - 40)+ 'px';
+        modalInCategoryContentEl.style.top = (intCoordY + 22) + 'px';
+
+        //Add category name in Dataset
+        const editBtn = document.getElementById('edit-category')!;
+        const deleteBtn = document.getElementById('delete-category')!;
+        editBtn.dataset.name = categoryName;
+        deleteBtn.dataset.name = categoryName;
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.addEventListener("click", function(event: any) {
+            if (event.target === modalInCategoryEl) {
+                modalInCategoryEl.style.display = "none";
+            }
+        });
+    }
+
+    return (<>
         <div className="modal" id='admin-modal'>
             <div className="modal-content">
                 <button onClick={clickDoneBtn}>DONE</button>
@@ -147,9 +176,12 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
                             return (
                             <div className="modal-content-lists" key={category}>
                                 <label>{category}</label>
+                                
                                 <div className="checkbox">
-                                <input type="checkbox" className="category-input-checkbox" data-name={category} onClick={countCategories} />
-                            </div>
+                                    <div id="category-delete-btn" onClick={handleCategoryOnClick}>...</div>
+                                    
+                                    <input type="checkbox" className="category-input-checkbox" data-name={category} onClick={countCategories} />
+                                </div>
                         </div>
                             )
                         })
@@ -157,6 +189,14 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
                     </div>
             </div>
         </div>
+
+        <div id='modal-in-category'>
+            <div id="modal-in-category-content">
+                <div id="edit-category">EDIT</div>
+                <div id="delete-category">DELETE</div>
+            </div>
+        </div>
+        </>
 
     )
 

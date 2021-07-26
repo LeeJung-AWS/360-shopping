@@ -151,6 +151,67 @@
         position: relative;
         bottom: 0.15rem;
     }
+
+    .checkbox{
+        display: flex;
+        align-items: center;
+
+        #category-delete-btn{
+            padding-bottom: 1rem;
+            padding-right: 0.2rem;
+
+            display: none;
+        }
+
+        #category-delete-btn:hover{
+            cursor: pointer;
+        }
+    }
     
 }
 
+.modal-content-lists:hover{
+    #category-delete-btn {
+        display: inline;
+    }
+}
+
+
+// Modal in Category for Delete, Edit Categories
+#modal-in-category {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 3; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+  }
+  #modal-in-category-content{
+    background-color: #fefefe;
+    position: fixed;
+    left: 574px;
+    top: 562px;
+    box-shadow: 0px 0px 10px rgb(230, 230, 230);
+    width: 85px;
+    height: 108px;
+    padding: 5px 0;
+
+    text-align: center;
+
+    #delete-category, #edit-category {
+        border: none;
+        background-color: white;
+        font-size: 0.8rem;
+        cursor: pointer;
+        padding: 1rem 0;
+    }
+
+    #delete-category{
+        color: $danger;
+    }
+
+    #delete-category:hover, #edit-category:hover {
+        background-color: rgb(230, 230, 230);
+    }
+}

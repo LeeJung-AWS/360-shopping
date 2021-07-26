@@ -47,7 +47,16 @@ const AddNewProduct: React.FC = () => {
     function clickModalBtn() {
         const modalEl = document.getElementById('admin-modal')!;
         modalEl.style.display = 'block';
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event: any) {
+        if (event.target === modalEl) {
+            modalEl.style.display = "none";
+        }
+      }
     }
+
+    
 
     // Set categories states after pulling status of categories from Modal ( checked or unchecked Categories )
     function pullCategories(pullCategories: string, checked: boolean) {
