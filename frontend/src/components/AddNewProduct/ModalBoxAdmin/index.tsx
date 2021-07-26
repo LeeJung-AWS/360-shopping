@@ -108,8 +108,21 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
 
     // When searching categories, if there is no the same category, then dispaly ADD button.
     useEffect(() => {
-        // console.log(filteredAllCategories);
-        if(filteredAllCategories.length === 0){
+        let isCheck: boolean;
+        if(userInput === ""){
+            isCheck = true;
+        }else{
+            isCheck = false;
+        }
+         // Check if there is a category that is the same as the category (that user input).
+        allCategories?.forEach(category => {
+            if(category.toLowerCase() === userInput.toLowerCase() && userInput !== ""){
+                isCheck = true;
+            }
+        })
+
+        // display ADD btn if the is no category that is the same as the category (that user input)
+        if(filteredAllCategories.length === 0 || !isCheck){
             document.getElementById('add-btn-category')!.style.display = "block";
         }else{
             document.getElementById('add-btn-category')!.style.display = "none";
@@ -126,7 +139,7 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
             }
         }
 
-    }, [filteredAllCategories, isChecked])
+    }, [allCategories, filteredAllCategories, userInput, isChecked])
 
     // Hendle Category Edit / Delete Button ( ... Btn )
     function handleCategoryOnClick(event: any){
@@ -196,6 +209,18 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
 
     // TODO: Edit a category
     // TODO: Edit a category from DB 
+    function editCategoryBtn(event: any) {
+        // Take Parent Node to close Edit/Delete Modal (display 'none')
+        const parentNode = event.target.parentNode.parentNode; // id='modal-in-category'
+        parentNode.style.display = 'none';
+        console.log("edit Category name")
+
+        // Open Edit Category Modal with Category name
+        console.log('Open Edit Category Modal with Category name')
+        console.log(event.target.dataset.name)
+
+        // Update State and DB
+    }
 
     return (<>
         <div className="modal" id='admin-modal'>
@@ -232,7 +257,7 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
 
         <div id='modal-in-category'>
             <div id="modal-in-category-content">
-                <div id="edit-category">EDIT</div>
+                <div id="edit-category" onClick={editCategoryBtn}>EDIT</div>
                 <div id="delete-category" onClick={deleteCategoryBtn}>DELETE</div>
             </div>
         </div>
