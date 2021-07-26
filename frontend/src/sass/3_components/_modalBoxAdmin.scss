@@ -21,6 +21,7 @@
     border: 1px solid #888;
     width: 400px;
     height: 626px;
+    overflow-y: auto;
 
     button {
         border: none;
@@ -32,8 +33,8 @@
 }
 
 .modal-content-body{
-    height: 514px;
-    
+    padding-bottom: 2rem;
+
     #seleted-category{
         font-size: 1.5rem;
         color: black;
