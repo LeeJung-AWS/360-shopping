@@ -33,6 +33,8 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     // Also pass Checked or Unchecked Categories to NewAddProduct Component(Parent) to add the category as a button in Categories Element
     function countCategories(event: any) {
         let amount: number = amountOfCategory;
+        // console.log(event.target)
+        // console.log(event.target.checked)
         if(event.target.checked){
             amount++;
             setAmountOfCategory(amount);
@@ -122,13 +124,11 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
 
     }, [filteredAllCategories, isChecked])
 
-    // Category Edit / Delete Button 
-    // TODO: Delete a category
-    // TODO: Delete the new category to DB 
+    // Hendle Category Edit / Delete Button ( ... Btn )
     function handleCategoryOnClick(event: any){
         // Get the Category name that a user want to edit or delete
         let categoryName = event.target.parentNode.childNodes[1].dataset.name;
-        console.log(event.target.parentNode.childNodes[1].dataset.name)
+        // console.log(event.target.parentNode.childNodes[1].dataset.name)
 
         // Display Modal
         const modalInCategoryEl = document.getElementById('modal-in-category')!;
@@ -157,6 +157,42 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
         });
     }
 
+    // Delete a category
+    // TODO: Delete the category from DB 
+    function deleteCategoryBtn(event: any) {
+        // Take category element by Id to pass unchecked status to 'Categories' row in AddNewProduct Component
+        const categoryElement = document.getElementById(`${event.target.dataset.name}-category-id`) as HTMLInputElement;
+
+         // Update amount of Category on the Top of the Modal
+         let amount: number = amountOfCategory;
+         // if the category is checked before, then decrease amount
+         if(categoryElement.checked){
+             amount--;
+             setAmountOfCategory(amount);
+         }
+        //  console.log(amountOfCategory)
+        
+        // Assign 'false' because it will be deleted.
+        categoryElement.checked = false;
+        // pass Unchecked Categories to NewAddProduct Component(Parent) to remove the category Btn on 'Categories' row
+        pullCategories(event.target.dataset.name, categoryElement.checked);
+
+        // Update Status for Categories List on the Modal
+        let tempCategory = [...filteredAllCategories];
+        let indexDeleting = tempCategory.indexOf(event.target.dataset.name);
+        // Remove the Category that a user want to delete
+        tempCategory.splice(indexDeleting, 1);
+        setFilteredAllCategories([...tempCategory]);
+        setAllCategories([...tempCategory])
+
+        // Take Parent Node to close Edit/Delete Modal (display 'none')
+        const parentNode = event.target.parentNode.parentNode; // id='modal-in-category'
+        parentNode.style.display = 'none';
+    }
+
+    // TODO: Edit a category
+    // TODO: Edit a category from DB 
+
     return (<>
         <div className="modal" id='admin-modal'>
             <div className="modal-content">
@@ -180,7 +216,7 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
                                 <div className="checkbox">
                                     <div id="category-delete-btn" onClick={handleCategoryOnClick}>...</div>
                                     
-                                    <input type="checkbox" className="category-input-checkbox" data-name={category} onClick={countCategories} />
+                                    <input type="checkbox" className="category-input-checkbox" id={category+"-category-id"} data-name={category} onClick={countCategories} />
                                 </div>
                         </div>
                             )
@@ -193,7 +229,7 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
         <div id='modal-in-category'>
             <div id="modal-in-category-content">
                 <div id="edit-category">EDIT</div>
-                <div id="delete-category">DELETE</div>
+                <div id="delete-category" onClick={deleteCategoryBtn}>DELETE</div>
             </div>
         </div>
         </>
