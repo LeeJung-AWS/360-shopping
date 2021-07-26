@@ -13,7 +13,12 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
      // To store categories list after Fetching them from DB
    const [allCategories, setAllCategories] = useState<string[] | undefined>(undefined);
    const [filteredAllCategories, setFilteredAllCategories] = useState<string[]>([]);
+
+   // To store new categories list
    const [newCategories, setNewCategories] = useState<string[] | undefined>(undefined);
+
+   // To store the status of categories checked or unchecked
+   const [isChecked, setIsChecked] = useState<{[k: string]: boolean}>({});
 
     // To store UserInput from Search Form
     const [userInput, setUserInput] = useState<string>('');
@@ -32,6 +37,9 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
             amount++;
             setAmountOfCategory(amount);
 
+            // store the status of categories checked or unchecked
+            setIsChecked({...isChecked, [event.target.dataset.name]: event.target.checked})
+
             // pass Checked Categories to NewAddProduct Component(Parent)
             pullCategories(event.target.dataset.name, event.target.checked);
         }else{
@@ -40,10 +48,14 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
 
             // pass Unchecked Categories to NewAddProduct Component(Parent)
             pullCategories(event.target.dataset.name, event.target.checked);
+
+            // store the status of categories checked or unchecked
+            setIsChecked({...isChecked, [event.target.dataset.name]: event.target.checked})
         }
     }
 
     // Add a category on the lists 
+    // TODO: Add the new category to DB 
     function addCategoryBtn(event:any) {
         event.preventDefault();
         
@@ -68,17 +80,10 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
         inputValue.value = '';
     }
 
-    // TODO: Delete a category function
-
-    // TODO: When Click DONE btn on Category Modal, if newCategories state has a new Category, Add the new category to DB 
+    // When Click DONE btn on Category Modal, close the modal
     function clickDoneBtn() {
         const modalEl = document.getElementById('admin-modal')!;
         modalEl.style.display = 'none';
-
-        // Check if there is a newCategory
-        if(newCategories){
-            console.log('Add new Category to DB');
-        }
     }
 
     // Search Function - Filter
@@ -104,9 +109,55 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
             document.getElementById('add-btn-category')!.style.display = "none";
         }
 
-    }, [filteredAllCategories])
+        // Check isChecked box to remain the checkbox status which is the same as before clicking ADD (category) Btn
+        const categoryInputCheckboxs = document.querySelectorAll<any>('.category-input-checkbox'); // querySelectorAll is generic so adding <HTMLElement> in the middle
+        for(const checkbox of categoryInputCheckboxs){  // Set the target compiler option in tsconfig.json to es6 or higher for NodeListOf<T> to be iterable.
+            let checkboxName: string | undefined = checkbox.dataset.name;
+            if(checkboxName !== undefined && isChecked[checkboxName]){
+                checkbox.checked = true;
+                // console.log(checkboxName + " in if statement");
+                // console.log(isChecked[checkboxName]);
+            }
+        }
 
-    return (
+    }, [filteredAllCategories, isChecked])
+
+    // Category Edit / Delete Button 
+    // TODO: Delete a category
+    // TODO: Delete the new category to DB 
+    function handleCategoryOnClick(event: any){
+        // Get the Category name that a user want to edit or delete
+        let categoryName = event.target.parentNode.childNodes[1].dataset.name;
+        console.log(event.target.parentNode.childNodes[1].dataset.name)
+
+        // Display Modal
+        const modalInCategoryEl = document.getElementById('modal-in-category')!;
+        modalInCategoryEl.style.display = 'block';
+
+        // Get current position
+        const modalInCategoryContentEl = document.getElementById('modal-in-category-content')!;
+        let intCoordX = event.clientX;   // -40px 
+        let intCoordY = event.clientY;   // +22px
+
+        // Assign ModalInCategoryContents position
+        modalInCategoryContentEl.style.left = (intCoordX - 40)+ 'px';
+        modalInCategoryContentEl.style.top = (intCoordY + 22) + 'px';
+
+        //Add category name in Dataset
+        const editBtn = document.getElementById('edit-category')!;
+        const deleteBtn = document.getElementById('delete-category')!;
+        editBtn.dataset.name = categoryName;
+        deleteBtn.dataset.name = categoryName;
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.addEventListener("click", function(event: any) {
+            if (event.target === modalInCategoryEl) {
+                modalInCategoryEl.style.display = "none";
+            }
+        });
+    }
+
+    return (<>
         <div className="modal" id='admin-modal'>
             <div className="modal-content">
                 <button onClick={clickDoneBtn}>DONE</button>
@@ -125,9 +176,12 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
                             return (
                             <div className="modal-content-lists" key={category}>
                                 <label>{category}</label>
+                                
                                 <div className="checkbox">
-                                <input type="checkbox" data-name={category} onClick={countCategories} />
-                            </div>
+                                    <div id="category-delete-btn" onClick={handleCategoryOnClick}>...</div>
+                                    
+                                    <input type="checkbox" className="category-input-checkbox" data-name={category} onClick={countCategories} />
+                                </div>
                         </div>
                             )
                         })
@@ -135,6 +189,14 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
                     </div>
             </div>
         </div>
+
+        <div id='modal-in-category'>
+            <div id="modal-in-category-content">
+                <div id="edit-category">EDIT</div>
+                <div id="delete-category">DELETE</div>
+            </div>
+        </div>
+        </>
 
     )
 
