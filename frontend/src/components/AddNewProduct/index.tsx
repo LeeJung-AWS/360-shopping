@@ -11,7 +11,7 @@ const AddNewProduct: React.FC = () => {
    //This for Categories buttons on Categories line
    const [categories, setCategories] = useState<string[] | undefined>(undefined);
 
-    // TODO: When categories are checked in ModalBox, then Add the categories into setCategories State.
+    
     // TODO: When clicking Save, then take all information of product and post the infomation in DB(Products).
     // TODO: When clicking cancel, Display Warning, if yes, go to Main of Admin Page, if No, keeping the page.
     // TODO: Set up DynamoDB for Categories, Products
@@ -47,11 +47,17 @@ const AddNewProduct: React.FC = () => {
     function clickModalBtn() {
         const modalEl = document.getElementById('admin-modal')!;
         modalEl.style.display = 'block';
+        
+        // block Scrollable Body
+        document.body.style.overflowY = 'hidden';
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event: any) {
         if (event.target === modalEl) {
             modalEl.style.display = "none";
+
+            // Active Scrollable Body
+            document.body.style.overflowY = 'auto';
         }
       }
     }
@@ -59,6 +65,7 @@ const AddNewProduct: React.FC = () => {
     
 
     // Set categories states after pulling status of categories from Modal ( checked or unchecked Categories )
+    // When categories are checked in ModalBox, then update the categories into setCategories State.
     function pullCategories(pullCategories: string, checked: boolean) {
         // console.log(pullCategories);
         if(checked){
@@ -69,10 +76,13 @@ const AddNewProduct: React.FC = () => {
             let tempArr:string[] = categories!; // Use ! because categories has always value inside else statement
             let removedIndex:number = tempArr.indexOf(pullCategories);
 
-            tempArr.splice(removedIndex, 1);
+            // If the category in categories state, then Remove the Category Btn.
+            if(removedIndex > -1){
+                tempArr.splice(removedIndex, 1);
+                // set Categories state with new lists ( it is a trigger to rerender this component )
+                setCategories([...tempArr]);
+            }
 
-            // set Categories state with new lists ( it is a trigger to rerender this component )
-            setCategories([...tempArr]);
         }
     }
 
