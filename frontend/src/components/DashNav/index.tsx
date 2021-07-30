@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+
+
 const DashNav: React.FC = () => {
   const mobileNavClick = () => {
     // The exclamation mark means a developer knows there is a button element.( The value is not null )
@@ -19,16 +22,17 @@ const DashNav: React.FC = () => {
         </a>
       </nav>
       <div id="mobile-Links">
-        <a href="#mobile-Links02">Login</a>
-        <a href="#mobile-Links03">Contact Us</a>
+      <Link onClick={mobileNavClick} to="/login"> Login</Link>
+      <Link onClick={mobileNavClick} to="/contact">Contact Us</Link>
         
       </div>
       <nav className="adminNav-desktop">
         <ul>
-          <li></li>
           <li>
-          <a href="#mobile-Links02">Login</a>
-        <a href="#mobile-Links03">Contact Us</a>
+            <Link to="/login"> Login</Link>
+          </li>
+          <li>
+            <Link to="/contact">Contact Us</Link>
           </li>
         </ul>
       </nav>
