@@ -2,6 +2,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Description   
+
+E-commerce application for small business apparel designers and customers. Application will include product and ensemble recommendations for shoppers and data analytics for businesses. Technologies used: Typescript, JavaScript, SASS, AWS Cloud Computing, React.   
+
+
 [Not available yet-See the deployment](https://gamestock-app.herokuapp.com/)  
 ---
 
