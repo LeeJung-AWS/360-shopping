@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import ModalBoxAdmin from './ModalBoxAdmin';
 
-import NumberComma from '../NumberComma';
+import { NumberComma } from '../../utils/helpers';
 
 const AddNewProduct: React.FC = () => {
     const [addNewProductTitle, setAddNewProductTitle] = useState('');
