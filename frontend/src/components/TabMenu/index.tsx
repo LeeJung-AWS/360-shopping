@@ -1,8 +1,9 @@
 // Stlye: sass/3_components/_tabmenu
 
 import { useState, ReactNode } from 'react';
-import NumberComma from '../NumberComma';
 import SalesGraph from '../SalesGraph';
+
+import { NumberComma } from '../../utils/helpers';
 
 interface tabMenuInformation {
     title: string; 

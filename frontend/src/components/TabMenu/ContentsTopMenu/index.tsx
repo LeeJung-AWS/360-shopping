@@ -1,7 +1,7 @@
 // Style: sass/03_component/_tabmenu.scss
 // This component export to AdminPage, then pass This component to tabMenu Component as a variable.
 
-import NumberComma from '../../NumberComma'; // Create dot(.) every third numbers ex) if receiving 123123, then return 123.123
+import { NumberComma } from '../../../utils/helpers'; // Create dot(.) every third numbers ex) if receiving 123123, then return 123.123
 
 interface ChildProps {
     title: string;
