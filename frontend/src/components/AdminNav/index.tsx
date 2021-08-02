@@ -22,7 +22,7 @@ const AdminNav: React.FC = () => {
         </nav>
         <div id="mobile-Links">
                 <Link to="/adminPage/marketing">Marketing</Link>
-                <Link to="/adminPage/addNewInventory">Add New Inventory</Link>
+                <Link to="/adminPage/inventory">Inventory</Link>
                 <Link to="/adminPage/orderHistory">Order history</Link>
                 <Link to="/adminPage/messages">Messages</Link>
                 <Link to="/adminPage/printReports">Print reports</Link>

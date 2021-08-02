@@ -1,0 +1,25 @@
+#inventory-top-menu{
+    text-align: center;
+    height: 100px;
+    font-size: 0.9rem;
+    div {
+        flex: 0 0 30%;
+    }
+
+    div:nth-last-child(1) {
+        text-align: right;
+    }
+}
+#add-product-btns{
+    div:nth-last-child(1) {
+        text-align: right;
+        cursor: pointer;
+    }  
+    .add-product-btn{
+        padding: 1rem 0;
+        height: 50px;
+    }
+    .add-product-btn:hover{
+        border-bottom: 0.2rem solid rgb(100, 100, 100);
+    }
+}

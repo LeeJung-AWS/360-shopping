@@ -2,18 +2,39 @@ import { useState } from 'react';
 
 import ModalBoxAdmin from './ModalBoxAdmin';
 
+import { postNewProduct } from '../../utils/API';
 import { NumberComma } from '../../utils/helpers';
 
+interface newProduct {
+    title: string; 
+    // description: string
+    // img_url?: string
+    // price: number
+    // onSale: boolean
+   	// salePrice: number
+   	// quantity: number
+  	// sku: string
+   	// categories : string[]
+   	// date: string
+
+}
+
 const AddNewProduct: React.FC = () => {
-    const [addNewProductTitle, setAddNewProductTitle] = useState('');
-    const [addNewProductDescription, setAddNewProductDescription] = useState('');
+    const [newProduct, setNewProduct] = useState<newProduct | undefined>(undefined);
+
+    // To Store Product Data
+    const [title, setTitle] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [price, setPrice] = useState<string>('0');
+    const [isPrice, setIsPrice] = useState<boolean>(false);
+    const [salePrice, setSalePrice] = useState<string>('0');
+    const [quantity, setQuantity] = useState<string>('0');
+    const [sku, setSku] = useState<string>('');
 
    //This for Categories buttons on Categories line
    const [categories, setCategories] = useState<string[] | undefined>(undefined);
 
     
-    // TODO: When clicking Save, then take all information of product and post the infomation in DB(Products).
-    // TODO: When clicking cancel, Display Warning, if yes, go to Main of Admin Page, if No, keeping the page.
     // TODO: Set up DynamoDB for Categories, Products
     // TODO: Set up AWS S3 to store IMGs
 
@@ -32,15 +53,6 @@ const AddNewProduct: React.FC = () => {
             checkBox.dataset.check = 'checked';
             originalPrice.style.textDecoration = 'line-through';
             salePrice.style.display = 'flex';
-        }
-    }
-
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(e.target.className === 'addNewProduct-title'){
-            setAddNewProductTitle(e.target.value);
-        }
-        if(e.target.className === 'addNewProduct-description'){
-            setAddNewProductDescription(e.target.value);
         }
     }
 
@@ -111,20 +123,38 @@ const AddNewProduct: React.FC = () => {
         }
     }
 
+    // TODO: When clicking Save, then take all information of product and post the infomation in DB(Products).
+    // TODO: Make ADD btn Inactive until recieving all data 
+    // TODO: When clicking cancel, Display Warning, if yes, go to Main of Admin Page, if No, keeping the page.
+    // Send new product data to Backend
+    function onClickSaveBtn() {
+        console.log(categories);
+        postNewProduct({
+            'title': title,
+            'description': description,
+            'price': price, 
+            'onSale': isPrice,
+            'salePrice': salePrice,
+            'quantity': quantity,
+            'sku': sku, 
+            'categories': categories
+        });
+    }
+
     return (
         <>
         <div className="card">
             <div className="card-header addNewProduct-header">
-                <button>Save</button>
+                <button onClick={onClickSaveBtn}>Save</button>
                 <div>Add New Product</div>
                 <button>Cancel</button>
             </div>
             <div className="card-body addNewProduct-body">
                 <div className="addNewProduct-body-item">
-                    <input onChange={onChange} className="addNewProduct-title" placeholder="Add Product Name" value={addNewProductTitle} />
+                    <input className="addNewProduct-title" placeholder="Add Product Name" value={title} onChange={(e) => setTitle(e.target.value)} />
                 </div>
                 <div className="addNewProduct-body-item">
-                    <input onChange={onChange} className="addNewProduct-description" placeholder="Add description..." value={addNewProductDescription} />
+                    <input className="addNewProduct-description" placeholder="Add description..." value={description} onChange={(e) => setDescription(e.target.value)} />
                 </div>
                 <div className="addNewProduct-body-item addNewProduct-img-box">
                     <div className="addNewProduct-img-border">
@@ -137,18 +167,26 @@ const AddNewProduct: React.FC = () => {
                     <div className="addNewProduct-body-item-body">
                         <div className="addNewProduct-body-item-body-items">
                             <label>Price</label>
-                            <input className="original-price" placeholder='$0.00' onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} />
+                            <input className="original-price" placeholder='$0.00' onChange={(e) => setPrice(e.target.value)} onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} />
                         </div>
                         <div className="addNewProduct-body-item-body-items">
                             <label>On Sale</label>
                             <label className="switch">
-                                <input id="toggleCheckbox" type="checkbox" data-check="" onClick={checkBox} />
+                                <input id="toggleCheckbox" type="checkbox" data-check="" onClick={checkBox} onChange={(e) => {
+                                    
+                                    if(e.target.dataset.check === "checked"){
+                                        setIsPrice(true);
+                                    }else{
+                                        setIsPrice(false);
+                                    }
+                                    }
+                                } />
                                 <span className="slider round"></span>
                             </label>
                         </div>
                         <div className="addNewProduct-body-item-body-items" id="sale-price">
                             <label>Sale Price</label>
-                            <input placeholder='$0.00' onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} />
+                            <input placeholder='$0.00' onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} onChange={(e) => setSalePrice(e.target.value)} />
                         </div>
                     </div>
                 </div>
@@ -157,11 +195,11 @@ const AddNewProduct: React.FC = () => {
                     <div className="addNewProduct-body-item-body">
                         <div className="addNewProduct-body-item-body-items">
                             <label>Quantity</label>
-                            <input placeholder='0' type='number'/>
+                            <input placeholder='0' type='number' min="0" onChange={(e) => setQuantity(e.target.value)}/>
                         </div>
                         <div className="addNewProduct-body-item-body-items">
                             <label>SKU</label>
-                            <input placeholder='SQ910011' />
+                            <input placeholder='SQ910011'  onChange={(e) => setSku(e.target.value)} />
                         </div>
                     </div>
                 </div>

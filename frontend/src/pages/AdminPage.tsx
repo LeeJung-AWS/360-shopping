@@ -6,7 +6,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AdminNav from '../components/AdminNav';
 import Tabmenu from '../components/TabMenu';
 import ContentsTopMenu from '../components/TabMenu/ContentsTopMenu';
-import AddNewProduct from "../components/AddNewProduct";
+import Inventory from '../components/Inventory';
+// import AddNewProduct from "../components/AddNewProduct";
 
 const AdminPage: React.FC = () => {
      // Dummy Graph Data
@@ -94,8 +95,9 @@ const AdminPage: React.FC = () => {
                 <Route exact path="/adminPage/marketing">
                     <p>Marketing Page</p>
                 </Route>
-                <Route exact path="/adminPage/addNewInventory">
-                    <AddNewProduct />
+                <Route exact path="/adminPage/inventory">
+                    {/* <AddNewProduct /> */}
+                    <Inventory />
                 </Route>
                 <Route exact path="/adminPage/orderHistory">
                     <p>orderHistory Page</p>
