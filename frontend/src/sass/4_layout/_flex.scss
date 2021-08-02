@@ -1,0 +1,24 @@
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.align-items-center {
+    align-items: center
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.justify-content-space-between{
+    justify-content: space-between;
+}
+
+.justify-content-space-around{
+    justify-content: space-around;
+}
+
+.justify-content-end {
+    justify-content: end;        /* Pack items from the end */
+}

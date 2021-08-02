@@ -16,7 +16,7 @@ export const getProductsbyCategory = (categoryID: String) => {
     // return fetch('/api/products/${categoryID}')
 };
 
-export const newProduct = (productData: Object) => {
+export const postNewProduct = (productData: Object) => {
     console.log("Add new Product : ", productData);
     // return fetch('/api/products', {
     //   method: 'POST',
@@ -27,7 +27,7 @@ export const newProduct = (productData: Object) => {
     // });
 };
 
-export const updateProduct = (productId: String, productData: Object) => {
+export const putProduct = (productId: String, productData: Object) => {
     console.log("updateProduct a Product by Id, ", productId);
     console.log('Updated Product Information ', productData)
     // return fetch(`/api/products/${productId}`, {
