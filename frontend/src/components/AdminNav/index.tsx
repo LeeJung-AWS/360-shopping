@@ -33,7 +33,7 @@ const AdminNav: React.FC = () => {
                     <Link to="/adminPage/marketing">Marketing</Link>
                 </li>
                 <li>
-                    <Link to="/adminPage/addNewInventory">Add New Inventory</Link>
+                    <Link to="/adminPage/inventory">Inventory</Link>
                 </li>
                 <li>
                     <Link to="/adminPage/orderHistory">Order history</Link>
