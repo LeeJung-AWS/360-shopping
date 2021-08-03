@@ -8,8 +8,10 @@ interface TableData {
     tHeads: string[];
     tBodys: {"id": string, "img"?: string, "product": string, "stock": string, "price": string}[] | undefined; 
 }
-//TODO: Display Delete Button when Check a product
-//TODO: Search Product by Product Tittle and Categories
+// TODO: Display Delete Button when Check a product
+// TODO: Search Product by Product Tittle and Categories
+// TODO: Use ellipsis for Product Title depending on Screen Size
+// TODO: Sorting function
 
 const Table: React.FC<TableData> = ({ tHeads, tBodys }) => {
     return(<>
@@ -36,7 +38,7 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys }) => {
                         <td style={{width: '28px'}}>
                             <div style={{width: '28px'}}></div>
                         </td>
-                        <td id="product-table">
+                        <td style={{width: '500px'}} id="product-table">
                             {tBody.product}
                         </td>
                         <td style={{width: '8rem'}}>

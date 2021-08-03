@@ -36,12 +36,12 @@
     form{
         display: flex;
         align-items: center;
-        height: 5rem;
+        height: 4.5rem;
         padding: 1rem 0;
 
         #product-search-form{
             margin: 1rem 0;
-            padding: 1rem;
+            padding-left: 0.2rem;
             width: 100%;
             height: 100%;
             border: none;
@@ -59,7 +59,7 @@
             background-color: rgb(230, 230, 230);
             border-radius: 10px 0 0 10px;
             color: rgb(120, 120, 120);
-            padding: 1rem 0.5rem;
+            padding: 0.75rem 0.5rem;
             width: 100%;
             height: 100%;
         }        
@@ -115,5 +115,19 @@
         #category-delete-btn:hover{
             cursor: pointer;
         }
+    }
+}
+
+
+/* 768px and less than 768px */
+@media screen and (max-width: 767px) {
+    #inventory-title{
+        margin-bottom: 2rem;
+    }
+    #inventory-top-menu{
+        justify-content: flex-end;
+    }
+    #inventory-menu-btn{
+        margin: 3rem 0;
     }
 }
