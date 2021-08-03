@@ -1,0 +1,47 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  td, th {
+    border-bottom: 1px solid #dddddd;
+    text-align: center;
+  }
+
+  #product-tHead {
+      text-align: left;
+  }
+  
+  th {
+    padding-bottom: 0.7rem;
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: $secondary;
+  }
+
+  td {
+    font-size: 1rem;
+    font-weight: 300;
+
+      img {
+        width: 84px;
+        background-color: rgb(200, 200, 200);
+        display: block;   // Remove White space under img
+      }
+  }
+
+  #product-table {
+      text-align: left;
+  }
+
+  #price-table {
+      text-align: right;
+      padding-right: 2rem;
+  }
+
+  tr:hover {
+      cursor: pointer;
+      background-color: rgb(230, 230, 230);
+  }
