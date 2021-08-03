@@ -56,7 +56,7 @@ const Inventory: React.FC = () => {
         }
       }
     }
-
+    
     return (<>
         <div className="flex align-items-center m-1" id="inventory-top-menu">
             <span id="inventory-title">Inventory</span>

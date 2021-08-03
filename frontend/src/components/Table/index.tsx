@@ -8,6 +8,8 @@ interface TableData {
     tHeads: string[];
     tBodys: {"id": string, "img"?: string, "product": string, "stock": string, "price": string}[] | undefined; 
 }
+//TODO: Display Delete Button when Check a product
+//TODO: Search Product by Product Tittle and Categories
 
 const Table: React.FC<TableData> = ({ tHeads, tBodys }) => {
     return(<>
@@ -25,8 +27,8 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys }) => {
             {tBodys? tBodys.map(tBody => {
                 return(
                     <tr key={tBody.id}>
-                        <td style={{width: '28px'}}>
-                            <input type="checkbox" style={{width: '42px'}} />
+                        <td style={{width: '28px', padding:'0 12px'}} id="table-check-box">
+                            <input type="checkbox" />
                         </td>
                         <td style={{width: '84px'}}>
                             <img src={tBody.img?tBody.img:dummyProductImg} alt={tBody.product} />
