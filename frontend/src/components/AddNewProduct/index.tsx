@@ -1,3 +1,5 @@
+// Style sass/3_components/_addNewProduct.scss
+
 import { useState } from 'react';
 
 import ModalBoxAdmin from './ModalBoxAdmin';
@@ -5,23 +7,7 @@ import ModalBoxAdmin from './ModalBoxAdmin';
 import { postNewProduct } from '../../utils/API';
 import { NumberComma } from '../../utils/helpers';
 
-interface newProduct {
-    title: string; 
-    // description: string
-    // img_url?: string
-    // price: number
-    // onSale: boolean
-   	// salePrice: number
-   	// quantity: number
-  	// sku: string
-   	// categories : string[]
-   	// date: string
-
-}
-
 const AddNewProduct: React.FC = () => {
-    const [newProduct, setNewProduct] = useState<newProduct | undefined>(undefined);
-
     // To Store Product Data
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -141,13 +127,33 @@ const AddNewProduct: React.FC = () => {
         });
     }
 
+    function onClickCancelBtn() {
+        const modalEl = document.getElementById('addNewProduct')!;
+        modalEl.style.display = "none";
+
+        // Active Scrollable Body
+        document.body.style.overflowY = 'auto';
+
+        // setTitle('');
+        // setDescription('');
+        // setPrice('0') 
+        // setIsPrice(false);
+        // setSalePrice('0');
+        // setQuantity('');
+        // setSku('');
+        // setCategories([]);
+
+        window.location.reload();
+
+    }
+
     return (
         <>
         <div className="card">
             <div className="card-header addNewProduct-header">
                 <button onClick={onClickSaveBtn}>Save</button>
                 <div>Add New Product</div>
-                <button>Cancel</button>
+                <button onClick={onClickCancelBtn}>Cancel</button>
             </div>
             <div className="card-body addNewProduct-body">
                 <div className="addNewProduct-body-item">
