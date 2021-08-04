@@ -14,7 +14,7 @@ const Inventory: React.FC = () => {
     useEffect(() => {
         // Dummy Data
         setProductList([
-        {'id':'1', 'product': 'myProduct01', 'stock': '1', 'price': '55'},
+        {'id':'1', 'product': 'myProduct01myProduct01myProduct01myProduct01myProduct01myProduct01myProduct01', 'stock': '1', 'price': '55'},
         {'id':'2', 'product': 'myProduct02', 'stock': '5', 'price': '205'},
         {'id':'3', 'product': 'myProduct03', 'stock': '3', 'price': '155'},
         {'id':'4', 'product': 'myProduct04', 'stock': '2', 'price': '887'},

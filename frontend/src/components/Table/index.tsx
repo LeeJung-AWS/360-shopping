@@ -8,12 +8,22 @@ interface TableData {
     tHeads: string[];
     tBodys: {"id": string, "img"?: string, "product": string, "stock": string, "price": string}[] | undefined; 
 }
-//TODO: Display Delete Button when Check a product
-//TODO: Search Product by Product Tittle and Categories
+// TODO: Display Delete Button when Check a product
+// TODO: Search Product by Product Tittle and Categories
+// TODO: Use ellipsis for Product Title depending on Screen Size
+// TODO: Sorting function
 
 const Table: React.FC<TableData> = ({ tHeads, tBodys }) => {
     return(<>
-    <table>
+    <table className="table-fixed">
+    <colgroup>
+        <col style={{width: '50px'}} />
+        <col style={{width: '84px'}} />
+        <col style={{width: '15px'}} />
+        <col style={{width: 'auto', minWidth:'35px'}} />
+        <col style={{width: '95px'}} />
+        <col style={{width: '95px'}} />
+    </colgroup>
         <thead>
             <tr>
                 {tHeads.map((tHead, index) => {
@@ -27,22 +37,22 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys }) => {
             {tBodys? tBodys.map(tBody => {
                 return(
                     <tr key={tBody.id}>
-                        <td style={{width: '28px', padding:'0 12px'}} id="table-check-box">
+                        <td id="table-check-box">
                             <input type="checkbox" />
                         </td>
-                        <td style={{width: '84px'}}>
+                        <td>
                             <img src={tBody.img?tBody.img:dummyProductImg} alt={tBody.product} />
                         </td>
-                        <td style={{width: '28px'}}>
+                        <td>
                             <div style={{width: '28px'}}></div>
                         </td>
                         <td id="product-table">
                             {tBody.product}
                         </td>
-                        <td style={{width: '8rem'}}>
+                        <td>
                             {tBody.stock}
                         </td>
-                        <td id="price-table" style={{width: '8rem'}}>
+                        <td id="price-table">
                             ${NumberComma(parseInt(tBody.price))}
                         </td>
                     </tr>
