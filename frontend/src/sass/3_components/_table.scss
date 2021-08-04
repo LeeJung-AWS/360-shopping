@@ -3,7 +3,7 @@ table {
     border-collapse: collapse;
     width: 100%;
     margin-top: 2rem;
-  }
+}
 
   td, th {
     border-bottom: 1px solid #dddddd;
@@ -29,11 +29,15 @@ table {
         width: 84px;
         background-color: rgb(200, 200, 200);
         display: block;   // Remove White space under img
+        margin:0;
       }
   }
 
   #product-table {
     text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   #price-table {
@@ -44,4 +48,12 @@ table {
   tr:hover {
       cursor: pointer;
       background-color: rgb(230, 230, 230);
+  }
+  
+  .table-fixed{
+    table-layout:fixed;
+  
+    td {
+      overflow: hidden;
+    }
   }
