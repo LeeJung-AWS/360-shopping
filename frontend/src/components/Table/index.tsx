@@ -17,12 +17,12 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys }) => {
     return(<>
     <table className="table-fixed">
     <colgroup>
-        <col style={{width: '70px'}} />
+        <col style={{width: '50px'}} />
         <col style={{width: '84px'}} />
         <col style={{width: '15px'}} />
-        <col style={{width: 'auto', minWidth:'38px'}} />
-        <col style={{width: '84px'}} />
-        <col style={{width: '84px'}} />
+        <col style={{width: 'auto', minWidth:'35px'}} />
+        <col style={{width: '95px'}} />
+        <col style={{width: '95px'}} />
     </colgroup>
         <thead>
             <tr>
