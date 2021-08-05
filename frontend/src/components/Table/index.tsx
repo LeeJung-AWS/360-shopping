@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 import { NumberComma } from '../../utils/helpers';
 
@@ -8,21 +8,19 @@ import dummyProductImg from '../../assets/img/dummy-product-img.png';
 interface TableData {
     tHeads: string[];
     tBodys: {"id": string, "img"?: string, "product": string, "stock": string, "price": string}[] | undefined; 
-    onClickCheckInventory: (productId:string) => void
+    onClickCheckInventory: (productId:string, isChecked:boolean) => void
 }
 
 // TODO: Search Product by Product Tittle and Categories
-// TODO: Use ellipsis for Product Title depending on Screen Size
 // TODO: Sorting function
 
 
 const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory }) => {
-    // const [ productIdArr, setProductIdArr ] = useState<string[]>([])
-    // TODO: Display Delete Button when Check a product
+
+    // Pass selected product data to inventory element to handle Bar-menu ( About deleting Products )
     function onClickCheck(event: any) {
-        // setProductIdArr([...productIdArr, event.target.dataset.id]);
-        console.log(event.target.checked)
-        onClickCheckInventory(event.target.dataset.id);
+        // console.log(event.target);
+        onClickCheckInventory(event.target.dataset.id, event.target.checked);
     }
 
     return(<>
@@ -44,7 +42,7 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory }) =
                 })}
             </tr>
         </thead>
-        <tbody>
+        <tbody id='product-list-table'>
             {tBodys? tBodys.map(tBody => {
                 return(
                     <tr key={tBody.id}>

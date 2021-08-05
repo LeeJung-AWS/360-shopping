@@ -10,7 +10,7 @@ const Inventory: React.FC = () => {
 
     const [ productList, setProductList] = useState<{'id': string, 'product': string, 'stock': string, 'price': string}[] | undefined>(undefined);
     
-    const [ selectedProduct, setSelectedProduct] = useState<string>();
+    const [ selectedProductId, setSelectedProductId] = useState<string[]>([]);
     // Display amount of seleted product when checking them.
     const [ amountOfSelectedProduct, setAmountOfSelectedProduct ] = useState(0);
 
@@ -60,21 +60,79 @@ const Inventory: React.FC = () => {
         }
       }
     }
+    // TODO: Search Product by Product Tittle and Categories
+    // TODO: Sorting function
 
-    function onClickCheckInventory(productId: string) {
+    // Display Delete Button when Check a product
+    function onClickCheckInventory(productId: string, isChecked: boolean) {
         const barMenuInventoryEl = document.getElementById('bar-menu-inventory')!;
-        barMenuInventoryEl.style.display = 'flex';
         let amount = amountOfSelectedProduct;
-        amount++;
+        let productIdArr = selectedProductId;
 
+        if(isChecked){
+            if(amount === 0){
+                barMenuInventoryEl.style.display = 'flex';
+            }
+            amount++;
+            productIdArr.push(productId);
+        }else{
+            if(amount === 1) {
+                barMenuInventoryEl.style.display = 'none';
+            }
+            amount--;
+            productIdArr.splice(productIdArr.indexOf(productId), 1);
+        }
+
+        setSelectedProductId(productIdArr);
         setAmountOfSelectedProduct(amount);
-
-        console.log(productId);
-        setSelectedProduct(productId)
-        console.log(selectedProduct);
-        
+        console.log(selectedProductId)
     } 
-    
+
+     // All check products on the table
+     function allCheckproduct() {
+        let productIdArr = [];
+        let amount = 0;
+        const productListTableEl = document.getElementById('product-list-table') as any;
+        const trArray = productListTableEl.children;
+
+        for(let i = 0; i < trArray.length; i++){
+            let tr:any = trArray[i];
+            
+            let checkbox = tr.firstChild?.firstChild
+            // console.log(checkbox);
+            if(checkbox){
+                checkbox.checked = true;
+                productIdArr.push(checkbox.dataset.id);
+                amount++;
+            }
+        }
+        // console.log(productIdArr);
+        setSelectedProductId(productIdArr);
+        setAmountOfSelectedProduct(amount);
+     }
+
+     // All uncheck products on the table
+     function allUncheckproduct() {
+        const productListTableEl = document.getElementById('product-list-table') as any;
+        const trArray = productListTableEl.children;
+
+        for(let i = 0; i < trArray.length; i++){
+            let tr:any = trArray[i];
+            
+            let checkbox = tr.firstChild?.firstChild
+            // console.log(checkbox);
+            if(checkbox){
+                checkbox.checked = false;
+            }
+        }
+        
+        const barMenuInventoryEl = document.getElementById('bar-menu-inventory')!;
+        barMenuInventoryEl.style.display = 'none';
+        // console.log(productIdArr);
+        setSelectedProductId([]);
+        setAmountOfSelectedProduct(0);
+     }
+
     return (<>
         <div className="flex align-items-center m-1" id="inventory-top-menu">
             <span id="inventory-title">Inventory</span>
@@ -97,8 +155,8 @@ const Inventory: React.FC = () => {
         </div>
         <div id="bar-menu-inventory">
             <div id="bar-menu-inventory-select-btn">
-                <button>Select All</button>
-                <button>Clear Selection</button>
+                <button onClick={allCheckproduct}>Select All</button>
+                <button onClick={allUncheckproduct}>Clear Selection</button>
             </div>
             <div>{amountOfSelectedProduct} Selected</div>
             <div id="bar-menu-inventory-delete-btn">
