@@ -9,6 +9,10 @@ import Table from '../Table';
 const Inventory: React.FC = () => {
 
     const [ productList, setProductList] = useState<{'id': string, 'product': string, 'stock': string, 'price': string}[] | undefined>(undefined);
+    
+    const [ selectedProduct, setSelectedProduct] = useState<string>();
+    // Display amount of seleted product when checking them.
+    const [ amountOfSelectedProduct, setAmountOfSelectedProduct ] = useState(0);
 
     // TODO: Fetch productList from DB
     useEffect(() => {
@@ -56,6 +60,20 @@ const Inventory: React.FC = () => {
         }
       }
     }
+
+    function onClickCheckInventory(productId: string) {
+        const barMenuInventoryEl = document.getElementById('bar-menu-inventory')!;
+        barMenuInventoryEl.style.display = 'flex';
+        let amount = amountOfSelectedProduct;
+        amount++;
+
+        setAmountOfSelectedProduct(amount);
+
+        console.log(productId);
+        setSelectedProduct(productId)
+        console.log(selectedProduct);
+        
+    } 
     
     return (<>
         <div className="flex align-items-center m-1" id="inventory-top-menu">
@@ -71,11 +89,21 @@ const Inventory: React.FC = () => {
             </div>
         </div>
 
-        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={productList? productList: undefined} />
+        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={productList? productList: undefined} onClickCheckInventory={onClickCheckInventory} />
         <div className="modal" id="addNewProduct">
             <div className="modal-content" id="addNewProduct-content">
                 <AddNewProduct />    
             </div>    
+        </div>
+        <div id="bar-menu-inventory">
+            <div id="bar-menu-inventory-select-btn">
+                <button>Select All</button>
+                <button>Clear Selection</button>
+            </div>
+            <div>{amountOfSelectedProduct} Selected</div>
+            <div id="bar-menu-inventory-delete-btn">
+                <button>Delete</button>
+            </div>
         </div>
     </>);
 };

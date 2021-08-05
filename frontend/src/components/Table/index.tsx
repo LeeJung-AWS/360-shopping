@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 
 import { NumberComma } from '../../utils/helpers';
 
@@ -7,13 +8,23 @@ import dummyProductImg from '../../assets/img/dummy-product-img.png';
 interface TableData {
     tHeads: string[];
     tBodys: {"id": string, "img"?: string, "product": string, "stock": string, "price": string}[] | undefined; 
+    onClickCheckInventory: (productId:string) => void
 }
-// TODO: Display Delete Button when Check a product
+
 // TODO: Search Product by Product Tittle and Categories
 // TODO: Use ellipsis for Product Title depending on Screen Size
 // TODO: Sorting function
 
-const Table: React.FC<TableData> = ({ tHeads, tBodys }) => {
+
+const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory }) => {
+    // const [ productIdArr, setProductIdArr ] = useState<string[]>([])
+    // TODO: Display Delete Button when Check a product
+    function onClickCheck(event: any) {
+        // setProductIdArr([...productIdArr, event.target.dataset.id]);
+        console.log(event.target.checked)
+        onClickCheckInventory(event.target.dataset.id);
+    }
+
     return(<>
     <table className="table-fixed">
     <colgroup>
@@ -38,7 +49,7 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys }) => {
                 return(
                     <tr key={tBody.id}>
                         <td id="table-check-box">
-                            <input type="checkbox" />
+                            <input type="checkbox" data-id={tBody.id} onClick={onClickCheck} />
                         </td>
                         <td>
                             <img src={tBody.img?tBody.img:dummyProductImg} alt={tBody.product} />
