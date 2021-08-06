@@ -14,6 +14,11 @@ const AdminNav: React.FC = () => {
           }
     }
 
+    function onclickMenu () {
+        const mobileLinksEl = document.getElementById('mobile-Links')!;
+        mobileLinksEl.style.display = "none";
+    }
+
     return (
     <header className="adminNav-header">
         <Link id="admin-page-btn" to="/adminPage">Admin Page</Link>
@@ -21,11 +26,11 @@ const AdminNav: React.FC = () => {
             <a href="#test" id="mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></a>
         </nav>
         <div id="mobile-Links">
-                <Link to="/adminPage/marketing">Marketing</Link>
-                <Link to="/adminPage/inventory">Inventory</Link>
-                <Link to="/adminPage/orderHistory">Order history</Link>
-                <Link to="/adminPage/messages">Messages</Link>
-                <Link to="/adminPage/printReports">Print reports</Link>
+                <Link to="/adminPage/marketing" onClick={onclickMenu}>Marketing</Link>
+                <Link to="/adminPage/inventory" onClick={onclickMenu}>Inventory</Link>
+                <Link to="/adminPage/orderHistory" onClick={onclickMenu}>Order history</Link>
+                <Link to="/adminPage/messages" onClick={onclickMenu}>Messages</Link>
+                <Link to="/adminPage/printReports" onClick={onclickMenu}>Print reports</Link>
             </div>
         <nav className="adminNav-desktop">
             <ul>
