@@ -5,7 +5,7 @@ function App() {
   return (
     <div>
       <AdminPage />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

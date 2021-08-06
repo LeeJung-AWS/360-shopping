@@ -6,28 +6,48 @@ import { useState, useEffect } from 'react';
 import AddNewProduct from "../AddNewProduct";
 import Table from '../Table';
 
+interface productListDataDype{
+    'id': string, 
+    'productTitle': string, 
+    'categories': string[], 
+    'stock': string, 
+    'price': string
+}
+
 const Inventory: React.FC = () => {
 
-    const [ productList, setProductList] = useState<{'id': string, 'product': string, 'stock': string, 'price': string}[] | undefined>(undefined);
+    const [ productList, setProductList] = useState<productListDataDype[] | undefined>(undefined);
+    const [ filteredProductList, setFilteredProductList] = useState<productListDataDype[] | undefined>(undefined);
+
+    const [ selectedProductId, setSelectedProductId] = useState<string[]>([]);
+    // Display amount of seleted product when checking them.
+    const [ amountOfSelectedProduct, setAmountOfSelectedProduct ] = useState(0);
+    const [ sortingStatus, setSortingStatus ] = useState<{'PRODUCT': string, 'STOCK': string, 'PRICE': string}>({
+        'PRODUCT': 'descending', 
+        'STOCK': 'descending', 
+        'PRICE': 'descending'
+    })
 
     // TODO: Fetch productList from DB
     useEffect(() => {
         // Dummy Data
-        setProductList([
-        {'id':'1', 'product': 'myProduct01myProduct01myProduct01myProduct01myProduct01myProduct01myProduct01', 'stock': '1', 'price': '55'},
-        {'id':'2', 'product': 'myProduct02', 'stock': '5', 'price': '205'},
-        {'id':'3', 'product': 'myProduct03', 'stock': '3', 'price': '155'},
-        {'id':'4', 'product': 'myProduct04', 'stock': '2', 'price': '887'},
-        {'id':'5', 'product': 'myProduct05', 'stock': '1', 'price': '752'},
-        {'id':'6', 'product': 'myProduct06', 'stock': '2', 'price': '712'},
-        {'id':'7', 'product': 'myProduct07', 'stock': '5', 'price': '612'},
-        {'id':'8', 'product': 'myProduct08', 'stock': '2', 'price': '353'},
-        {'id':'9', 'product': 'myProduct09', 'stock': '1', 'price': '125'},
-        {'id':'10', 'product': 'myProduct10', 'stock': '2', 'price': '1005'},
-        {'id':'11', 'product': 'myProduct11', 'stock': '1', 'price': '25'},
-        {'id':'12', 'product': 'myProduct12', 'stock': '1', 'price': '254'},
+        const myProductlists = [
+            {'id':'1', 'productTitle': 'myProduct01', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '55'},
+            {'id':'2', 'productTitle': 'myProduct02', 'categories': ['shirts', 'men'], 'stock': '5', 'price': '205'},
+            {'id':'3', 'productTitle': 'myProduct03', 'categories': ['shirts', 'men'], 'stock': '3', 'price': '155'},
+            {'id':'4', 'productTitle': 'myProduct04', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '887'},
+            {'id':'5', 'productTitle': 'myProduct05', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '752'},
+            {'id':'6', 'productTitle': 'myProduct06', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '712'},
+            {'id':'7', 'productTitle': 'myProduct07', 'categories': ['shirts', 'men'], 'stock': '11', 'price': '612'},
+            {'id':'8', 'productTitle': 'zyProduct08', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '353'},
+            {'id':'9', 'productTitle': 'myProduct09', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '125'},
+            {'id':'10', 'productTitle': 'myProduct10', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '1005'},
+            {'id':'11', 'productTitle': 'myProduct111', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '25'},
+            {'id':'12', 'productTitle': 'adsfadsfadsf', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '254'},
+            ]
 
-    ])
+        setProductList(myProductlists)
+        setFilteredProductList(myProductlists)
     }, [])
 
     function addProductOnClick() {
@@ -56,14 +76,144 @@ const Inventory: React.FC = () => {
         }
       }
     }
-    
+    // Search Product by Product Title
+    function handleInputChangeSearch(event: any){
+        const value = event.target.value.trim();
+
+        const originalProducts:productListDataDype[]|undefined= productList?[...productList]:[];
+        
+        setFilteredProductList(
+            originalProducts.filter(product => {
+                return(product.productTitle.toLowerCase().includes(value.toLowerCase()))
+            })
+        );
+    }
+    // Sorting function
+    function sortingByTableHeader(header: string) {
+        const originalProducts:productListDataDype[]|undefined= productList?[...productList]:[];
+
+        if(header === "PRODUCT"){
+            // console.log(sortingStatus);
+            if(sortingStatus[header] === "descending"){
+                setSortingStatus({...sortingStatus, "PRODUCT": "ascending"});
+                // Ascending
+                setFilteredProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? 1 : -1));
+                setProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? 1 : -1));
+            }else{
+                setSortingStatus({...sortingStatus, "PRODUCT": "descending"});
+                // Descending
+                setFilteredProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? -1 : 1));
+                setProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? -1 : 1));
+            }
+        }else if(header === "STOCK"){
+            if(sortingStatus[header] === "descending"){
+                setSortingStatus({...sortingStatus, "STOCK": "ascending"});
+                // Ascending
+                setFilteredProductList(originalProducts.sort((a:any, b:any) => a.stock - b.stock));
+                setProductList(originalProducts.sort((a:any, b:any) => a.stock - b.stock));
+            }else{
+                setSortingStatus({...sortingStatus, "STOCK": "descending"});
+                // Descending
+                setFilteredProductList(originalProducts.sort((a:any, b:any) => b.stock - a.stock));
+                setProductList(originalProducts.sort((a:any, b:any) => b.stock - a.stock));
+            }
+
+        }else if(header === "PRICE"){
+            // console.log(sortingStatus);
+            if(sortingStatus[header] === "descending"){
+                setSortingStatus({...sortingStatus, "PRICE": "ascending"});
+                // Ascending
+                setFilteredProductList(originalProducts.sort((a:any, b:any) => a.price - b.price));
+                setProductList(originalProducts.sort((a:any, b:any) => a.price - b.price));
+
+            }else{
+                setSortingStatus({...sortingStatus, "PRICE": "descending"});
+                // Descending
+                setFilteredProductList(originalProducts.sort((a:any, b:any) => b.price - a.price));
+                setProductList(originalProducts.sort((a:any, b:any) => b.price - a.price));
+            }
+
+
+        }
+    }
+
+    // Display Delete Button when Check a product
+    function onClickCheckInventory(productId: string, isChecked: boolean) {
+        const barMenuInventoryEl = document.getElementById('bar-menu-inventory')!;
+        let amount = amountOfSelectedProduct;
+        let productIdArr = selectedProductId;
+
+        if(isChecked){
+            if(amount === 0){
+                barMenuInventoryEl.style.display = 'flex';
+            }
+            amount++;
+            productIdArr.push(productId);
+        }else{
+            if(amount === 1) {
+                barMenuInventoryEl.style.display = 'none';
+            }
+            amount--;
+            productIdArr.splice(productIdArr.indexOf(productId), 1);
+        }
+
+        setSelectedProductId(productIdArr);
+        setAmountOfSelectedProduct(amount);
+        // console.log(selectedProductId)
+    } 
+
+     // All check products on the table
+     function allCheckproduct() {
+        let productIdArr = [];
+        let amount = 0;
+        const productListTableEl = document.getElementById('product-list-table') as any;
+        const trArray = productListTableEl.children;
+
+        for(let i = 0; i < trArray.length; i++){
+            let tr:any = trArray[i];
+            
+            let checkbox = tr.firstChild?.firstChild
+            // console.log(checkbox);
+            if(checkbox){
+                checkbox.checked = true;
+                productIdArr.push(checkbox.dataset.id);
+                amount++;
+            }
+        }
+        // console.log(productIdArr);
+        setSelectedProductId(productIdArr);
+        setAmountOfSelectedProduct(amount);
+     }
+
+     // All uncheck products on the table
+     function allUncheckproduct() {
+        const productListTableEl = document.getElementById('product-list-table') as any;
+        const trArray = productListTableEl.children;
+
+        for(let i = 0; i < trArray.length; i++){
+            let tr:any = trArray[i];
+            
+            let checkbox = tr.firstChild?.firstChild
+            // console.log(checkbox);
+            if(checkbox){
+                checkbox.checked = false;
+            }
+        }
+
+        const barMenuInventoryEl = document.getElementById('bar-menu-inventory')!;
+        barMenuInventoryEl.style.display = 'none';
+        // console.log(productIdArr);
+        setSelectedProductId([]);
+        setAmountOfSelectedProduct(0);
+     }
+
     return (<>
         <div className="flex align-items-center m-1" id="inventory-top-menu">
             <span id="inventory-title">Inventory</span>
             <div id="inventory-menu-btn">
                 <form>
                     <i className="fas fa-search"></i>
-                    <input id="product-search-form" placeholder="Products, Categories" />
+                    <input id="product-search-form" placeholder="Product Title" onChange={handleInputChangeSearch} />
                 </form>
                 <div onClick={addProductOnClick}>
                     ADD_PRODUCT
@@ -71,11 +221,21 @@ const Inventory: React.FC = () => {
             </div>
         </div>
 
-        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={productList? productList: undefined} />
+        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={filteredProductList? filteredProductList: undefined} onClickCheckInventory={onClickCheckInventory} sortingByTableHeader={sortingByTableHeader} />
         <div className="modal" id="addNewProduct">
             <div className="modal-content" id="addNewProduct-content">
                 <AddNewProduct />    
             </div>    
+        </div>
+        <div id="bar-menu-inventory">
+            <div id="bar-menu-inventory-select-btn">
+                <button onClick={allCheckproduct}>Select All</button>
+                <button onClick={allUncheckproduct}>Clear Selection</button>
+            </div>
+            <div>{amountOfSelectedProduct} Selected</div>
+            <div id="bar-menu-inventory-delete-btn">
+                <button>Delete</button>
+            </div>
         </div>
     </>);
 };
