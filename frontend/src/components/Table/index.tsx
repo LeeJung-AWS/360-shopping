@@ -7,20 +7,26 @@ import dummyProductImg from '../../assets/img/dummy-product-img.png';
 
 interface TableData {
     tHeads: string[];
-    tBodys: {"id": string, "img"?: string, "product": string, "stock": string, "price": string}[] | undefined; 
-    onClickCheckInventory: (productId:string, isChecked:boolean) => void
+    tBodys: {"id": string, "img"?: string, "productTitle": string,'categories': string[], "stock": string, "price": string}[] | undefined; 
+    onClickCheckInventory: (productId:string, isChecked:boolean) => void;
+    sortingByTableHeader: (header:string) => void;
 }
 
-// TODO: Search Product by Product Tittle and Categories
-// TODO: Sorting function
 
-
-const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory }) => {
+const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sortingByTableHeader }) => {
 
     // Pass selected product data to inventory element to handle Bar-menu ( About deleting Products )
     function onClickCheck(event: any) {
         // console.log(event.target);
         onClickCheckInventory(event.target.dataset.id, event.target.checked);
+    }
+
+
+    // Sorting function
+    function onClickHeader(event: any){
+        // console.log(event.target.value.toLowerCase())
+        console.log(event.target.textContent)
+        // sortingByTableHeader()
     }
 
     return(<>
@@ -37,7 +43,18 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory }) =
             <tr>
                 {tHeads.map((tHead, index) => {
                     return(
-                        <th key={index} id={`${tHead.toLowerCase()}-tHead`}>{tHead}</th>
+                        <th key={index} id={`${tHead.toLowerCase()}-tHead`} className="table-header" onClick={onClickHeader} >
+                            {index < 4? <div className="flex" style={{height:"30px"}}>
+                                <div style={{marginRight:"5px"}}>{tHead}</div>
+                                <div><i className="fas fa-sort-up table-header-icon"></i></div>
+                            </div> 
+                            :
+                            <div className="flex justify-content-end" style={{height:"30px"}}>
+                                <div style={{marginRight:"5px"}}><i className="fas fa-sort-up table-header-icon"></i></div>
+                                <div style={{marginRight:"30px"}}>{tHead}</div>
+                            </div> }
+                            
+                        </th>
                     )
                 })}
             </tr>
@@ -50,13 +67,13 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory }) =
                             <input type="checkbox" data-id={tBody.id} onClick={onClickCheck} />
                         </td>
                         <td>
-                            <img src={tBody.img?tBody.img:dummyProductImg} alt={tBody.product} />
+                            <img src={tBody.img?tBody.img:dummyProductImg} alt={tBody.productTitle} />
                         </td>
                         <td>
                             <div style={{width: '28px'}}></div>
                         </td>
                         <td id="product-table">
-                            {tBody.product}
+                            {tBody.productTitle}
                         </td>
                         <td>
                             {tBody.stock}

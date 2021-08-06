@@ -5,56 +5,82 @@ table {
     margin-top: 2rem;
     // padding-bottom: 5rem;
 }
+.table-header{
+    height: 30px;
+    padding:0;
 
-  td, th {
-    border-bottom: 1px solid #dddddd;
-    text-align: center;
-  }
+    span{
+      height: 100px;
+    }
+}
 
-  #product-tHead {
-      text-align: left;
+.table-header:nth-of-type(n+4):hover{
+  cursor: pointer;
+  .table-header-icon{
+    display: inline;
   }
-  
-  th {
-    padding-bottom: 0.7rem;
-    font-size: 0.7rem;
-    font-weight: 300;
-    color: $secondary;
+}
+
+
+
+// .table-header:nth-of-type(n+4):hover::after{
+//   content:'\f0dd';
+// }
+
+.table-header-icon{
+  display: none;
+  position: relative;
+  bottom: -3px;
+  font-size: 15px;
+  color:rgb(200, 200, 200);
+}
+
+td, th {
+  border-bottom: 1px solid #dddddd;
+  text-align: center;
+}
+#product-tHead {
+    text-align: left;
+}
+
+th {
+  padding-bottom: 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 300;
+  color: $secondary;
+}
+td {
+  font-size: 1rem;
+  font-weight: 300;
+    img {
+      width: 84px;
+      background-color: rgb(200, 200, 200);
+      display: block;   // Remove White space under img
+      margin:0;
+    }
+}
+#product-table {
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#price-table {
+    text-align: right;
+    padding-right: 2rem;
+}
+tbody{
+  tr:hover {
+    cursor: pointer;
+    background-color: rgb(230, 230, 230);
   }
+}
+
+
+.table-fixed{
+  table-layout:fixed;
 
   td {
-    font-size: 1rem;
-    font-weight: 300;
-
-      img {
-        width: 84px;
-        background-color: rgb(200, 200, 200);
-        display: block;   // Remove White space under img
-        margin:0;
-      }
-  }
-
-  #product-table {
-    text-align: left;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
   }
-
-  #price-table {
-      text-align: right;
-      padding-right: 2rem;
-  }
-
-  tr:hover {
-      cursor: pointer;
-      background-color: rgb(230, 230, 230);
-  }
-  
-  .table-fixed{
-    table-layout:fixed;
-  
-    td {
-      overflow: hidden;
-    }
-  }
+}

@@ -6,10 +6,19 @@ import { useState, useEffect } from 'react';
 import AddNewProduct from "../AddNewProduct";
 import Table from '../Table';
 
+interface productListDataDype{
+    'id': string, 
+    'productTitle': string, 
+    'categories': string[], 
+    'stock': string, 
+    'price': string
+}
+
 const Inventory: React.FC = () => {
 
-    const [ productList, setProductList] = useState<{'id': string, 'product': string, 'stock': string, 'price': string}[] | undefined>(undefined);
-    
+    const [ productList, setProductList] = useState<productListDataDype[] | undefined>(undefined);
+    const [ filteredProductList, setFilteredProductList] = useState<productListDataDype[] | undefined>(undefined);
+
     const [ selectedProductId, setSelectedProductId] = useState<string[]>([]);
     // Display amount of seleted product when checking them.
     const [ amountOfSelectedProduct, setAmountOfSelectedProduct ] = useState(0);
@@ -17,21 +26,23 @@ const Inventory: React.FC = () => {
     // TODO: Fetch productList from DB
     useEffect(() => {
         // Dummy Data
-        setProductList([
-        {'id':'1', 'product': 'myProduct01myProduct01myProduct01myProduct01myProduct01myProduct01myProduct01', 'stock': '1', 'price': '55'},
-        {'id':'2', 'product': 'myProduct02', 'stock': '5', 'price': '205'},
-        {'id':'3', 'product': 'myProduct03', 'stock': '3', 'price': '155'},
-        {'id':'4', 'product': 'myProduct04', 'stock': '2', 'price': '887'},
-        {'id':'5', 'product': 'myProduct05', 'stock': '1', 'price': '752'},
-        {'id':'6', 'product': 'myProduct06', 'stock': '2', 'price': '712'},
-        {'id':'7', 'product': 'myProduct07', 'stock': '5', 'price': '612'},
-        {'id':'8', 'product': 'myProduct08', 'stock': '2', 'price': '353'},
-        {'id':'9', 'product': 'myProduct09', 'stock': '1', 'price': '125'},
-        {'id':'10', 'product': 'myProduct10', 'stock': '2', 'price': '1005'},
-        {'id':'11', 'product': 'myProduct11', 'stock': '1', 'price': '25'},
-        {'id':'12', 'product': 'myProduct12', 'stock': '1', 'price': '254'},
+        const myProductlists = [
+            {'id':'1', 'productTitle': 'myProduct01', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '55'},
+            {'id':'2', 'productTitle': 'myProduct02', 'categories': ['shirts', 'men'], 'stock': '5', 'price': '205'},
+            {'id':'3', 'productTitle': 'myProduct03', 'categories': ['shirts', 'men'], 'stock': '3', 'price': '155'},
+            {'id':'4', 'productTitle': 'myProduct04', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '887'},
+            {'id':'5', 'productTitle': 'myProduct05', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '752'},
+            {'id':'6', 'productTitle': 'myProduct06', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '712'},
+            {'id':'7', 'productTitle': 'myProduct07', 'categories': ['shirts', 'men'], 'stock': '5', 'price': '612'},
+            {'id':'8', 'productTitle': 'myProduct08', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '353'},
+            {'id':'9', 'productTitle': 'myProduct09', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '125'},
+            {'id':'10', 'productTitle': 'myProduct10', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '1005'},
+            {'id':'11', 'productTitle': 'myProduct11', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '25'},
+            {'id':'12', 'productTitle': 'myProduct12', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '254'},
+            ]
 
-    ])
+        setProductList(myProductlists)
+        setFilteredProductList(myProductlists)
     }, [])
 
     function addProductOnClick() {
@@ -60,8 +71,22 @@ const Inventory: React.FC = () => {
         }
       }
     }
-    // TODO: Search Product by Product Tittle and Categories
+    // Search Product by Product Title
+    function handleInputChangeSearch(event: any){
+        const value = event.target.value.trim();
+
+        const originalProducts:productListDataDype[]|undefined= productList?[...productList]:[];
+        
+        setFilteredProductList(
+            originalProducts.filter(product => {
+                return(product.productTitle.toLowerCase().includes(value.toLowerCase()))
+            })
+        );
+    }
     // TODO: Sorting function
+    function sortingByTableHeader(header: string) {
+        console.log(header);
+    }
 
     // Display Delete Button when Check a product
     function onClickCheckInventory(productId: string, isChecked: boolean) {
@@ -85,7 +110,7 @@ const Inventory: React.FC = () => {
 
         setSelectedProductId(productIdArr);
         setAmountOfSelectedProduct(amount);
-        console.log(selectedProductId)
+        // console.log(selectedProductId)
     } 
 
      // All check products on the table
@@ -125,7 +150,7 @@ const Inventory: React.FC = () => {
                 checkbox.checked = false;
             }
         }
-        
+
         const barMenuInventoryEl = document.getElementById('bar-menu-inventory')!;
         barMenuInventoryEl.style.display = 'none';
         // console.log(productIdArr);
@@ -139,7 +164,7 @@ const Inventory: React.FC = () => {
             <div id="inventory-menu-btn">
                 <form>
                     <i className="fas fa-search"></i>
-                    <input id="product-search-form" placeholder="Products, Categories" />
+                    <input id="product-search-form" placeholder="Product Title" onChange={handleInputChangeSearch} />
                 </form>
                 <div onClick={addProductOnClick}>
                     ADD_PRODUCT
@@ -147,7 +172,7 @@ const Inventory: React.FC = () => {
             </div>
         </div>
 
-        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={productList? productList: undefined} onClickCheckInventory={onClickCheckInventory} />
+        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={filteredProductList? filteredProductList: undefined} onClickCheckInventory={onClickCheckInventory} sortingByTableHeader={sortingByTableHeader} />
         <div className="modal" id="addNewProduct">
             <div className="modal-content" id="addNewProduct-content">
                 <AddNewProduct />    
