@@ -1,5 +1,5 @@
 import React from 'react';
-// import { useState } from 'react';
+import { useState } from 'react';
 
 import { NumberComma } from '../../utils/helpers';
 
@@ -14,6 +14,7 @@ interface TableData {
 
 
 const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sortingByTableHeader }) => {
+    const [ currentNodeState, setCurrentNodeState ] = useState(undefined);
 
     // Pass selected product data to inventory element to handle Bar-menu ( About deleting Products )
     function onClickCheck(event: any) {
@@ -24,9 +25,31 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
 
     // Sorting function
     function onClickHeader(event: any){
-        // console.log(event.target.value.toLowerCase())
-        console.log(event.target.textContent)
-        // sortingByTableHeader()
+        let beforeNode:HTMLInputElement|any = currentNodeState;
+        let currentNode = event.target;
+        // console.log(currentNode === beforeNode);
+        if(beforeNode){
+            // console.log(beforeNode);
+            // console.log(typeof beforeNode);
+            beforeNode.style.color = 'rgb(230, 230, 230)';
+            beforeNode.style.display = '';
+        }
+        
+        if(event.target.textContent ==='PRODUCT'){
+            // console.log(event.target.parentNode.childNodes[1].childNodes)
+            currentNode = event.target.parentNode.childNodes[1].childNodes[0];
+
+            currentNode.style.color = "black"
+            currentNode.style.display = 'inline'
+        }else{
+            currentNode = event.target.parentNode.childNodes[0].childNodes[0]
+            currentNode.style.color = "black"
+            currentNode.style.display = 'inline'
+        }
+        // event.target.style.color = 'black';
+        // console.log(event.target.textContent)
+        sortingByTableHeader(event.target.textContent)
+        setCurrentNodeState(currentNode);
     }
 
     return(<>
@@ -43,15 +66,15 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
             <tr>
                 {tHeads.map((tHead, index) => {
                     return(
-                        <th key={index} id={`${tHead.toLowerCase()}-tHead`} className="table-header" onClick={onClickHeader} >
+                        <th key={index} id={`${tHead.toLowerCase()}-tHead`} className="table-header">
                             {index < 4? <div className="flex" style={{height:"30px"}}>
-                                <div style={{marginRight:"5px"}}>{tHead}</div>
-                                <div><i className="fas fa-sort-up table-header-icon"></i></div>
+                                <div style={{marginRight:"5px"}} onClick={onClickHeader} className="table-header-title">{tHead}</div>
+                                <div><i className="fas fa-sort table-header-icon"></i></div>
                             </div> 
                             :
                             <div className="flex justify-content-end" style={{height:"30px"}}>
-                                <div style={{marginRight:"5px"}}><i className="fas fa-sort-up table-header-icon"></i></div>
-                                <div style={{marginRight:"30px"}}>{tHead}</div>
+                                <div style={{marginRight:"5px"}}><i className="fas fa-sort table-header-icon"></i></div>
+                                <div style={{marginRight:"30px"}} onClick={onClickHeader} className="table-header-title">{tHead}</div>
                             </div> }
                             
                         </th>

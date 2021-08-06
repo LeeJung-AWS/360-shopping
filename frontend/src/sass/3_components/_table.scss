@@ -15,23 +15,19 @@ table {
 }
 
 .table-header:nth-of-type(n+4):hover{
-  cursor: pointer;
   .table-header-icon{
     display: inline;
   }
 }
-
-
-
-// .table-header:nth-of-type(n+4):hover::after{
-//   content:'\f0dd';
-// }
+.table-header-title:hover{
+  cursor: pointer;
+}
 
 .table-header-icon{
   display: none;
   position: relative;
-  bottom: -3px;
-  font-size: 15px;
+  bottom: 0px;
+  font-size: 10px;
   color:rgb(200, 200, 200);
 }
 

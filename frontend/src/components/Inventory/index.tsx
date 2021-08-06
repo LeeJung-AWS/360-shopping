@@ -22,6 +22,11 @@ const Inventory: React.FC = () => {
     const [ selectedProductId, setSelectedProductId] = useState<string[]>([]);
     // Display amount of seleted product when checking them.
     const [ amountOfSelectedProduct, setAmountOfSelectedProduct ] = useState(0);
+    const [ sortingStatus, setSortingStatus ] = useState<{'PRODUCT': string, 'STOCK': string, 'PRICE': string}>({
+        'PRODUCT': 'descending', 
+        'STOCK': 'descending', 
+        'PRICE': 'descending'
+    })
 
     // TODO: Fetch productList from DB
     useEffect(() => {
@@ -33,12 +38,12 @@ const Inventory: React.FC = () => {
             {'id':'4', 'productTitle': 'myProduct04', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '887'},
             {'id':'5', 'productTitle': 'myProduct05', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '752'},
             {'id':'6', 'productTitle': 'myProduct06', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '712'},
-            {'id':'7', 'productTitle': 'myProduct07', 'categories': ['shirts', 'men'], 'stock': '5', 'price': '612'},
-            {'id':'8', 'productTitle': 'myProduct08', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '353'},
+            {'id':'7', 'productTitle': 'myProduct07', 'categories': ['shirts', 'men'], 'stock': '11', 'price': '612'},
+            {'id':'8', 'productTitle': 'zyProduct08', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '353'},
             {'id':'9', 'productTitle': 'myProduct09', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '125'},
             {'id':'10', 'productTitle': 'myProduct10', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '1005'},
-            {'id':'11', 'productTitle': 'myProduct11', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '25'},
-            {'id':'12', 'productTitle': 'myProduct12', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '254'},
+            {'id':'11', 'productTitle': 'myProduct111', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '25'},
+            {'id':'12', 'productTitle': 'adsfadsfadsf', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '254'},
             ]
 
         setProductList(myProductlists)
@@ -83,9 +88,53 @@ const Inventory: React.FC = () => {
             })
         );
     }
-    // TODO: Sorting function
+    // Sorting function
     function sortingByTableHeader(header: string) {
-        console.log(header);
+        const originalProducts:productListDataDype[]|undefined= productList?[...productList]:[];
+
+        if(header === "PRODUCT"){
+            // console.log(sortingStatus);
+            if(sortingStatus[header] === "descending"){
+                setSortingStatus({...sortingStatus, "PRODUCT": "ascending"});
+                // Ascending
+                setFilteredProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? 1 : -1));
+                setProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? 1 : -1));
+            }else{
+                setSortingStatus({...sortingStatus, "PRODUCT": "descending"});
+                // Descending
+                setFilteredProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? -1 : 1));
+                setProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? -1 : 1));
+            }
+        }else if(header === "STOCK"){
+            if(sortingStatus[header] === "descending"){
+                setSortingStatus({...sortingStatus, "STOCK": "ascending"});
+                // Ascending
+                setFilteredProductList(originalProducts.sort((a:any, b:any) => a.stock - b.stock));
+                setProductList(originalProducts.sort((a:any, b:any) => a.stock - b.stock));
+            }else{
+                setSortingStatus({...sortingStatus, "STOCK": "descending"});
+                // Descending
+                setFilteredProductList(originalProducts.sort((a:any, b:any) => b.stock - a.stock));
+                setProductList(originalProducts.sort((a:any, b:any) => b.stock - a.stock));
+            }
+
+        }else if(header === "PRICE"){
+            // console.log(sortingStatus);
+            if(sortingStatus[header] === "descending"){
+                setSortingStatus({...sortingStatus, "PRICE": "ascending"});
+                // Ascending
+                setFilteredProductList(originalProducts.sort((a:any, b:any) => a.price - b.price));
+                setProductList(originalProducts.sort((a:any, b:any) => a.price - b.price));
+
+            }else{
+                setSortingStatus({...sortingStatus, "PRICE": "descending"});
+                // Descending
+                setFilteredProductList(originalProducts.sort((a:any, b:any) => b.price - a.price));
+                setProductList(originalProducts.sort((a:any, b:any) => b.price - a.price));
+            }
+
+
+        }
     }
 
     // Display Delete Button when Check a product
