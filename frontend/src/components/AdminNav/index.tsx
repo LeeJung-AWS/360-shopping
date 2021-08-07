@@ -7,23 +7,28 @@ const AdminNav: React.FC = () => {
     // In Mobile Size, display or hide Navigation Menu
     const mobileNavClick = () => {
         const mobileLinksEl = document.getElementById('mobile-Links')!;  // The exclamation mark means a developer knows there is a button element.( The value is not null )
-        if (mobileLinksEl.style.display === "block") {
-            mobileLinksEl.style.display = "none";
+        // console.log(mobileLinksEl);
+        if (mobileLinksEl.style.height === '100%') {
+            mobileLinksEl.style.height = '0';
+            mobileLinksEl.style.padding = '0';
           } else {
-            mobileLinksEl.style.display = "block";
+            mobileLinksEl.style.height = '100%';
+            mobileLinksEl.style.padding = '6rem 2rem';
           }
+        
     }
 
     function onclickMenu () {
         const mobileLinksEl = document.getElementById('mobile-Links')!;
-        mobileLinksEl.style.display = "none";
+        mobileLinksEl.style.height = '0';
+        mobileLinksEl.style.padding = '0';
     }
 
     return (
     <header className="adminNav-header">
         <Link id="admin-page-btn" to="/adminPage">Admin Page</Link>
         <nav className="adminNav-mobile">
-            <a href="#test" id="mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></a>
+            <a href="#navBar" id="mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></a>
         </nav>
         <div id="mobile-Links">
                 <Link to="/adminPage/marketing" onClick={onclickMenu}>Marketing</Link>
