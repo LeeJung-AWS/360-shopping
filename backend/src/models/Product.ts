@@ -14,19 +14,19 @@ interface ProductType{
 }
 
 // Create a Schema corresponding to the document interface.
-const OrderSchema = new Schema<ProductType>({
-    title: { type: String, required: true },
-    description: { type: String, required: true },
+const ProductSchema = new Schema<ProductType>({
+    title: { type: String, required: "Title is Required" },
+    description: { type: String, required: false },
     imgURL: { type: String, required: false },
-    price: { type: Number, required: true },
-    onSale: { type: Boolean, required: true },
-    salePrice: { type: Number, required: true },
-    quantity: { type: Number, required: true },
-    sku: { type: String, required: true },
-    categories: [ {type: String, required: true} ],
+    price: { type: Number, required: "Price is Required" },
+    onSale: { type: Boolean, required: "onSale is Required" },
+    salePrice: { type: Number, required: false },
+    quantity: { type: Number, required: "Quantity is Required" },
+    sku: { type: String, required: false },
+    categories: [ {type: String, required: false} ],
     productCreated: { type: Date, default: Date.now },
   });
   
-  const Order = model<ProductType>('Order', OrderSchema);
+  const Product = model<ProductType>('Product', ProductSchema);
   
-  export default Order;
+  export default Product;
