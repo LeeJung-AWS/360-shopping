@@ -6,11 +6,7 @@ const router = Router();
 
 import apiRoutes from './api';
 
-import { testController } from '../controllers/testController';
-
 // API Routes
-router.use("/api", apiRoutes);
-
-// router.get("/test", testController);
+router.use('/api', apiRoutes);
 
 export default router;
