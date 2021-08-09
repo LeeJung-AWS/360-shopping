@@ -48,3 +48,59 @@ export const deleteProduct = (productId: String) => {
 
 // <---------------- Product API ----------------
 // ----------------------------------------------
+
+// ----------------------------------------------
+// ---------------- Category API ---------------->
+
+export const getCategories = async () => {
+    try{
+        const res = await fetch('/api/category')
+        return res.json();
+
+    }catch(error){
+        return error;
+    }
+};
+
+export const addCategory = async (data = {}) => {
+    try{
+        const res = await fetch('/api/category', {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json"}
+        })
+        return res.json();
+
+    }catch(error){
+        return error;
+    }
+};
+
+export const updateCategory = async (id: string, data = {}) => {
+    try{
+        const res = await fetch('/api/category' + id, {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json"}
+        })
+        return res.json();
+
+    }catch(error){
+        return error;
+    }
+};
+
+export const deleteCategory = async (id: string, data = {}) => {
+    try{
+        const res = await fetch('/api/category' + id, {
+            method: "DELETE"
+        })
+        return res.json();
+
+    }catch(error){
+        return error;
+    }
+};
+
+// <---------------- Category API ----------------
+// ----------------------------------------------
