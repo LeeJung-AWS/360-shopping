@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 
+import { getCategories, addCategory, updateCategory, deleteCategory } from '../../../utils/API';
+
 interface ChildProps{
     pullCategories: (pullCategories: string, checked: boolean) => void
 }
@@ -15,7 +17,7 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
    const [filteredAllCategories, setFilteredAllCategories] = useState<string[]>([]);
 
    // To store new categories list
-   const [newCategories, setNewCategories] = useState<string[] | undefined>(undefined);
+   // const [newCategories, setNewCategories] = useState<string[] | undefined>(undefined);
 
    // To store the status of categories checked or unchecked
    const [isChecked, setIsChecked] = useState<{[k: string]: boolean}>({});
@@ -23,10 +25,21 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     // To store UserInput from Search Form
     const [userInput, setUserInput] = useState<string>('');
 
-     // TODO: Build useEffect to fetch categories data from DB (Categories). and Pass Categories to ModalBox to display.
+    // Fetch Category DATA from DB (Categories)
+    // Pass Categories to ModalBox to display.
+    async function categoryData(){
+        const res = await getCategories();
+        let categories = [];
+        for(let i = 0; i < res.length; i++){
+            categories.push(res[i].name);
+        }
+        setAllCategories(categories);
+        setFilteredAllCategories(categories);
+    }
+
+     // Build useEffect for fetch Categories DB
      useEffect(() => {
-        setAllCategories(['Men', 'Shirts', 'Clothing', 'Watches', 'Accessories', 'Shoes']);
-        setFilteredAllCategories(['Men', 'Shirts', 'Clothing', 'Watches', 'Accessories', 'Shoes']);
+        categoryData();
     }, [])
 
     // When clicking a category, Increase or Decrease amount of category on the top in this Modal
@@ -57,10 +70,13 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     }
 
     // Add a category on the lists 
-    // TODO: Add the new category to DB 
+    // Add the new category to DB 
     function addCategoryBtn(event:any) {
         event.preventDefault();
         
+        // Add new Category in Category DB
+        addCategory({name: userInput});
+
         // Updates categories state with new category
         if(allCategories !== undefined){
             setAllCategories([...allCategories, userInput]);
@@ -68,13 +84,6 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
         }else{
             setAllCategories([userInput]);
             setFilteredAllCategories([userInput]);
-        }
-
-        // Collect new categories to store DB after clicking DONE btn
-        if(newCategories !== undefined){
-            setNewCategories([...newCategories, userInput]);
-        }else{
-            setNewCategories([userInput]);
         }
 
         // Make Input-value empty
@@ -175,9 +184,12 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     }
 
     // Delete a category
-    // TODO: Delete the category from DB 
+    // Delete the category from DB 
     function deleteCategoryBtn(event: any) {
-        // Take category element by Id to pass unchecked status to 'Categories' row in AddNewProduct Component
+        // Delete a category from DB by Category Name
+        deleteCategory(event.target.dataset.name);
+
+        // Take category Check-box element by Id to pass unchecked status to 'Categories' row in AddNewProduct Component
         const categoryElement = document.getElementById(`${event.target.dataset.name}-category-id`) as HTMLInputElement;
 
          // Update amount of Category on the Top of the Modal
