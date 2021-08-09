@@ -16,3 +16,14 @@ export function NumberComma( num: number ) {
     }
     return str.join('.');
   }
+
+export function capitalizeFirstLetter(string: string) {
+  let newStrArr = string.split(" ")
+  if(newStrArr.length > 1){
+      let newStr = '';
+      newStrArr.forEach(str => newStr += str.charAt(0).toUpperCase() + str.slice(1) + " ");
+      return newStr.trim();
+  }else{
+      return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+}
