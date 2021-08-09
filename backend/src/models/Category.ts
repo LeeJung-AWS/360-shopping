@@ -1,12 +1,12 @@
 import { Schema, model } from 'mongoose';
 
 interface CategoryType{
-    categories: string[];
+    name: string;
 }
 
 // Create a Schema corresponding to the document interface.
 const CategorySchema = new Schema<CategoryType>({
-    categories: [ {type: String, required: false} ],
+    name: {type: String, required: "Category Name is required"},
 });
   
   const Category = model<CategoryType>('Category', CategorySchema);
