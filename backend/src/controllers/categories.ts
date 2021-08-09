@@ -35,3 +35,13 @@ export const updateCategory: RequestHandler = async (req, res, next) => {     //
         }
     )
 }
+
+export const deleteCategory: RequestHandler = async (req, res, next) => {     // export const testController = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const response = await Category.findByIdAndDelete(req.params.id)
+        res.status(200).json(response);
+    }
+    catch (err){
+        res.status(400).json(err);
+    }
+}
