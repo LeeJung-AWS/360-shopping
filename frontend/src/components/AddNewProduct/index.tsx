@@ -70,15 +70,17 @@ const AddNewProduct: React.FC = () => {
             //Add checked Category in categories state
             categories ? setCategories([...categories, pullCategories]) : setCategories([pullCategories]);
         }else{
-            //Remove unchecked Category from categories state
-            let tempArr:string[] = categories!; // Use ! because categories has always value inside else statement
-            let removedIndex:number = tempArr.indexOf(pullCategories);
-
-            // If the category in categories state, then Remove the Category Btn.
-            if(removedIndex > -1){
-                tempArr.splice(removedIndex, 1);
-                // set Categories state with new lists ( it is a trigger to rerender this component )
-                setCategories([...tempArr]);
+            if(categories !== undefined){
+                //Remove unchecked Category from categories state
+                let tempArr:string[] = categories!; // Use ! because categories has always value inside else statement
+                let removedIndex:number = tempArr.indexOf(pullCategories);
+    
+                // If the category in categories state, then Remove the Category Btn.
+                if(removedIndex > -1){
+                    tempArr.splice(removedIndex, 1);
+                    // set Categories state with new lists ( it is a trigger to rerender this component )
+                    setCategories([...tempArr]);
+                }
             }
 
         }
