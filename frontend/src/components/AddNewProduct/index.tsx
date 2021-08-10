@@ -111,12 +111,12 @@ const AddNewProduct: React.FC = () => {
         }
     }
 
-    // TODO: When clicking Save, then take all information of product and post the infomation in DB(Products).
+    // When clicking Save, then take all information of product and post the infomation in DB(Products).
     // TODO: Make ADD btn Inactive until recieving all data 
     // TODO: When clicking cancel, Display Warning, if yes, go to Main of Admin Page, if No, keeping the page.
     // Send new product data to Backend
     function onClickSaveBtn() {
-        console.log(categories);
+        // Post product data to Product DB. 
         postNewProduct({
             'title': title,
             'description': description,
@@ -127,6 +127,9 @@ const AddNewProduct: React.FC = () => {
             'sku': sku, 
             'categories': categories
         });
+
+        window.location.reload();
+        
     }
 
     function onClickCancelBtn() {
@@ -136,17 +139,7 @@ const AddNewProduct: React.FC = () => {
         // Active Scrollable Body
         document.body.style.overflowY = 'auto';
 
-        // setTitle('');
-        // setDescription('');
-        // setPrice('0') 
-        // setIsPrice(false);
-        // setSalePrice('0');
-        // setQuantity('');
-        // setSku('');
-        // setCategories([]);
-
         window.location.reload();
-
     }
 
     return (
@@ -207,7 +200,7 @@ const AddNewProduct: React.FC = () => {
                         </div>
                         <div className="addNewProduct-body-item-body-items">
                             <label>SKU</label>
-                            <input placeholder='SQ910011'  onChange={(e) => setSku(e.target.value)} />
+                            <input placeholder='360W001'  onChange={(e) => setSku(e.target.value)} />
                         </div>
                     </div>
                 </div>
