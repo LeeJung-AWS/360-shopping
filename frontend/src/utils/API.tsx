@@ -1,49 +1,64 @@
 // ----------------------------------------------
 // ---------------- Product API ---------------->
 
-export const getProducts = () => {
-    console.log("Get all products");
-    // return fetch('/api/products')
+export const getProducts = async () => {
+    try{
+        const res = await fetch('/api/product')
+        return res.json();
+
+    }catch(error){
+        return error;
+    }
 };
 
-export const getProduct = (productId: String) => {
-    console.log("Get a product by ID ", productId);
-    // return fetch('/api/products/${productId}')
+export const getProduct = async (id: string) => {
+    try{
+        const res = await fetch('/api/products/' + id)
+        return res.json();
+
+    }catch(error){
+        return error;
+    }
 };
 
-export const getProductsbyCategory = (categoryID: String) => {
-    console.log("Get a product by category id ", categoryID);
-    // return fetch('/api/products/${categoryID}')
+export const postNewProduct = async (data = {}) => {
+    try{
+        const res = await fetch('/api/product', {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json"}
+        })
+        return res.json();
+
+    }catch(error){
+        return error;
+    }
 };
 
-export const postNewProduct = (productData: Object) => {
-    console.log("Add new Product : ", productData);
-    // return fetch('/api/products', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(productData),
-    // });
+export const putProduct = async (id: string, data = {}) => {
+    try{
+        const res = await fetch('/api/category/' + id, {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json"}
+        })
+        return res.json();
+
+    }catch(error){
+        return error;
+    }
 };
 
-export const putProduct = (productId: String, productData: Object) => {
-    console.log("updateProduct a Product by Id, ", productId);
-    console.log('Updated Product Information ', productData)
-    // return fetch(`/api/products/${productId}`, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(productData),
-    // });
-};
-
-export const deleteProduct = (productId: String) => {
-    console.log("Delete a Product by Id, ", productId);
-    // return fetch(`/api/products/${productId}`, {
-    //   method: 'DELETE'
-    // });
+export const deleteProduct = async (id: string) => {
+    try{
+        const res = await fetch('/api/category/' + id, {
+            method: "DELETE"
+        })
+        return res.json();
+ 
+    }catch(error){
+        return error;
+    }
 };
 
 // <---------------- Product API ----------------
