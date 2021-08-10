@@ -48,8 +48,15 @@ export const updateProduct: RequestHandler = (req, res, next) => {     // export
 }
 
 export const deleteProduct: RequestHandler = async (req, res, next) => {     // export const testController = (req: Request, res: Response, next: NextFunction) => {
+    // req.body <= array
     try {
-        const response = await Product.findByIdAndDelete(req.params.id)
+        const response = await Product.deleteMany(
+            {
+                _id: {
+                    $in: req.body
+                }
+            }
+        )
         res.status(200).json(response);
     }
     catch (err){

@@ -7,7 +7,7 @@ import dummyProductImg from '../../assets/img/dummy-product-img.png';
 
 interface TableData {
     tHeads: string[];
-    tBodys: {"id": string, "img"?: string, "productTitle": string,'categories': string[], "stock": string, "price": string}[] | undefined; 
+    tBodys: {"_id": string, "imgURL"?: string, "title": string,'categories': string[], "quantity": string, "price": string}[] | undefined; 
     onClickCheckInventory: (productId:string, isChecked:boolean) => void;
     sortingByTableHeader: (header:string) => void;
 }
@@ -83,23 +83,24 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
             </tr>
         </thead>
         <tbody id='product-list-table'>
+            {/* {console.log(tBodys.length)} */}
             {tBodys? tBodys.map(tBody => {
                 return(
-                    <tr key={tBody.id}>
+                    <tr data-id={tBody._id} key={tBody._id}>
                         <td id="table-check-box">
-                            <input type="checkbox" data-id={tBody.id} onClick={onClickCheck} />
+                            <input type="checkbox" data-id={tBody._id} onClick={onClickCheck} />
                         </td>
                         <td>
-                            <img src={tBody.img?tBody.img:dummyProductImg} alt={tBody.productTitle} />
+                            <img src={tBody.imgURL?tBody.imgURL:dummyProductImg} alt={tBody.title} />
                         </td>
                         <td>
                             <div style={{width: '28px'}}></div>
                         </td>
                         <td id="product-table">
-                            {tBody.productTitle}
+                            {tBody.title}
                         </td>
                         <td>
-                            {tBody.stock}
+                            {tBody.quantity}
                         </td>
                         <td id="price-table">
                             ${NumberComma(parseInt(tBody.price))}
@@ -129,6 +130,10 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
                 </td>
             </tr>
             }
+
+            {/* To create margin on the bottom of Table */}
+            <tr style={{height: "84px"}}>
+            </tr>
         </tbody>
     </table>
     </>)
