@@ -6,11 +6,13 @@ import { useState, useEffect } from 'react';
 import AddNewProduct from "../AddNewProduct";
 import Table from '../Table';
 
+import { getProducts, deleteProduct } from "../../utils/API";
+
 interface productListDataDype{
-    'id': string, 
-    'productTitle': string, 
+    '_id': string, 
+    'title': string, 
     'categories': string[], 
-    'stock': string, 
+    'quantity': string, 
     'price': string
 }
 
@@ -28,26 +30,16 @@ const Inventory: React.FC = () => {
         'PRICE': 'descending'
     })
 
-    // TODO: Fetch productList from DB
-    useEffect(() => {
-        // Dummy Data
-        const myProductlists = [
-            {'id':'1', 'productTitle': 'myProduct01', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '55'},
-            {'id':'2', 'productTitle': 'myProduct02', 'categories': ['shirts', 'men'], 'stock': '5', 'price': '205'},
-            {'id':'3', 'productTitle': 'myProduct03', 'categories': ['shirts', 'men'], 'stock': '3', 'price': '155'},
-            {'id':'4', 'productTitle': 'myProduct04', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '887'},
-            {'id':'5', 'productTitle': 'myProduct05', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '752'},
-            {'id':'6', 'productTitle': 'myProduct06', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '712'},
-            {'id':'7', 'productTitle': 'myProduct07', 'categories': ['shirts', 'men'], 'stock': '11', 'price': '612'},
-            {'id':'8', 'productTitle': 'zyProduct08', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '353'},
-            {'id':'9', 'productTitle': 'myProduct09', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '125'},
-            {'id':'10', 'productTitle': 'myProduct10', 'categories': ['shirts', 'men'], 'stock': '2', 'price': '1005'},
-            {'id':'11', 'productTitle': 'myProduct111', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '25'},
-            {'id':'12', 'productTitle': 'adsfadsfadsf', 'categories': ['shirts', 'men'], 'stock': '1', 'price': '254'},
-            ]
+    // Fetch productList from DB
+    async function getAllProducts() {
+        const productsLists = await getProducts();
+        // console.log(productsLists);
+        setProductList(productsLists)
+        setFilteredProductList(productsLists)
+    }
 
-        setProductList(myProductlists)
-        setFilteredProductList(myProductlists)
+    useEffect(() => {
+        getAllProducts();
     }, [])
 
     function addProductOnClick() {
@@ -84,7 +76,7 @@ const Inventory: React.FC = () => {
         
         setFilteredProductList(
             originalProducts.filter(product => {
-                return(product.productTitle.toLowerCase().includes(value.toLowerCase()))
+                return(product.title.toLowerCase().includes(value.toLowerCase()))
             })
         );
     }
@@ -97,25 +89,25 @@ const Inventory: React.FC = () => {
             if(sortingStatus[header] === "descending"){
                 setSortingStatus({...sortingStatus, "PRODUCT": "ascending"});
                 // Ascending
-                setFilteredProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? 1 : -1));
-                setProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? 1 : -1));
+                setFilteredProductList(originalProducts.sort((a, b) => (a.title > b.title) ? 1 : -1));
+                setProductList(originalProducts.sort((a, b) => (a.title > b.title) ? 1 : -1));
             }else{
                 setSortingStatus({...sortingStatus, "PRODUCT": "descending"});
                 // Descending
-                setFilteredProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? -1 : 1));
-                setProductList(originalProducts.sort((a, b) => (a.productTitle > b.productTitle) ? -1 : 1));
+                setFilteredProductList(originalProducts.sort((a, b) => (a.title > b.title) ? -1 : 1));
+                setProductList(originalProducts.sort((a, b) => (a.title > b.title) ? -1 : 1));
             }
         }else if(header === "STOCK"){
             if(sortingStatus[header] === "descending"){
                 setSortingStatus({...sortingStatus, "STOCK": "ascending"});
                 // Ascending
-                setFilteredProductList(originalProducts.sort((a:any, b:any) => a.stock - b.stock));
-                setProductList(originalProducts.sort((a:any, b:any) => a.stock - b.stock));
+                setFilteredProductList(originalProducts.sort((a:any, b:any) => a.quantity - b.quantity));
+                setProductList(originalProducts.sort((a:any, b:any) => a.quantity - b.quantity));
             }else{
                 setSortingStatus({...sortingStatus, "STOCK": "descending"});
                 // Descending
-                setFilteredProductList(originalProducts.sort((a:any, b:any) => b.stock - a.stock));
-                setProductList(originalProducts.sort((a:any, b:any) => b.stock - a.stock));
+                setFilteredProductList(originalProducts.sort((a:any, b:any) => b.quantity - a.quantity));
+                setProductList(originalProducts.sort((a:any, b:any) => b.quantity - a.quantity));
             }
 
         }else if(header === "PRICE"){
@@ -207,6 +199,13 @@ const Inventory: React.FC = () => {
         setAmountOfSelectedProduct(0);
      }
 
+     function productDeleteBtn() {
+        //  selectedProductId <== Array Type
+        console.log(selectedProductId);
+        deleteProduct(selectedProductId);
+
+        window.location.reload();
+     }
     return (<>
         <div className="flex align-items-center m-1" id="inventory-top-menu">
             <span id="inventory-title">Inventory</span>
@@ -221,7 +220,7 @@ const Inventory: React.FC = () => {
             </div>
         </div>
 
-        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={filteredProductList? filteredProductList: undefined} onClickCheckInventory={onClickCheckInventory} sortingByTableHeader={sortingByTableHeader} />
+        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={filteredProductList? (filteredProductList.length > 0 ? filteredProductList : undefined): undefined} onClickCheckInventory={onClickCheckInventory} sortingByTableHeader={sortingByTableHeader} />
         <div className="modal" id="addNewProduct">
             <div className="modal-content" id="addNewProduct-content">
                 <AddNewProduct />    
@@ -234,7 +233,7 @@ const Inventory: React.FC = () => {
             </div>
             <div>{amountOfSelectedProduct} Selected</div>
             <div id="bar-menu-inventory-delete-btn">
-                <button>Delete</button>
+                <button onClick={productDeleteBtn}>Delete</button>
             </div>
         </div>
     </>);

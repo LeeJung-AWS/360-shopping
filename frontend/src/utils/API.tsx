@@ -37,7 +37,7 @@ export const postNewProduct = async (data = {}) => {
 
 export const putProduct = async (id: string, data = {}) => {
     try{
-        const res = await fetch('/api/category/' + id, {
+        const res = await fetch('/api/product/' + id, {
             method: "PUT",
             body: JSON.stringify(data),
             headers: { "Content-Type": "application/json"}
@@ -49,10 +49,12 @@ export const putProduct = async (id: string, data = {}) => {
     }
 };
 
-export const deleteProduct = async (id: string) => {
+export const deleteProduct = async (data: string[]) => {
     try{
-        const res = await fetch('/api/category/' + id, {
-            method: "DELETE"
+        const res = await fetch('/api/product', {
+            method: "DELETE",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json"}
         })
         return res.json();
  
