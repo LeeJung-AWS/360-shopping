@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 
 import { getCategories, addCategory, updateCategory, deleteCategory } from '../../../utils/API';
 
+import { capitalizeFirstLetter } from '../../../utils/helpers';
+
 interface ChildProps{
     pullCategories: (pullCategories: string, checked: boolean) => void
 }
@@ -25,6 +27,11 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     // To store UserInput from Search Form
     const [userInput, setUserInput] = useState<string>('');
 
+    // Edit Category Input state
+    const [ editCategory, setEditCategory ] = useState<string>('');
+    const [ editedCategory, setEditedCategory ] = useState<string>('');
+    const [ isEditingCategory, setisEditingCategory ] = useState<string>('');
+
     // Fetch Category DATA from DB (Categories)
     // Pass Categories to ModalBox to display.
     async function categoryData(){
@@ -38,9 +45,10 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     }
 
      // Build useEffect for fetch Categories DB
+     // reBuild whenever category is edited
      useEffect(() => {
         categoryData();
-    }, [])
+    }, [isEditingCategory])
 
     // When clicking a category, Increase or Decrease amount of category on the top in this Modal
     // Also pass Checked or Unchecked Categories to NewAddProduct Component(Parent) to add the category as a button in Categories Element
@@ -74,16 +82,17 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
     function addCategoryBtn(event:any) {
         event.preventDefault();
         
+        let capitalizedUserInput = capitalizeFirstLetter(userInput)
         // Add new Category in Category DB
-        addCategory({name: userInput});
+        addCategory({name: capitalizedUserInput});
 
         // Updates categories state with new category
         if(allCategories !== undefined){
-            setAllCategories([...allCategories, userInput]);
-            setFilteredAllCategories([...allCategories, userInput]);
+            setAllCategories([...allCategories, capitalizedUserInput]);
+            setFilteredAllCategories([...allCategories, capitalizedUserInput]);
         }else{
-            setAllCategories([userInput]);
-            setFilteredAllCategories([userInput]);
+            setAllCategories([capitalizedUserInput]);
+            setFilteredAllCategories([capitalizedUserInput]);
         }
 
         // Make Input-value empty
@@ -219,19 +228,59 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
         parentNode.style.display = 'none';
     }
 
-    // TODO: Edit a category
-    // TODO: Edit a category from DB 
+    // Edit a category
+    // Edit a category from DB 
     function editCategoryBtn(event: any) {
         // Take Parent Node to close Edit/Delete Modal (display 'none')
         const parentNode = event.target.parentNode.parentNode; // id='modal-in-category'
         parentNode.style.display = 'none';
-        console.log("edit Category name")
 
         // Open Edit Category Modal with Category name
-        console.log('Open Edit Category Modal with Category name')
-        console.log(event.target.dataset.name)
+        // console.log('Open Edit Category Modal with Category name')
+        // console.log(event.target.dataset.name)
+        // console.log(event.target.dataset.name);
+        setEditCategory(event.target.dataset.name);
+
+        // Display Modal
+        const modalEditInCategoryEl = document.getElementById('modal-edit-in-category')!;
+        modalEditInCategoryEl.style.display = 'block';
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.addEventListener("click", function(event: any) {
+            if (event.target === modalEditInCategoryEl) {
+                modalEditInCategoryEl.style.display = "none";
+            }
+        });
+    }
+
+    function onChangeEditCategory(event: any){
+        setEditedCategory(event.target.value)
+    }
+
+    function saveBtnEditCategory(){
+        // Close Modal
+        const modalEditInCategoryEl = document.getElementById('modal-edit-in-category')!;
+        modalEditInCategoryEl.style.display = 'none';
+        // console.log(editCategory);
+
+        // asign empty to input value
+        const editCategoryInputEl = document.getElementById('edit-category-input') as HTMLInputElement;
+        editCategoryInputEl.value = '';
 
         // Update State and DB
+        updateCategory(editCategory, {name: capitalizeFirstLetter(editedCategory)});
+        setisEditingCategory(editedCategory);
+        // window.location.reload();
+    }
+
+    function cancelBtnEditCategory(){
+        // Close Modal
+        const modalEditInCategoryEl = document.getElementById('modal-edit-in-category')!;
+        modalEditInCategoryEl.style.display = 'none';
+
+        // asign empty to input value
+        const editCategoryInputEl = document.getElementById('edit-category-input') as HTMLInputElement;
+        editCategoryInputEl.value = '';
     }
 
     return (<>
@@ -273,6 +322,19 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
                 <div id="delete-category" onClick={deleteCategoryBtn}>DELETE</div>
             </div>
         </div>
+
+        <div id='modal-edit-in-category'>
+            <div id="modal-edit-in-category-box">
+                <p>Edit Category</p>
+                <div id="modal-edit-in-category-content">
+                    <label>Name</label>
+                    <input id="edit-category-input" placeholder={editCategory} onChange={onChangeEditCategory} />
+                    <div id="save-category" onClick={saveBtnEditCategory}>Save</div>
+                    <div id="cancel-category" onClick={cancelBtnEditCategory}>Cancel</div>
+                </div>
+            </div>
+        </div>
+
         </>
 
     )

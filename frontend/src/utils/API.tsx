@@ -76,9 +76,9 @@ export const addCategory = async (data = {}) => {
     }
 };
 
-export const updateCategory = async (id: string, data = {}) => {
+export const updateCategory = async (name: string, data = {}) => {
     try{
-        const res = await fetch('/api/category' + id, {
+        const res = await fetch('/api/category/' + name, {
             method: "PUT",
             body: JSON.stringify(data),
             headers: { "Content-Type": "application/json"}
@@ -90,7 +90,7 @@ export const updateCategory = async (id: string, data = {}) => {
     }
 };
 
-export const deleteCategory = async (name: string, data = {}) => {
+export const deleteCategory = async (name: string) => {
     try{
         const res = await fetch('/api/category/' + name, {
             method: "DELETE"

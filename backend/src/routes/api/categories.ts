@@ -6,7 +6,7 @@ const router = Router();
 // Location:  /api/category/
 router.get("/", getCategories);
 router.post("/", addCategory);
-router.put("/:id", updateCategory);
+router.put("/:name", updateCategory);
 router.delete("/:name", deleteCategory);
 
 export default router;
