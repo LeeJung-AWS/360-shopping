@@ -130,6 +130,10 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
                 </td>
             </tr>
             }
+
+            {/* To create margin on the bottom of Table */}
+            <tr style={{height: "84px"}}>
+            </tr>
         </tbody>
     </table>
     </>)
