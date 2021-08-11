@@ -20,8 +20,6 @@ const AddNewProduct: React.FC = () => {
    //This for Categories buttons on Categories line
    const [categories, setCategories] = useState<string[] | undefined>(undefined);
 
-    
-    // TODO: Set up DynamoDB for Categories, Products
     // TODO: Set up AWS S3 to store IMGs
 
 
