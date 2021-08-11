@@ -65,6 +65,8 @@
         justify-content: center;
         align-items: center;
 
+        cursor: pointer;
+
         background-color: rgb(240, 240, 240);
 
         div {
@@ -129,4 +131,33 @@
     #sale-price{
         display: none;
     }
+}
+
+#multiple-image-upload{
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
+    margin-top: 32px;
+}
+
+.file-upload-label{
+    background-color: rgb(230, 230, 230);
+    color: black;
+    font-size: 0.8rem;
+    text-align: center;
+    padding-top: 50px;
+    width: 110.75px;
+    height: 110.75px;
+
+    cursor: pointer;
+}
+.dragTest{
+    background-color: rgb(230, 230, 230);
+    color: black;
+    text-align: center;
+    width: 110.75px;
+    height: 110.75px;
+
+    cursor: grab;
 }

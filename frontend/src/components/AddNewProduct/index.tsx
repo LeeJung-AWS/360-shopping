@@ -1,6 +1,6 @@
 // Style sass/3_components/_addNewProduct.scss
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 import ModalBoxAdmin from './ModalBoxAdmin';
 
@@ -142,6 +142,20 @@ const AddNewProduct: React.FC = () => {
         window.location.reload();
     }
 
+    // Programatically click the hidden file input element
+    // when the Button component is clicked
+    const handleClick = () => {
+        // hiddenFileInput.current.click();
+        const uploadImgEl = document.getElementById('upload-img-input')!;
+        uploadImgEl.click();
+    };
+    // Call a function (passed as a prop from the parent component)
+    // to handle the user-selected file 
+    const handleChange = (event: any) => {
+      const fileUploaded = event.target.files[0];
+      console.log(fileUploaded);
+    };
+
     return (
         <>
         <div className="card">
@@ -158,10 +172,26 @@ const AddNewProduct: React.FC = () => {
                     <input className="addNewProduct-description" placeholder="Add description..." value={description} onChange={(e) => setDescription(e.target.value)} />
                 </div>
                 <div className="addNewProduct-body-item addNewProduct-img-box">
-                    <div className="addNewProduct-img-border">
+                    <div className="addNewProduct-img-border" onClick={handleClick}>
+                        <input type="file" style={{"display": "none"}} id="upload-img-input" onChange={handleChange} />
                         <div><i className="fas fa-upload"></i></div>
                         <div>ADD IMAGES</div>
                     </div>
+                </div>
+                <div id="multiple-image-upload">
+                    <div className="dragTest" data-draggable="true">
+                        <img src="https://img.ltwebstatic.com/images3_pi/2021/07/02/16252200307d3f3d099403e9e38a725fc0f62720b7.webp" alt="uploaded-product" width="110px" height="110px" />
+                    </div>
+                    <div className="dragTest"  data-draggable="true"></div>
+                    <div className="dragTest"  data-draggable="true"></div>
+                    {/* <div className="dragTest" data-draggable="true"></div>
+                    <div className="dragTest"  data-draggable="true"></div>
+                    <div className="dragTest"  data-draggable="true"></div>
+                    <div className="dragTest"  data-draggable="true"></div> */}
+                    <label htmlFor="productFileUpload" className="file-upload-label">
+                        <i className="fas fa-plus"></i>
+                        <input id="productFileUpload" style={{"display": "none"}} accept="image/gif, image/jpeg, image/png" type="file" multiple />
+                    </label>
                 </div>
                 <div className="addNewProduct-body-item">
                     <p>Pricing</p>
