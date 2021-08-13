@@ -1,6 +1,6 @@
 // Style sass/3_components/_addNewProduct.scss
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 import ModalBoxAdmin from './ModalBoxAdmin';
 
@@ -19,6 +19,9 @@ const AddNewProduct: React.FC = () => {
 
    //This for Categories buttons on Categories line
    const [categories, setCategories] = useState<string[] | undefined>(undefined);
+
+
+   const [ uploadedImg, setUploadedImg ] = useState<string[]>([]);
 
     // TODO: Set up AWS S3 to store IMGs
 
@@ -147,11 +150,21 @@ const AddNewProduct: React.FC = () => {
         const uploadImgEl = document.getElementById('upload-img-input')!;
         uploadImgEl.click();
     };
+
     // Call a function (passed as a prop from the parent component)
     // to handle the user-selected file 
     const handleChange = (event: any) => {
-      const fileUploaded = event.target.files[0];
-      console.log(fileUploaded);
+    // URL.creatObjectURL() method takes an object (like our file) and 
+    // creates a temporary local URL that is tied to the document in which it is created 
+    // (meaning it won’t remember the URL if you leave the page and come back).
+    // This URL can be used to set the the src property of a <img/> element
+        
+      const fileUploaded = [];
+      for(let i = 0; i < event.target.files.length; i++){
+        fileUploaded.push(URL.createObjectURL(event.target.files[i])) // In files[i], there is image's URL of local location
+      }
+
+      setUploadedImg([...uploadedImg, ...fileUploaded]);
     };
 
     return (
@@ -169,28 +182,31 @@ const AddNewProduct: React.FC = () => {
                 <div className="addNewProduct-body-item">
                     <input className="addNewProduct-description" placeholder="Add description..." value={description} onChange={(e) => setDescription(e.target.value)} />
                 </div>
-                <div className="addNewProduct-body-item addNewProduct-img-box">
-                    <div className="addNewProduct-img-border" onClick={handleClick}>
-                        <input type="file" style={{"display": "none"}} id="upload-img-input" onChange={handleChange} />
-                        <div><i className="fas fa-upload"></i></div>
-                        <div>ADD IMAGES</div>
+                <input type="file" style={{"display": "none"}} id="upload-img-input" accept="image/gif, image/jpeg, image/png" multiple onChange={handleChange} />
+                {uploadedImg.length === 0 ? 
+                    <div className="addNewProduct-body-item addNewProduct-img-box">
+                        <div className="addNewProduct-img-border" onClick={handleClick}>
+                            <div><i className="fas fa-upload"></i></div>
+                            <div>ADD IMAGES</div>
+                        </div>
                     </div>
-                </div>
-                <div id="multiple-image-upload">
-                    <div className="dragTest" data-draggable="true">
-                        <img src="https://img.ltwebstatic.com/images3_pi/2021/07/02/16252200307d3f3d099403e9e38a725fc0f62720b7.webp" alt="uploaded-product" width="110px" height="110px" />
+                :<></>}
+                {uploadedImg.length === 0 ? <></> :
+                    <div id="multiple-image-upload">
+                        {uploadedImg.map((img, index) => {
+                            return (
+                                <div className="dragTest"  data-draggable="true" key={index}>
+                                    <img src={img} alt="uploaded-product" width="110px" height="110px" />
+                                </div>
+                            )
+                        })}
+                        {uploadedImg.length < 12?
+                        <label className="file-upload-label" onClick={handleClick}>
+                            <i className="fas fa-plus"></i>
+                        </label>:<></>
+                        }
                     </div>
-                    <div className="dragTest"  data-draggable="true"></div>
-                    <div className="dragTest"  data-draggable="true"></div>
-                    {/* <div className="dragTest" data-draggable="true"></div>
-                    <div className="dragTest"  data-draggable="true"></div>
-                    <div className="dragTest"  data-draggable="true"></div>
-                    <div className="dragTest"  data-draggable="true"></div> */}
-                    <label htmlFor="productFileUpload" className="file-upload-label">
-                        <i className="fas fa-plus"></i>
-                        <input id="productFileUpload" style={{"display": "none"}} accept="image/gif, image/jpeg, image/png" type="file" multiple />
-                    </label>
-                </div>
+                }
                 <div className="addNewProduct-body-item">
                     <p>Pricing</p>
                     <div className="addNewProduct-body-item-body">
