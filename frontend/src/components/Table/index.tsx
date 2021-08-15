@@ -7,7 +7,7 @@ import dummyProductImg from '../../assets/img/dummy-product-img.png';
 
 interface TableData {
     tHeads: string[];
-    tBodys: {"_id": string, "imgURL"?: string, "title": string,'categories': string[], "quantity": string, "price": string}[] | undefined; 
+    tBodys: {"_id": string, "thumbnailImgURL"?: string, "title": string,'categories': string[], "quantity": string, "price": string}[] | undefined; 
     onClickCheckInventory: (productId:string, isChecked:boolean) => void;
     sortingByTableHeader: (header:string) => void;
 }
@@ -91,7 +91,7 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
                             <input type="checkbox" data-id={tBody._id} onClick={onClickCheck} />
                         </td>
                         <td>
-                            <img src={tBody.imgURL?tBody.imgURL:dummyProductImg} alt={tBody.title} />
+                            <img src={tBody.thumbnailImgURL?tBody.thumbnailImgURL:dummyProductImg} alt={tBody.title} />
                         </td>
                         <td>
                             <div style={{width: '28px'}}></div>

@@ -16,7 +16,7 @@ const ProductSeed = [
     {
         title: "Straight Leg Jeans",
         description: "Light Wash",
-        imgURL: null,
+        thumbnailImgURL: null,
         price: 24,
         onSale: false,
         quantity: 5,
@@ -26,7 +26,7 @@ const ProductSeed = [
     {
         title: "Zipper Kangaroo Pocket Drawstring Hoodie",
         description: "Chocolate Brown",
-        imgURL: "https://img.ltwebstatic.com/images3_pi/2021/07/02/16252200307d3f3d099403e9e38a725fc0f62720b7.webp",
+        thumbnailImgURL: "https://img.ltwebstatic.com/images3_pi/2021/07/02/16252200307d3f3d099403e9e38a725fc0f62720b7.webp",
         price: 13,
         onSale: false,
         quantity: 2,
@@ -36,7 +36,7 @@ const ProductSeed = [
     {
         title: "Letter Cartoon Bear Graphic Oversized Tee",
         description: "Chocolate Brown",
-        imgURL: "https://img.ltwebstatic.com/images3_pi/2021/07/19/16266899107ce35e978320df3ab1b976c96fa0be5f.webp",
+        thumbnailImgURL: "https://img.ltwebstatic.com/images3_pi/2021/07/19/16266899107ce35e978320df3ab1b976c96fa0be5f.webp",
         price: 13,
         onSale: false,
         quantity: 2,
@@ -46,7 +46,7 @@ const ProductSeed = [
     {
         title: "Striped Pattern Oversized Sweater",
         description: "Oversized",
-        imgURL: "https://img.ltwebstatic.com/images3_pi/2020/10/06/1601993024ce3c3943f0ea664ffeadd019782b8da4.webp",
+        thumbnailImgURL: "https://img.ltwebstatic.com/images3_pi/2020/10/06/1601993024ce3c3943f0ea664ffeadd019782b8da4.webp",
         price: 20,
         onSale: true,
         salePrice: 17,
@@ -57,7 +57,7 @@ const ProductSeed = [
     {
         title: "Solid Slant Pocket Belted Suspender Pants",
         description: "Elegant Black Wide Leg",
-        imgURL: "https://img.ltwebstatic.com/images3_pi/2021/01/21/1611204119991a9d107c1a63a6893bd3f4c1be6d82.webp",
+        thumbnailImgURL: "https://img.ltwebstatic.com/images3_pi/2021/01/21/1611204119991a9d107c1a63a6893bd3f4c1be6d82.webp",
         price: 25,
         onSale: true,
         salePrice: 18,
@@ -68,7 +68,7 @@ const ProductSeed = [
     {
         title: "Men Solid Crew Neck Tee",
         description: "Black Shirts",
-        imgURL: "https://img.ltwebstatic.com/images3_pi/2021/03/05/1614912247cfc15bf3d30e695bdba53b51b78f94c0.webp",
+        thumbnailImgURL: "https://img.ltwebstatic.com/images3_pi/2021/03/05/1614912247cfc15bf3d30e695bdba53b51b78f94c0.webp",
         price: 10,
         onSale: false,
         quantity: 10,
@@ -78,7 +78,7 @@ const ProductSeed = [
     {
         title: "Men Solid Button Through Shirt",
         description: "Summber Short Sleeve Shirts",
-        imgURL: "https://img.ltwebstatic.com/images3_pi/2021/06/22/16243401415b3bf4fa1b720e5df4edbc92328422dc.webp",
+        thumbnailImgURL: "https://img.ltwebstatic.com/images3_pi/2021/06/22/16243401415b3bf4fa1b720e5df4edbc92328422dc.webp",
         price: 17,
         onSale: false,
         quantity: 2,
@@ -88,7 +88,7 @@ const ProductSeed = [
     {
         title: "ROMWE Guys Cartoon Graphic Tee",
         description: "Graphic Tee",
-        imgURL: "https://img.ltwebstatic.com/images3_pi/2021/01/26/161162724167ad2689110fee16c0808f7da81f10f1_thumbnail_900x.webp",
+        thumbnailImgURL: "https://img.ltwebstatic.com/images3_pi/2021/01/26/161162724167ad2689110fee16c0808f7da81f10f1_thumbnail_900x.webp",
         price: 10,
         onSale: false,
         quantity: 5,
@@ -98,7 +98,7 @@ const ProductSeed = [
     {
         title: "Unisex Letter Embroidered Tie Dye 1 Tee And 1 Shourts Set",
         description: "Unisex set",
-        imgURL: "https://img.ltwebstatic.com/images3_pi/2021/05/14/162099346068982be070bf670e34ff617ae0869a79_thumbnail_900x.webp",
+        thumbnailImgURL: "https://img.ltwebstatic.com/images3_pi/2021/05/14/162099346068982be070bf670e34ff617ae0869a79_thumbnail_900x.webp",
         price: 25,
         onSale: true,
         salePrice: 20,

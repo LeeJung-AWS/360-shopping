@@ -22,6 +22,7 @@ const AddNewProduct: React.FC = () => {
 
     // Store blob img URLs from Local Document by URL.creatObjectURL()
    const [ uploadedImg, setUploadedImg ] = useState<string[]>([]);
+   const [ imgAWSUrl, setImgAWSUrl ] = useState<string[]>([]);
 
     const checkBox = () =>{
         const checkBox = document.getElementById('toggleCheckbox')!;
@@ -114,10 +115,13 @@ const AddNewProduct: React.FC = () => {
     // TODO: When clicking cancel, Display Warning, if yes, go to Main of Admin Page, if No, keeping the page.
     // Send new product data to Backend
     function onClickSaveBtn() {
+        console.log(imgAWSUrl);
         // Post product data to Product DB. 
         postNewProduct({
             'title': title,
             'description': description,
+            'thumbnailImgURL': imgAWSUrl[0],
+            'imgURLlists': imgAWSUrl,
             'price': price, 
             'onSale': isPrice,
             'salePrice': salePrice,
@@ -150,21 +154,49 @@ const AddNewProduct: React.FC = () => {
 
     // Call a function (passed as a prop from the parent component)
     // to handle the user-selected file 
-    const handleChange = (event: any) => {
+    const handleChange = async (event: any) => {
+        console.log(imgAWSUrl);
     // TODO: AWS S3 - Save images file in S3.
+    // // Get S3-UploadUrl
+    //     const s3UploadUrl = await s3GetUploadUrl();
+    //     console.log(s3UploadUrl);
+
         console.log(event.target.files);
     // URL.creatObjectURL() method takes an object (like our file) and 
     // creates a temporary local URL that is tied to the document in which it is created 
     // (meaning it won’t remember the URL if you leave the page and come back).
     // This URL can be used to set the the src property of a <img/> element
       const fileUploaded = [];
+      const imageUrl = [];
       for(let i = 0; i < event.target.files.length; i++){
         fileUploaded.push(URL.createObjectURL(event.target.files[i])) // In files[i], there is image's URL of local location
-        console.log(URL.createObjectURL(event.target.files[i]));
-    }
+        // console.log(URL.createObjectURL(event.target.files[i]));
 
+        // Get S3-UploadUrl
+        const s3UploadUrl = await s3GetUploadUrl();
+        
+        // Upload Img to AWS S3
+        await fetch(s3UploadUrl, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "multipart/form-data"
+            },
+            body: event.target.files[i]
+        })
+
+        // Store imageUrl from AWS S3 ( to put imageUrl lists to product model )
+        imageUrl.push(s3UploadUrl.split('?')[0])
+      }
+
+      setImgAWSUrl([...imgAWSUrl, ...imageUrl]);
       setUploadedImg([...uploadedImg, ...fileUploaded]);
     };
+
+    const s3GetUploadUrl = async () =>{
+        const urlRaw = await fetch("/api/aws/getFileUploadURL");
+        const url = await urlRaw.json();
+        return url;
+    }
 
     return (
         <>
