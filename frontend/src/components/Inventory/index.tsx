@@ -58,16 +58,40 @@ const Inventory: React.FC = () => {
         // block Scrollable Body
         document.body.style.overflowY = 'hidden';
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event: any) {
-        if (event.target === addNewProductEl) {
-            addNewProductEl.style.display = "none";
+    }
 
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event: any) {
+        // console.log(event.target);
+        const addNewProductEl = document.getElementById('addNewProduct')!;
+        const noticeMessageCancelPostingProduct = document.getElementById('notice-message-cancel-posting-product')!;
+    
+        if (event.target === addNewProductEl) {
+            // Display warning notice modal about posting product;
+            noticeMessageCancelPostingProduct.style.display = "block";
+
+        }else if(event.target === noticeMessageCancelPostingProduct){
+            noticeMessageCancelPostingProduct.style.display = "none";
             // Active Scrollable Body
             document.body.style.overflowY = 'auto';
         }
+    }
+
+    function onClickNoticeMessageCancelPostingProduct(event: any){
+      // console.log(event.target.textContent);
+      const addNewProductEl = document.getElementById('addNewProduct')!;
+      const noticeMessageCancelPostingProduct = document.getElementById('notice-message-cancel-posting-product')!;
+  
+      if(event.target.textContent === 'CONFIRM'){
+          addNewProductEl.style.display = "none";
+          noticeMessageCancelPostingProduct.style.display = "none";
+          // Active Scrollable Body
+          document.body.style.overflowY = 'auto';
+      }else{
+          noticeMessageCancelPostingProduct.style.display = "none";
       }
     }
+
     // Search Product by Product Title
     function handleInputChangeSearch(event: any){
         const value = event.target.value.trim();
@@ -201,7 +225,7 @@ const Inventory: React.FC = () => {
 
      function productDeleteBtn() {
         //  selectedProductId <== Array Type
-        console.log(selectedProductId);
+        // console.log(selectedProductId);
         deleteProduct(selectedProductId);
 
         window.location.reload();
@@ -235,6 +259,16 @@ const Inventory: React.FC = () => {
             <div id="bar-menu-inventory-delete-btn">
                 <button onClick={productDeleteBtn}>Delete</button>
             </div>
+        </div>
+        <div className="modal" id="notice-message-cancel-posting-product">
+            <div className="modal-content" id="notice-message-cancel-posting-product-content">
+                <p>Leave Editor</p>
+                <p>You will lose any unsaved changes.</p>
+                <div id="notice-message-cancel-posting-product-content-btns">
+                    <button onClick={onClickNoticeMessageCancelPostingProduct}>CANCEL</button>
+                    <button onClick={onClickNoticeMessageCancelPostingProduct}>CONFIRM</button>
+                </div>
+            </div>    
         </div>
     </>);
 };

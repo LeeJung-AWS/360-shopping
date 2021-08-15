@@ -164,6 +164,44 @@
     }
 }
 
+#notice-message-cancel-posting-product{
+    // padding: 100px;
+}
+
+#notice-message-cancel-posting-product-content{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    height: 200px;
+    width: 400px;
+
+    margin-top: -100px;     /* Negative half of height. */
+    margin-left: -200px;    /* Negative half of width. */
+
+    padding: 40px;
+    p {
+        margin-bottom: 1rem;
+    }
+
+    p:nth-child(2) {
+        font-size: 1rem;
+    }
+
+    #notice-message-cancel-posting-product-content-btns{
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1rem;
+        button{
+            font-weight: 600;
+            padding: 1rem;
+        }
+        button:hover{
+            background-color: rgb(230, 230, 230);
+        }
+    }
+}
+
 /* 768px and less than 768px */
 @media screen and (max-width: 767px) {
     #inventory-title{
