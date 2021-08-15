@@ -17,6 +17,9 @@ const AddNewProduct: React.FC = () => {
     const [quantity, setQuantity] = useState<string>('0');
     const [sku, setSku] = useState<string>('');
 
+    // Error Message
+    const [errMessage, setErrMessage] = useState<string>('');
+
    //This for Categories buttons on Categories line
    const [categories, setCategories] = useState<string[] | undefined>(undefined);
 
@@ -111,13 +114,10 @@ const AddNewProduct: React.FC = () => {
     }
 
     // When clicking Save, then take all information of product and post the infomation in DB(Products).
-    // TODO: Make ADD btn Inactive until recieving all data 
-    // TODO: When clicking cancel, Display Warning, if yes, go to Main of Admin Page, if No, keeping the page.
     // Send new product data to Backend
-    function onClickSaveBtn() {
-        console.log(imgAWSUrl);
+    async function onClickSaveBtn() {
         // Post product data to Product DB. 
-        postNewProduct({
+        const response = await postNewProduct({
             'title': title,
             'description': description,
             'thumbnailImgURL': imgAWSUrl[0],
@@ -129,8 +129,29 @@ const AddNewProduct: React.FC = () => {
             'sku': sku, 
             'categories': categories
         });
+        console.log(response);
+        const warningAddproductInputEl = document.getElementById('warning-addproduct-input')!;
+        
+        // Display Warning notice if there is no title.
+        if(response.message){
+            setErrMessage(response.message.split(":")[2])
+            warningAddproductInputEl.style.opacity = '100%';
+            setTimeout(()=>{
+                warningAddproductInputEl.style.opacity = '0%';
+            }, 3000);
+        // Display Warning notice if there is the same SKU name which is already taken in DB.
+        }else if(response.code === 11000){
+            let skuErrMessage = "SKU: " + response.keyValue.sku + " is already taken."
+            setErrMessage(skuErrMessage)
+            warningAddproductInputEl.style.width = '100%';
+            warningAddproductInputEl.style.opacity = '100%';
+            setTimeout(()=>{
+                warningAddproductInputEl.style.opacity = '0%';
+            }, 3000);
+        }else{
+            window.location.reload();
+        }
 
-        window.location.reload();
         
     }
 
@@ -155,13 +176,7 @@ const AddNewProduct: React.FC = () => {
     // Call a function (passed as a prop from the parent component)
     // to handle the user-selected file 
     const handleChange = async (event: any) => {
-        console.log(imgAWSUrl);
-    // TODO: AWS S3 - Save images file in S3.
-    // // Get S3-UploadUrl
-    //     const s3UploadUrl = await s3GetUploadUrl();
-    //     console.log(s3UploadUrl);
-
-        console.log(event.target.files);
+    // console.log(event.target.files);
     // URL.creatObjectURL() method takes an object (like our file) and 
     // creates a temporary local URL that is tied to the document in which it is created 
     // (meaning it won’t remember the URL if you leave the page and come back).
@@ -206,9 +221,12 @@ const AddNewProduct: React.FC = () => {
                 <div>Add New Product</div>
                 <button onClick={onClickCancelBtn}>Cancel</button>
             </div>
+            <div id="warning-addproduct-input">
+                    <p>{errMessage}</p>
+            </div>
             <div className="card-body addNewProduct-body">
                 <div className="addNewProduct-body-item">
-                    <input className="addNewProduct-title" placeholder="Add Product Name" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <input className="addNewProduct-title" placeholder="Add Product Name" value={title} onChange={(e) => setTitle(e.target.value)} required />
                 </div>
                 <div className="addNewProduct-body-item">
                     <input className="addNewProduct-description" placeholder="Add description..." value={description} onChange={(e) => setDescription(e.target.value)} />

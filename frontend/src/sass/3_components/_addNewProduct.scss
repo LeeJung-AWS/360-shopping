@@ -22,6 +22,19 @@
     }
 }
 
+#warning-addproduct-input{
+    width: 100%;
+    opacity: 0%;
+    height: 55px;
+    overflow-x: hidden;
+    background-color: yellow;
+    color: red;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
 .addNewProduct-title{
     font-size: 1.5rem;
     font-weight: bolder;
@@ -50,6 +63,10 @@
 
 .addNewProduct-body-item{
     margin-top: 2rem;
+}
+
+.addNewProduct-body-item:nth-child(1){
+    margin-top: -1rem;
 }
 
 .addNewProduct-img-box{
