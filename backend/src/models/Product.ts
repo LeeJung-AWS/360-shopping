@@ -3,7 +3,8 @@ import { Schema, model } from 'mongoose';
 interface ProductType{
     title: string;
     description: string;
-    imgURL: string;
+    thumbnailImgURL: string;
+    imgURLlists: string[];
     price: number;
     onSale: boolean;
     salePrice: number | null;
@@ -17,7 +18,8 @@ interface ProductType{
 const ProductSchema = new Schema<ProductType>({
     title: { type: String, required: "Title is Required" },
     description: { type: String, required: false },
-    imgURL: { type: String, required: false },
+    thumbnailImgURL: { type: String, required: false },
+    imgURLlists: [ {type: String, required: false} ],
     price: { type: Number, required: "Price is Required" },
     onSale: { type: Boolean, required: "onSale is Required" },
     salePrice: { type: Number, default: null },
