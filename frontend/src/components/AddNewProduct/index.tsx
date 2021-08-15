@@ -20,11 +20,8 @@ const AddNewProduct: React.FC = () => {
    //This for Categories buttons on Categories line
    const [categories, setCategories] = useState<string[] | undefined>(undefined);
 
-
+    // Store blob img URLs from Local Document by URL.creatObjectURL()
    const [ uploadedImg, setUploadedImg ] = useState<string[]>([]);
-
-    // TODO: Set up AWS S3 to store IMGs
-
 
     const checkBox = () =>{
         const checkBox = document.getElementById('toggleCheckbox')!;
@@ -154,15 +151,17 @@ const AddNewProduct: React.FC = () => {
     // Call a function (passed as a prop from the parent component)
     // to handle the user-selected file 
     const handleChange = (event: any) => {
+    // TODO: AWS S3 - Save images file in S3.
+        console.log(event.target.files);
     // URL.creatObjectURL() method takes an object (like our file) and 
     // creates a temporary local URL that is tied to the document in which it is created 
     // (meaning it won’t remember the URL if you leave the page and come back).
     // This URL can be used to set the the src property of a <img/> element
-        
       const fileUploaded = [];
       for(let i = 0; i < event.target.files.length; i++){
         fileUploaded.push(URL.createObjectURL(event.target.files[i])) // In files[i], there is image's URL of local location
-      }
+        console.log(URL.createObjectURL(event.target.files[i]));
+    }
 
       setUploadedImg([...uploadedImg, ...fileUploaded]);
     };
