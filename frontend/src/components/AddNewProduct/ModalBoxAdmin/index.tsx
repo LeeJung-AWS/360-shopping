@@ -175,8 +175,13 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
         let intCoordY = event.clientY;   // +22px
 
         // Assign ModalInCategoryContents position
-        modalInCategoryContentEl.style.left = (intCoordX - 40)+ 'px';
-        modalInCategoryContentEl.style.top = (intCoordY + 22) + 'px';
+        if(event.clientY > 500){
+            modalInCategoryContentEl.style.left = (intCoordX - 40)+ 'px';
+            modalInCategoryContentEl.style.top = (intCoordY - 90) + 'px';
+        }else{
+            modalInCategoryContentEl.style.left = (intCoordX - 40)+ 'px';
+            modalInCategoryContentEl.style.top = (intCoordY + 22) + 'px';
+        }
 
         //Add category name in Dataset
         const editBtn = document.getElementById('edit-category')!;

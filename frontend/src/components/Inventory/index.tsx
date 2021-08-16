@@ -161,13 +161,15 @@ const Inventory: React.FC = () => {
 
         if(isChecked){
             if(amount === 0){
-                barMenuInventoryEl.style.display = 'flex';
+                barMenuInventoryEl.style.opacity = '100%';
+                barMenuInventoryEl.style.width = '100%';
             }
             amount++;
             productIdArr.push(productId);
         }else{
             if(amount === 1) {
-                barMenuInventoryEl.style.display = 'none';
+                barMenuInventoryEl.style.opacity = '0%';
+                barMenuInventoryEl.style.width = '0%';
             }
             amount--;
             productIdArr.splice(productIdArr.indexOf(productId), 1);
@@ -217,7 +219,9 @@ const Inventory: React.FC = () => {
         }
 
         const barMenuInventoryEl = document.getElementById('bar-menu-inventory')!;
-        barMenuInventoryEl.style.display = 'none';
+        // barMenuInventoryEl.style.display = 'none';
+        barMenuInventoryEl.style.opacity = '0%';
+        barMenuInventoryEl.style.width = '0%';
         // console.log(productIdArr);
         setSelectedProductId([]);
         setAmountOfSelectedProduct(0);
