@@ -62,7 +62,7 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
             setThumbnailImgURL(seletedProduct.thumbnailImgURL)
             setImgAWSUrl(seletedProduct.imgURLlists)
             setCategories(seletedProduct.categories)
-
+            
             setUploadedImg(seletedProduct.imgURLlists);
 
             if(seletedProduct.onSale){
@@ -397,7 +397,14 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
                 </div>
             </div>
         </div>
-        <ProductFormModalBox pullCategories={pullCategories} />
+        {productFormStatus === 'EDIT' ?
+        <ProductFormModalBox pullCategories={pullCategories} categoriesSeletedProduct={categories} />
+        : <ProductFormModalBox pullCategories={pullCategories} />
+        }
+        {/* {productFormStatus === 'EDIT' ?
+        console.log("Here : ", categories)
+        : console.log(categories)
+        } */}
         </>
     )
 };
