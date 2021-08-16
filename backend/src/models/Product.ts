@@ -7,7 +7,7 @@ interface ProductType{
     imgURLlists: string[];
     price: number;
     onSale: boolean;
-    salePrice: number | null;
+    salePrice: number;
     quantity: number;
     sku: string;
     categories: string[];
@@ -22,7 +22,7 @@ const ProductSchema = new Schema<ProductType>({
     imgURLlists: [ {type: String, required: false} ],
     price: { type: Number, required: "Price is Required" },
     onSale: { type: Boolean, required: "onSale is Required" },
-    salePrice: { type: Number, default: null },
+    salePrice: { type: Number, default: 0 },
     quantity: { type: Number, required: "Quantity is Required" },
     sku: { type: String, required: false },
     categories: [ {type: String, required: false} ],
