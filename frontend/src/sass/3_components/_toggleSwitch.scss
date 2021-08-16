@@ -41,19 +41,19 @@
     transition: .4s;
   }
   
-  input:checked + .slider {
-    // background-color: black;
-  }
+  // input:checked + .slider {
+  //   background-color: black;
+  // }
   
   input:focus + .slider {
     box-shadow: 0 0 1px black;
   }
   
-  input:checked + .slider:before {
-    // -webkit-transform: translateX(15px);
-    // -ms-transform: translateX(15px);
-    // transform: translateX(15px);
-  }
+  // input:checked + .slider:before {
+  //   -webkit-transform: translateX(15px);
+  //   -ms-transform: translateX(15px);
+  //   transform: translateX(15px);
+  // }
   
   /* Rounded sliders */
   .slider.round {
