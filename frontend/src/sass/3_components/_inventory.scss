@@ -119,13 +119,16 @@
 }
 
 #bar-menu-inventory{
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 0;
     height: 60px;
+    opacity: 0%;
+    overflow: hidden;
+    transition: opacity 0.3s ease-in-out;
     background-color: $tertiary;
 
     color: white;
