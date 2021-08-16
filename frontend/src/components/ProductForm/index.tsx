@@ -58,6 +58,8 @@ const ProductForm: React.FC<productFormData> = ( {productID} ) => {
             setImgAWSUrl(seletedProduct.imgURLlists)
             setCategories(seletedProduct.categories)
 
+            setUploadedImg(seletedProduct.imgURLlists);
+
             if(seletedProduct.onSale){
                 const checkBox = document.getElementById('toggleCheckbox')!;
                 const originalPrice = document.querySelector<HTMLElement>('.original-price')!;
