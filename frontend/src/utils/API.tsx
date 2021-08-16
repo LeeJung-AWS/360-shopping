@@ -13,7 +13,7 @@ export const getProducts = async () => {
 
 export const getProduct = async (id: string) => {
     try{
-        const res = await fetch('/api/products/' + id)
+        const res = await fetch('/api/product/' + id)
         return res.json();
 
     }catch(error){

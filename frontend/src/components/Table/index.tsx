@@ -3,6 +3,8 @@ import { useState } from 'react';
 
 import { NumberComma } from '../../utils/helpers';
 
+import ProductForm from '../ProductForm';
+
 import dummyProductImg from '../../assets/img/dummy-product-img.png';
 
 interface TableData {
@@ -15,6 +17,8 @@ interface TableData {
 
 const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sortingByTableHeader }) => {
     const [ currentNodeState, setCurrentNodeState ] = useState(undefined);
+
+    const [ currentProductID, setCurrentProductID ] = useState('');
 
     // Pass selected product data to inventory element to handle Bar-menu ( About deleting Products )
     function onClickCheck(event: any) {
@@ -52,6 +56,32 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
         setCurrentNodeState(currentNode);
     }
 
+    async function onClickProduct(event: any){
+        // If it has Product ID, display Product Edit page
+        const productID = event.target.parentNode.dataset.id;
+        setCurrentProductID(productID);
+        if(productID){
+            console.log('Editing Product');
+
+            const modifiedProductEl = document.getElementById('modifiedProduct')!;
+            modifiedProductEl.style.display = 'block';
+            modifiedProductEl.style.padding = '10px';
+    
+            const modifiedProductContentEl = document.getElementById('modifiedProduct-content')!;
+            modifiedProductContentEl.style.width = '90%';
+            modifiedProductContentEl.style.height = '100%';
+            modifiedProductContentEl.style.padding = '0';
+    
+            let modifiedProductContentChildNodeEl = modifiedProductContentEl.firstChild as HTMLElement;
+            modifiedProductContentChildNodeEl.style.margin = '0';
+    
+            // block Scrollable Body
+            document.body.style.overflowY = 'hidden';
+        
+
+        }
+    }
+
     return(<>
     <table className="table-fixed">
     <colgroup>
@@ -86,12 +116,12 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
             {/* {console.log(tBodys.length)} */}
             {tBodys? tBodys.map(tBody => {
                 return(
-                    <tr data-id={tBody._id} key={tBody._id}>
+                    <tr data-id={tBody._id} key={tBody._id} onClick={onClickProduct}>
                         <td id="table-check-box">
                             <input type="checkbox" data-id={tBody._id} onClick={onClickCheck} />
                         </td>
                         <td>
-                            <img src={tBody.thumbnailImgURL?tBody.thumbnailImgURL:dummyProductImg} alt={tBody.title} />
+                            <img src={tBody.thumbnailImgURL?tBody.thumbnailImgURL:dummyProductImg} alt={tBody.title} className="img-El" />
                         </td>
                         <td>
                             <div style={{width: '28px'}}></div>
@@ -136,6 +166,11 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
             </tr>
         </tbody>
     </table>
+    <div className="modal" id="modifiedProduct">
+        <div className="modal-content" id="modifiedProduct-content">
+            <ProductForm productID={currentProductID} />  
+        </div>    
+    </div>
     </>)
 }
 
