@@ -3,7 +3,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-import AddNewProduct from "../AddNewProduct";
+// import productForm from "../AddNewProduct";
+
+import ProductForm from '../ProductForm';
 import Table from '../Table';
 
 import { getProducts, deleteProduct } from "../../utils/API";
@@ -30,6 +32,8 @@ const Inventory: React.FC = () => {
         'PRICE': 'descending'
     })
 
+    const [ currentProductID, setCurrentProductID ] = useState('');
+
     // Fetch productList from DB
     async function getAllProducts() {
         const productsLists = await getProducts();
@@ -42,31 +46,52 @@ const Inventory: React.FC = () => {
         getAllProducts();
     }, [])
 
-    function addProductOnClick() {
-        const addNewProductEl = document.getElementById('addNewProduct')!;
-        addNewProductEl.style.display = 'block';
-        addNewProductEl.style.padding = '10px';
+    function handleProductForm(productId?: string) {
+        if(productId){
+            setCurrentProductID(productId);
+        }
+        const productFormEl = document.getElementById('productForm')!;
+        productFormEl.style.display = 'block';
+        productFormEl.style.padding = '10px';
 
-        const addNewProductContentEl = document.getElementById('addNewProduct-content')!;
-        addNewProductContentEl.style.width = '90%';
-        addNewProductContentEl.style.height = '100%';
-        addNewProductContentEl.style.padding = '0';
+        const productFormContentEl = document.getElementById('productForm-content')!;
+        productFormContentEl.style.width = '90%';
+        productFormContentEl.style.height = '100%';
+        productFormContentEl.style.padding = '0';
 
-        let addNewProductContentChildNodeEl = addNewProductContentEl.firstChild as HTMLElement;
-        addNewProductContentChildNodeEl.style.margin = '0';
+        let productFormContentChildNodeEl = productFormContentEl.firstChild as HTMLElement;
+        productFormContentChildNodeEl.style.margin = '0';
 
         // block Scrollable Body
         document.body.style.overflowY = 'hidden';
+    }
+
+    function addProductOnClick() {
+        handleProductForm();
+        // const productFormEl = document.getElementById('productForm')!;
+        // productFormEl.style.display = 'block';
+        // productFormEl.style.padding = '10px';
+
+        // const productFormContentEl = document.getElementById('productForm-content')!;
+        // productFormContentEl.style.width = '90%';
+        // productFormContentEl.style.height = '100%';
+        // productFormContentEl.style.padding = '0';
+
+        // let productFormContentChildNodeEl = productFormContentEl.firstChild as HTMLElement;
+        // productFormContentChildNodeEl.style.margin = '0';
+
+        // // block Scrollable Body
+        // document.body.style.overflowY = 'hidden';
 
     }
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event: any) {
         // console.log(event.target);
-        const addNewProductEl = document.getElementById('addNewProduct')!;
+        const productFormEl = document.getElementById('productForm')!;
         const noticeMessageCancelPostingProduct = document.getElementById('notice-message-cancel-posting-product')!;
     
-        if (event.target === addNewProductEl) {
+        if (event.target === productFormEl) {
             // Display warning notice modal about posting product;
             noticeMessageCancelPostingProduct.style.display = "block";
 
@@ -79,11 +104,11 @@ const Inventory: React.FC = () => {
 
     function onClickNoticeMessageCancelPostingProduct(event: any){
       // console.log(event.target.textContent);
-      const addNewProductEl = document.getElementById('addNewProduct')!;
+      const productFormEl = document.getElementById('productForm')!;
       const noticeMessageCancelPostingProduct = document.getElementById('notice-message-cancel-posting-product')!;
   
       if(event.target.textContent === 'CONFIRM'){
-          addNewProductEl.style.display = "none";
+          productFormEl.style.display = "none";
           noticeMessageCancelPostingProduct.style.display = "none";
           // Active Scrollable Body
           document.body.style.overflowY = 'auto';
@@ -248,10 +273,10 @@ const Inventory: React.FC = () => {
             </div>
         </div>
 
-        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={filteredProductList? (filteredProductList.length > 0 ? filteredProductList : undefined): undefined} onClickCheckInventory={onClickCheckInventory} sortingByTableHeader={sortingByTableHeader} />
-        <div className="modal" id="addNewProduct">
-            <div className="modal-content" id="addNewProduct-content">
-                <AddNewProduct />    
+        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={filteredProductList? (filteredProductList.length > 0 ? filteredProductList : undefined): undefined} onClickCheckInventory={onClickCheckInventory} sortingByTableHeader={sortingByTableHeader} handleProductForm={handleProductForm} />
+        <div className="modal" id="productForm">
+            <div className="modal-content" id="productForm-content">
+                <ProductForm productId={currentProductID} />    
             </div>    
         </div>
         <div id="bar-menu-inventory">

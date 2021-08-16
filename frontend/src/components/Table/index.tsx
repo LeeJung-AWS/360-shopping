@@ -3,8 +3,6 @@ import { useState } from 'react';
 
 import { NumberComma } from '../../utils/helpers';
 
-import ProductForm from '../ProductForm';
-
 import dummyProductImg from '../../assets/img/dummy-product-img.png';
 
 interface TableData {
@@ -12,13 +10,12 @@ interface TableData {
     tBodys: {"_id": string, "thumbnailImgURL"?: string, "title": string,'categories': string[], "quantity": string, "price": string}[] | undefined; 
     onClickCheckInventory: (productId:string, isChecked:boolean) => void;
     sortingByTableHeader: (header:string) => void;
+    handleProductForm: (productId:string) => void;
 }
 
 
-const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sortingByTableHeader }) => {
+const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sortingByTableHeader, handleProductForm }) => {
     const [ currentNodeState, setCurrentNodeState ] = useState(undefined);
-
-    const [ currentProductID, setCurrentProductID ] = useState('');
 
     // Pass selected product data to inventory element to handle Bar-menu ( About deleting Products )
     function onClickCheck(event: any) {
@@ -59,27 +56,9 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
     async function onClickProduct(event: any){
         // If it has Product ID, display Product Edit page
         const productID = event.target.parentNode.dataset.id;
-        setCurrentProductID(productID);
-        if(productID){
-            console.log('Editing Product');
-
-            const modifiedProductEl = document.getElementById('modifiedProduct')!;
-            modifiedProductEl.style.display = 'block';
-            modifiedProductEl.style.padding = '10px';
-    
-            const modifiedProductContentEl = document.getElementById('modifiedProduct-content')!;
-            modifiedProductContentEl.style.width = '90%';
-            modifiedProductContentEl.style.height = '100%';
-            modifiedProductContentEl.style.padding = '0';
-    
-            let modifiedProductContentChildNodeEl = modifiedProductContentEl.firstChild as HTMLElement;
-            modifiedProductContentChildNodeEl.style.margin = '0';
-    
-            // block Scrollable Body
-            document.body.style.overflowY = 'hidden';
         
-
-        }
+        // Call Parents' Function to Display ProductForm 
+        handleProductForm(productID)
     }
 
     return(<>
@@ -166,11 +145,6 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
             </tr>
         </tbody>
     </table>
-    <div className="modal" id="modifiedProduct">
-        <div className="modal-content" id="modifiedProduct-content">
-            <ProductForm productID={currentProductID} />  
-        </div>    
-    </div>
     </>)
 }
 
