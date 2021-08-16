@@ -1,17 +1,19 @@
-// Style sass/3_components/_addNewProduct.scss
+// Style sass/3_components/_productForm.scss
 
 import { useState, useEffect } from 'react';
 
 import ProductFormModalBox from './ProductFormModalBox';
 
-import { postNewProduct, getProduct } from '../../utils/API';
+import { postNewProduct, getProduct,  putProduct } from '../../utils/API';
 import { NumberComma } from '../../utils/helpers';
 
 interface productFormData {
-    productID?: string;
+    productId?: string;
 }
 
-const ProductForm: React.FC<productFormData> = ( {productID} ) => {
+const ProductForm: React.FC<productFormData> = ( {productId} ) => {
+    const [productFormStatus, setProductFormStatus] = useState('POST');
+
     const [productFormTitle, setProductFormTitle] = useState('Add New Product');
 
     // To Store Product Data
@@ -35,16 +37,19 @@ const ProductForm: React.FC<productFormData> = ( {productID} ) => {
    const [ thumbnailImgURL, setThumbnailImgURL] = useState<string>('');
 
 
-    // Checking getting ProductID from Table then Display Edit Product
+    // Checking getting productId from Table then Display Edit Product
     useEffect(() => {
-        if(productID){
+        if(productId){
             setProductFormTitle('Edit')
-            getProductById(productID);
+            getProductById(productId);
         }
 
-        async function getProductById(productID: string) {
-            const seletedProduct = await getProduct(productID)
-            console.log(seletedProduct);
+        async function getProductById(productId: string) {
+            setProductFormStatus('EDIT');
+
+            // Get Product Data by product ID
+            const seletedProduct = await getProduct(productId)
+            // console.log(seletedProduct);
             let pageTitle = 'Edit: ' + seletedProduct.title;
             setProductFormTitle(pageTitle)
             setTitle(seletedProduct.title)
@@ -57,7 +62,7 @@ const ProductForm: React.FC<productFormData> = ( {productID} ) => {
             setThumbnailImgURL(seletedProduct.thumbnailImgURL)
             setImgAWSUrl(seletedProduct.imgURLlists)
             setCategories(seletedProduct.categories)
-
+            
             setUploadedImg(seletedProduct.imgURLlists);
 
             if(seletedProduct.onSale){
@@ -76,7 +81,7 @@ const ProductForm: React.FC<productFormData> = ( {productID} ) => {
                 toggleSlider.style.setProperty("--left-location", "16px");
             }
         }
-    }, [productID])
+    }, [productId])
 
     const checkBox = () =>{
         const checkBox = document.getElementById('toggleCheckbox')!;
@@ -175,7 +180,7 @@ const ProductForm: React.FC<productFormData> = ( {productID} ) => {
     // When clicking Save, then take all information of product and post the infomation in DB(Products).
     // Send new product data to Backend
     async function onClickSaveBtn() {
-        // Post product data to Product DB. 
+        // Post product data to Product DB.
         const response = await postNewProduct({
             'title': title,
             'description': description,
@@ -210,12 +215,32 @@ const ProductForm: React.FC<productFormData> = ( {productID} ) => {
         }else{
             window.location.reload();
         }
+    }
 
-        
+    async function onClickUpdateBtn() {
+        console.log('update');
+        console.log(productId);
+        const updatedProductData = {
+            'title': title,
+            'description': description,
+            'thumbnailImgURL': imgAWSUrl[0],
+            'imgURLlists': imgAWSUrl,
+            'price': price, 
+            'onSale': isPrice,
+            'salePrice': salePrice,
+            'quantity': quantity,
+            'sku': sku, 
+            'categories': categories
+        }
+
+        const response = await putProduct(productId!, updatedProductData);
+        console.log(response);
+
+        window.location.reload();
     }
 
     function onClickCancelBtn() {
-        const modalEl = document.getElementById('addNewProduct')!;
+        const modalEl = document.getElementById('productForm')!;
         modalEl.style.display = "none";
 
         // Active Scrollable Body
@@ -275,25 +300,28 @@ const ProductForm: React.FC<productFormData> = ( {productID} ) => {
     return (
         <>
         <div className="card">
-            <div className="card-header addNewProduct-header">
-                <button onClick={onClickSaveBtn}>Save</button>
+            <div className="card-header productForm-header">
+                {productFormStatus === 'POST'?
+                    <button onClick={onClickSaveBtn}>Save</button>
+                    : <button onClick={onClickUpdateBtn}>Update</button>
+                }
                 <div>{productFormTitle}</div>
                 <button onClick={onClickCancelBtn}>Cancel</button>
             </div>
             <div id="warning-addproduct-input">
                     <p>{errMessage}</p>
             </div>
-            <div className="card-body addNewProduct-body">
-                <div className="addNewProduct-body-item">
-                    <input className="addNewProduct-title" placeholder="Add Product Name" value={title} onChange={(e) => setTitle(e.target.value)} required />
+            <div className="card-body productForm-body">
+                <div className="productForm-body-item">
+                    <input className="productForm-title" placeholder="Add Product Name" value={title} onChange={(e) => setTitle(e.target.value)} required />
                 </div>
-                <div className="addNewProduct-body-item">
-                    <input className="addNewProduct-description" placeholder="Add description..." value={description} onChange={(e) => setDescription(e.target.value)} />
+                <div className="productForm-body-item">
+                    <input className="productForm-description" placeholder="Add description..." value={description} onChange={(e) => setDescription(e.target.value)} />
                 </div>
                 <input type="file" style={{"display": "none"}} id="upload-img-input" accept="image/gif, image/jpeg, image/png" multiple onChange={handleChange} />
                 {uploadedImg.length === 0 ? 
-                    <div className="addNewProduct-body-item addNewProduct-img-box">
-                        <div className="addNewProduct-img-border" onClick={handleClick}>
+                    <div className="productForm-body-item productForm-img-box">
+                        <div className="productForm-img-border" onClick={handleClick}>
                             <div><i className="fas fa-upload"></i></div>
                             <div>ADD IMAGES</div>
                         </div>
@@ -315,14 +343,14 @@ const ProductForm: React.FC<productFormData> = ( {productID} ) => {
                         }
                     </div>
                 }
-                <div className="addNewProduct-body-item">
+                <div className="productForm-body-item">
                     <p>Pricing</p>
-                    <div className="addNewProduct-body-item-body">
-                        <div className="addNewProduct-body-item-body-items">
+                    <div className="productForm-body-item-body">
+                        <div className="productForm-body-item-body-items">
                             <label>Price</label>
                             <input className="original-price" placeholder='$0.00' value={price} onChange={(e) => setPrice(e.target.value)} onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} />
                         </div>
-                        <div className="addNewProduct-body-item-body-items">
+                        <div className="productForm-body-item-body-items">
                             <label>On Sale</label>
                             <label className="switch">
                                 <input id="toggleCheckbox" type="checkbox" data-check="" onClick={checkBox} onChange={(e) => {
@@ -337,31 +365,31 @@ const ProductForm: React.FC<productFormData> = ( {productID} ) => {
                                 <span className="slider round" id="toggle-slider"></span>
                             </label>
                         </div>
-                        <div className="addNewProduct-body-item-body-items" id="sale-price">
+                        <div className="productForm-body-item-body-items" id="sale-price">
                             <label>Sale Price</label>
                             <input placeholder='$0.00' value={salePrice} onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} onChange={(e) => setSalePrice(e.target.value)} />
                         </div>
                     </div>
                 </div>
-                <div  className="addNewProduct-body-item">
+                <div  className="productForm-body-item">
                     <p>Inventory</p>
-                    <div className="addNewProduct-body-item-body">
-                        <div className="addNewProduct-body-item-body-items">
+                    <div className="productForm-body-item-body">
+                        <div className="productForm-body-item-body-items">
                             <label>Quantity</label>
                             <input placeholder='0' type='number' min="0" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
                         </div>
-                        <div className="addNewProduct-body-item-body-items">
+                        <div className="productForm-body-item-body-items">
                             <label>SKU</label>
                             <input placeholder='360W001'  value={sku} onChange={(e) => setSku(e.target.value)} />
                         </div>
                     </div>
                 </div>
-                <div  className="addNewProduct-body-item">
+                <div  className="productForm-body-item">
                     <p>Categories</p>
-                    <div className="addNewProduct-body-item-body">
-                        <div className="addNewProduct-body-item-body-items addNewProduct-body-item-body-items-last-child">
+                    <div className="productForm-body-item-body">
+                        <div className="productForm-body-item-body-items productForm-body-item-body-items-last-child">
                             {categories? 
-                                categories.map((category, index) => <p className="addNewProduct-categories-item" key={index}>{category}</p>) :""
+                                categories.map((category, index) => <p className="productForm-categories-item" key={index}>{category}</p>) :""
                             }
                             <button onClick={clickModalBtn}>ADD</button>
                         </div>
@@ -369,7 +397,14 @@ const ProductForm: React.FC<productFormData> = ( {productID} ) => {
                 </div>
             </div>
         </div>
-        <ProductFormModalBox pullCategories={pullCategories} />
+        {productFormStatus === 'EDIT' ?
+        <ProductFormModalBox pullCategories={pullCategories} categoriesSeletedProduct={categories} />
+        : <ProductFormModalBox pullCategories={pullCategories} />
+        }
+        {/* {productFormStatus === 'EDIT' ?
+        console.log("Here : ", categories)
+        : console.log(categories)
+        } */}
         </>
     )
 };
