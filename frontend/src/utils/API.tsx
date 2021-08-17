@@ -1,4 +1,36 @@
 // ----------------------------------------------
+// ---------------- AWS S3 API ---------------->
+
+export const s3GetUploadUrl = async () =>{
+    try{
+        const urlRaw = await fetch("/api/aws/getFileUploadURL");
+        const url = await urlRaw.json();
+        return url;
+
+    }catch(error){
+        return error;
+    }
+};
+
+export const s3UploadImg = async (s3UploadUrl: string,  file: string) =>{
+    try{
+        await fetch(s3UploadUrl, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "multipart/form-data"
+            },
+            body: file
+        });
+    }catch(error){
+        return error;
+    }
+};
+
+// <---------------- AWS S3 API ----------------
+// ----------------------------------------------
+
+
+// ----------------------------------------------
 // ---------------- Product API ---------------->
 
 export const getProducts = async () => {
