@@ -22,12 +22,17 @@ input[type=text], input[type=password] {
   button:hover {
     opacity: 0.8;
   }
+
+.remember-me {
+  display: inline !important;
+  width: 100% !important;
+}
   
   /* Extra styles for the cancel button */
   .cancelbtn {
     width: auto;
     padding: 10px 18px;
-    background-color: #f44336;
+    background-color: #f44336 !important;
   }
   
   /* Center the image and position the close button */
@@ -44,6 +49,7 @@ input[type=text], input[type=password] {
   
   .container-log {
     padding: 16px;
+    height: auto;
   }
   
   span.psw {
@@ -53,7 +59,7 @@ input[type=text], input[type=password] {
   
   /* The Modal (background) */
   .modal {
-    display: none; /* Hidden by default */
+    display: block; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
@@ -72,6 +78,7 @@ input[type=text], input[type=password] {
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
+    height: auto;
   }
   
   /* The Close Button (x) */
