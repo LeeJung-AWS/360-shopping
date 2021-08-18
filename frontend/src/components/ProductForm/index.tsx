@@ -291,11 +291,32 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
       setUploadedImg([...uploadedImg, ...fileUploaded]);
     };
 
+    // TODO: move it to util/API
     const s3GetUploadUrl = async () =>{
         const urlRaw = await fetch("/api/aws/getFileUploadURL");
         const url = await urlRaw.json();
         return url;
     }
+
+    const onClickDeleteS3Img = async (event: any) => {
+        const index = event.target.dataset.imageIndex;
+        const getS3Key = event.target.dataset.s3key.split("amazonaws.com/")[1];
+        
+        // setUploadedImg
+        let tempImgArray = [...uploadedImg];
+        tempImgArray.splice(index, 1);
+        setImgAWSUrl(tempImgArray);
+        setUploadedImg(tempImgArray);
+
+        console.log(getS3Key);
+    }
+
+    // TODO: move it to util/API
+    // const s3GetUploadUrl = async () =>{
+    //     const urlRaw = await fetch("/api/aws/getFileUploadURL");
+    //     const url = await urlRaw.json();
+    //     return url;
+    // }
 
     return (
         <>
@@ -330,11 +351,15 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
                 {uploadedImg.length === 0 ? <></> :
                     <div id="multiple-image-upload">
                         {uploadedImg.map((img, index) => {
-                            return (
-                                <div className="dragTest"  data-draggable="true" key={index}>
+                            return (<div className="uploaded-images dragMenu"  data-draggable="true" key={index}>
+                                <div>
                                     <img src={img} alt="uploaded-product" width="110px" height="110px" />
                                 </div>
-                            )
+                                <div id="img-delete-btn">
+                                    <button onClick={onClickDeleteS3Img} data-image-index={index} data-s3key={img}>X</button>
+                                </div>
+                                
+                            </div>)
                         })}
                         {uploadedImg.length < 12?
                         <label className="file-upload-label" onClick={handleClick}>
