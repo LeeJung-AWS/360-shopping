@@ -168,6 +168,49 @@
     margin-top: 32px;
 }
 
+
+
+.uploaded-images{
+    position: relative;
+    background-color: rgb(230, 230, 230);
+    color: black;
+    text-align: center;
+    width: 110.75px;
+    height: 110.75px;
+
+    cursor: grab;
+}
+
+.uploaded-images:hover{
+    #img-delete-btn{
+        opacity: 100%;
+    }
+}
+
+#img-delete-btn{
+    opacity: 0;
+    border-radius: 50%;
+    // background-color: #f6f6f6;
+    position: absolute;
+    right:0px;
+    top: 0px;
+    transition: opacity .4s cubic-bezier(.645,.045,.355,1);
+    width: 30px;
+    height: 30px;
+
+    button {
+        font-weight: bolder;
+        background-color: transparent;
+        border: none;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+    button:hover {
+        color: red;
+    }
+}
+
 .file-upload-label{
     background-color: rgb(230, 230, 230);
     color: black;
@@ -179,24 +222,3 @@
 
     cursor: pointer;
 }
-.dragTest{
-    background-color: rgb(230, 230, 230);
-    color: black;
-    text-align: center;
-    width: 110.75px;
-    height: 110.75px;
-
-    cursor: grab;
-}
-
-/* 376px and Greater than 376px */
-// @media screen and (min-width: 376px) {
-//     .productForm-header{
-//         div{
-//             // flex-basis: 0;
-//             white-space: nowrap;
-//             overflow: hidden;
-//             text-overflow: ellipsis;
-//         }
-//     }
-// }
