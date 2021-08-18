@@ -35,7 +35,7 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
    const [ uploadedImg, setUploadedImg ] = useState<string[]>([]);
    const [ imgAWSUrl, setImgAWSUrl ] = useState<string[]>([]);
    const [ thumbnailImgURL, setThumbnailImgURL] = useState<string>('');
-
+   const [ deletedImgKey, setDeletedImgKey] = useState<{'key': string}[]>();
 
     // Checking getting productId from Table then Display Edit Product
     useEffect(() => {
@@ -220,6 +220,15 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
     async function onClickUpdateBtn() {
         console.log('update');
         console.log(productId);
+        // console.log(deletedImgKey);
+        if(deletedImgKey){
+            console.log(deletedImgKey)
+            deletedImgKey.forEach(async key => {
+                console.log(key);
+               const response = await deleteS3Img(key)
+               console.log(response);
+            })
+        }
         const updatedProductData = {
             'title': title,
             'description': description,
@@ -308,15 +317,28 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
         setImgAWSUrl(tempImgArray);
         setUploadedImg(tempImgArray);
 
-        console.log(getS3Key);
+        if(deletedImgKey){
+            setDeletedImgKey([...deletedImgKey, {'key': getS3Key}])
+        }else{
+            setDeletedImgKey([{'key': getS3Key}]);
+        }
+        // const response = await deleteS3Img({'key': getS3Key});
+        // console.log(response);
     }
 
     // TODO: move it to util/API
-    // const s3GetUploadUrl = async () =>{
-    //     const urlRaw = await fetch("/api/aws/getFileUploadURL");
-    //     const url = await urlRaw.json();
-    //     return url;
-    // }
+    const deleteS3Img = async (key: {key: string}) =>{
+        // const response = await fetch("/api/aws/deleteS3Img");
+        const response = await fetch("/api/aws/deleteS3Img", {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(key)
+        });
+        const response02 = await response.json();
+        return response02;
+    }
 
     return (
         <>

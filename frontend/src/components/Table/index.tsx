@@ -58,7 +58,9 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
         const productID = event.target.parentNode.dataset.id;
         
         // Call Parents' Function to Display ProductForm 
-        handleProductForm(productID)
+        if(productID){
+            handleProductForm(productID)
+        }
     }
 
     return(<>

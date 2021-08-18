@@ -28,10 +28,11 @@ export const getFileUploadURL: RequestHandler = async (req, res, next) => {     
 
 // Delete S3 Images by Key name
 export const deleteS3Img: RequestHandler = async (req, res, next) => {     // export const testController = (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body.key);
     try {
         const deleteParams = {
             Bucket: '360shopping',
-            Key: req.body
+            Key: req.body.key
         };
 
         const command = new DeleteObjectCommand(deleteParams)
