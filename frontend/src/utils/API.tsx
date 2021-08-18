@@ -26,6 +26,18 @@ export const s3UploadImg = async (s3UploadUrl: string,  file: string) =>{
     }
 };
 
+export  const deleteS3Img = async (key: {key: string}) =>{
+    const response = await fetch("/api/aws/deleteS3Img", {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify(key)
+    });
+    const response02 = await response.json();
+    return response02;
+}
+
 // <---------------- AWS S3 API ----------------
 // ----------------------------------------------
 

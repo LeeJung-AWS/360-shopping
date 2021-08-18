@@ -7,8 +7,8 @@ import dummyProductImg from '../../assets/img/dummy-product-img.png';
 
 interface TableData {
     tHeads: string[];
-    tBodys: {"_id": string, "thumbnailImgURL"?: string, "title": string,'categories': string[], "quantity": string, "price": string}[] | undefined; 
-    onClickCheckInventory: (productId:string, isChecked:boolean) => void;
+    tBodys: {"_id": string, "thumbnailImgURL"?: string, "imgURLlists"?: string[], "title": string,'categories': string[], "quantity": string, "price": string}[] | undefined; 
+    onClickCheckInventory: (productId:string, isChecked:boolean, s3key: string[]) => void;
     sortingByTableHeader: (header:string) => void;
     handleProductForm: (productId:string) => void;
 }
@@ -20,7 +20,8 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
     // Pass selected product data to inventory element to handle Bar-menu ( About deleting Products )
     function onClickCheck(event: any) {
         // console.log(event.target);
-        onClickCheckInventory(event.target.dataset.id, event.target.checked);
+        // console.log(event.target.dataset.s3key.split(','))
+        onClickCheckInventory(event.target.dataset.id, event.target.checked, event.target.dataset.s3key.split(','));
     }
 
 
@@ -56,7 +57,6 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
     async function onClickProduct(event: any){
         // If it has Product ID, display Product Edit page
         const productID = event.target.parentNode.dataset.id;
-        
         // Call Parents' Function to Display ProductForm 
         if(productID){
             handleProductForm(productID)
@@ -94,12 +94,12 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
             </tr>
         </thead>
         <tbody id='product-list-table'>
-            {/* {console.log(tBodys.length)} */}
+            {/* {console.log(tBodys)} */}
             {tBodys? tBodys.map(tBody => {
                 return(
                     <tr data-id={tBody._id} key={tBody._id} onClick={onClickProduct}>
                         <td id="table-check-box">
-                            <input type="checkbox" data-id={tBody._id} onClick={onClickCheck} />
+                            <input type="checkbox" data-id={tBody._id} data-s3key={tBody.imgURLlists} onClick={onClickCheck} />
                         </td>
                         <td>
                             <img src={tBody.thumbnailImgURL?tBody.thumbnailImgURL:dummyProductImg} alt={tBody.title} className="img-El" />

@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import ProductForm from '../ProductForm';
 import Table from '../Table';
 
-import { getProducts, deleteProduct } from "../../utils/API";
+import { getProducts, deleteProduct, deleteS3Img } from "../../utils/API";
 
 interface productListDataDype{
     '_id': string, 
@@ -24,6 +24,7 @@ const Inventory: React.FC = () => {
     const [ filteredProductList, setFilteredProductList] = useState<productListDataDype[] | undefined>(undefined);
 
     const [ selectedProductId, setSelectedProductId] = useState<string[]>([]);
+    const [ selectedS3key, setSelectedS3key] = useState<{'key': string}[] | undefined>(undefined);
     // Display amount of seleted product when checking them.
     const [ amountOfSelectedProduct, setAmountOfSelectedProduct ] = useState(0);
     const [ sortingStatus, setSortingStatus ] = useState<{'PRODUCT': string, 'STOCK': string, 'PRICE': string}>({
@@ -179,10 +180,14 @@ const Inventory: React.FC = () => {
     }
 
     // Display Delete Button when Check a product
-    function onClickCheckInventory(productId: string, isChecked: boolean) {
+    function onClickCheckInventory(productId: string, isChecked: boolean, s3key: string[]) {
         const barMenuInventoryEl = document.getElementById('bar-menu-inventory')!;
         let amount = amountOfSelectedProduct;
         let productIdArr = selectedProductId;
+        let tempS3keys:{key: string}[] = []
+        if(selectedS3key){
+            tempS3keys = selectedS3key;
+        }
 
         if(isChecked){
             if(amount === 0){
@@ -191,6 +196,13 @@ const Inventory: React.FC = () => {
             }
             amount++;
             productIdArr.push(productId);
+
+            s3key.forEach(key => {
+                if(key !== ""){
+                    tempS3keys.push({'key': key.split("amazonaws.com/")[1]})
+                }
+            })
+
         }else{
             if(amount === 1) {
                 barMenuInventoryEl.style.opacity = '0%';
@@ -198,16 +210,31 @@ const Inventory: React.FC = () => {
             }
             amount--;
             productIdArr.splice(productIdArr.indexOf(productId), 1);
+
+            s3key.forEach(key => {
+                console.log(tempS3keys.indexOf({'key': key.split("amazonaws.com/")[1]}))
+                // if(key !== ""){
+                    // tempS3keys.splice(tempS3keys.indexOf({'key': key.split("amazonaws.com/")[1]}), 1)
+                // }
+            })
         }
 
         setSelectedProductId(productIdArr);
         setAmountOfSelectedProduct(amount);
+
+        if(selectedS3key){
+            setSelectedS3key([...selectedS3key, ...tempS3keys]);
+        }else{
+            setSelectedS3key([...tempS3keys]);
+        }
         // console.log(selectedProductId)
+        console.log(tempS3keys);
     } 
 
      // All check products on the table
      function allCheckproduct() {
         let productIdArr = [];
+        let awsS3keyArr:{"key": string}[] = [];
         let amount = 0;
         const productListTableEl = document.getElementById('product-list-table') as any;
         const trArray = productListTableEl.children;
@@ -220,12 +247,20 @@ const Inventory: React.FC = () => {
             if(checkbox){
                 checkbox.checked = true;
                 productIdArr.push(checkbox.dataset.id);
+                if(checkbox.dataset.s3key !==""){
+                    console.log(checkbox.dataset.s3key.split(','));
+                    let s3keys = checkbox.dataset.s3key.split(',');
+                    s3keys.forEach((key: string) => {
+                        awsS3keyArr.push({'key': key.split("amazonaws.com/")[1]} )
+                    })
+                }
                 amount++;
             }
         }
         // console.log(productIdArr);
         setSelectedProductId(productIdArr);
         setAmountOfSelectedProduct(amount);
+        setSelectedS3key(awsS3keyArr)
      }
 
      // All uncheck products on the table
@@ -250,12 +285,23 @@ const Inventory: React.FC = () => {
         // console.log(productIdArr);
         setSelectedProductId([]);
         setAmountOfSelectedProduct(0);
+        setSelectedS3key([]);
      }
 
      function productDeleteBtn() {
         //  selectedProductId <== Array Type
         // console.log(selectedProductId);
+        console.log(selectedS3key)
+       
         deleteProduct(selectedProductId);
+
+        if(selectedS3key){
+            selectedS3key.forEach(async key => {
+                console.log(key);
+                const response = await deleteS3Img(key)
+                console.log(response);
+            })
+        }
 
         window.location.reload();
      }
