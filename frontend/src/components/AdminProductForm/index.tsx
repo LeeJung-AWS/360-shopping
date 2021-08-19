@@ -11,7 +11,7 @@ interface productFormData {
     productId?: string;
 }
 
-const ProductForm: React.FC<productFormData> = ( {productId} ) => {
+const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
     const [productFormStatus, setProductFormStatus] = useState('POST');
 
     const [productFormTitle, setProductFormTitle] = useState('Add New Product');
@@ -193,7 +193,7 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
             'sku': sku, 
             'categories': categories
         });
-        console.log(response);
+        // console.log(response);
         const warningAddproductInputEl = document.getElementById('warning-addproduct-input')!;
         
         // Display Warning notice if there is no title.
@@ -218,15 +218,14 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
     }
 
     async function onClickUpdateBtn() {
-        console.log('update');
-        console.log(productId);
+        // console.log('update');
+        // console.log(productId);
         // console.log(deletedImgKey);
         if(deletedImgKey){
-            console.log(deletedImgKey)
+            // console.log(deletedImgKey)
             deletedImgKey.forEach(async key => {
-                console.log(key);
-               const response = await deleteS3Img(key)
-               console.log(response);
+                // console.log(key);
+               await deleteS3Img(key);
             })
         }
         const updatedProductData = {
@@ -242,8 +241,8 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
             'categories': categories
         }
 
-        const response = await putProduct(productId!, updatedProductData);
-        console.log(response);
+        await putProduct(productId!, updatedProductData);
+        // console.log(response);
 
         window.location.reload();
     }
@@ -456,4 +455,4 @@ const ProductForm: React.FC<productFormData> = ( {productId} ) => {
     )
 };
 
-export default ProductForm;
+export default AdminProductForm;

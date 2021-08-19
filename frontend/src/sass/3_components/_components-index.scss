@@ -4,10 +4,9 @@
 @import "buttons";      // Buttons
 @import "carousel";     // Carousel
 @import "card";
-@import "tabmenu";
-// @import "addNewProduct";
-@import "productForm";
+@import "adminTabmenu";
+@import "adminProductForm";
 @import "toggleSwitch";
-@import "modalBoxAdmin";
-@import "inventory.scss";
-@import "table.scss";
+@import "adminModalBox";
+@import "adminInventory.scss";
+@import "adminProductTable.scss";

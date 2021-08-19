@@ -14,7 +14,7 @@ interface TableData {
 }
 
 
-const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sortingByTableHeader, handleProductForm }) => {
+const AdminProductTable: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sortingByTableHeader, handleProductForm }) => {
     const [ currentNodeState, setCurrentNodeState ] = useState(undefined);
 
     // Pass selected product data to inventory element to handle Bar-menu ( About deleting Products )
@@ -150,4 +150,4 @@ const Table: React.FC<TableData> = ({ tHeads, tBodys, onClickCheckInventory, sor
     </>)
 }
 
-export default Table;
+export default AdminProductTable;

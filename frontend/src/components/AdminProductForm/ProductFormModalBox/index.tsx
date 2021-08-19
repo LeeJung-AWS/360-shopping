@@ -53,7 +53,7 @@ const ProductFormModalBox: React.FC<ChildProps> = ( {pullCategories, categoriesS
 
     // Assign all Category to IsChecked When Updating Product
     useEffect(() => {
-        console.log(categoriesSeletedProduct);
+        // console.log(categoriesSeletedProduct);
 
         // Assign Custom Key name
         let obj:{[k: string]: boolean} = {};

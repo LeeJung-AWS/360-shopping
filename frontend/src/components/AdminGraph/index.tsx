@@ -7,7 +7,7 @@ interface ChildProps {
     yAixsTickprefix: string;
 }
 
-const SalesGraph: React.FC<ChildProps> = ( { months, yAxis, yAixsTickprefix }) => {
+const AdminGraph: React.FC<ChildProps> = ( { months, yAxis, yAixsTickprefix }) => {
     // const handleClick = (evt: any) => alert('click');
     // const handleHover = (evt: any) => alert('hover');
 
@@ -65,4 +65,4 @@ const SalesGraph: React.FC<ChildProps> = ( { months, yAxis, yAixsTickprefix }) =
 }
 
 
-export default SalesGraph;
+export default AdminGraph;
