@@ -7,10 +7,11 @@ import { getCategories, addCategory, updateCategory, deleteCategory } from '../.
 import { capitalizeFirstLetter } from '../../../utils/helpers';
 
 interface ChildProps{
-    pullCategories: (pullCategories: string, checked: boolean) => void
+    pullCategories: (pullCategories: string, checked: boolean) => void,
+    categoriesSeletedProduct?: string[]
 }
 
-const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
+const ProductFormModalBox: React.FC<ChildProps> = ( {pullCategories, categoriesSeletedProduct} ) => {
     // Display amount of seleted categories when checking them by using state.
     const [ amountOfCategory, setAmountOfCategory ] = useState(0);
 
@@ -49,6 +50,20 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
      useEffect(() => {
         categoryData();
     }, [isEditingCategory])
+
+    // Assign all Category to IsChecked When Updating Product
+    useEffect(() => {
+        // console.log(categoriesSeletedProduct);
+
+        // Assign Custom Key name
+        let obj:{[k: string]: boolean} = {};
+        categoriesSeletedProduct?.forEach(category => {
+            obj[category] = true;
+        })
+
+        setIsChecked(obj);
+        
+    }, [categoriesSeletedProduct])
 
     // When clicking a category, Increase or Decrease amount of category on the top in this Modal
     // Also pass Checked or Unchecked Categories to NewAddProduct Component(Parent) to add the category as a button in Categories Element
@@ -346,4 +361,4 @@ const ModalBoxAdmin: React.FC<ChildProps> = ( {pullCategories} ) => {
 
 }
 
-export default ModalBoxAdmin;
+export default ProductFormModalBox;

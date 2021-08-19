@@ -1,7 +1,7 @@
 // Stlye: sass/3_components/_tabmenu
 
 import { useState, ReactNode } from 'react';
-import SalesGraph from '../SalesGraph';
+import AdminGraph from '../AdminGraph';
 
 import { NumberComma } from '../../utils/helpers';
 
@@ -18,7 +18,7 @@ interface ChildProps {
     tabMenuInformation: Array<tabMenuInformation>;
 }
 
-const TabMenu: React.FC<ChildProps> = ({header, tabMenuInformation}) => {
+const AdminTabMenu: React.FC<ChildProps> = ({header, tabMenuInformation}) => {
     
     const [ graphContent, setGraphContent ] = useState<{months: Array<string>; yAixsTickprefix: string; yAxis: Array<number>}>(
         {
@@ -100,11 +100,11 @@ const TabMenu: React.FC<ChildProps> = ({header, tabMenuInformation}) => {
                     })
                 }
                 {/* Add Graph for Content console.log(tabMenuInformation) */ }
-                <SalesGraph months={graphContent.months} yAxis={graphContent.yAxis} yAixsTickprefix={graphContent.yAixsTickprefix} />
+                <AdminGraph months={graphContent.months} yAxis={graphContent.yAxis} yAixsTickprefix={graphContent.yAixsTickprefix} />
             </div>
         </div>
     </section>
     
 }
 
-export default TabMenu;
+export default AdminTabMenu;

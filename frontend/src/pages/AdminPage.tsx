@@ -4,10 +4,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // Components
 import AdminNav from '../components/AdminNav';
-import Tabmenu from '../components/TabMenu';
-import ContentsTopMenu from '../components/TabMenu/ContentsTopMenu';
-import Inventory from '../components/Inventory';
-// import AddNewProduct from "../components/AddNewProduct";
+import AdminTabMenu from '../components/AdminTabMenu';
+import ContentsTopMenu from '../components/AdminTabMenu/ContentsTopMenu';
+import AdminInventory from '../components/AdminInventory';
 
 const AdminPage: React.FC = () => {
      // Dummy Graph Data
@@ -71,7 +70,7 @@ const AdminPage: React.FC = () => {
             <Switch>
                 <Route exact path="/adminPage">
                     <main className="adminPage-row">
-                        <Tabmenu header="Sales" tabMenuInformation={tabMenuInformation}/>
+                        <AdminTabMenu header="Sales" tabMenuInformation={tabMenuInformation}/>
                         <section className="adminPage-col card">
                             <div className="card-header">
                                 <h4>Awaiting Shipments</h4>
@@ -96,8 +95,7 @@ const AdminPage: React.FC = () => {
                     <p>Marketing Page</p>
                 </Route>
                 <Route exact path="/adminPage/inventory">
-                    {/* <AddNewProduct /> */}
-                    <Inventory />
+                    <AdminInventory />
                 </Route>
                 <Route exact path="/adminPage/orderHistory">
                     <p>orderHistory Page</p>

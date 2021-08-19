@@ -1,13 +1,21 @@
-// Style sass/3_components/_addNewProduct.scss
+// Style sass/3_components/_productForm.scss
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import ModalBoxAdmin from './ModalBoxAdmin';
+import ProductFormModalBox from './ProductFormModalBox';
 
-import { postNewProduct } from '../../utils/API';
+import { postNewProduct, getProduct,  putProduct } from '../../utils/API';
 import { NumberComma } from '../../utils/helpers';
 
-const AddNewProduct: React.FC = () => {
+interface productFormData {
+    productId?: string;
+}
+
+const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
+    const [productFormStatus, setProductFormStatus] = useState('POST');
+
+    const [productFormTitle, setProductFormTitle] = useState('Add New Product');
+
     // To Store Product Data
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -26,21 +34,77 @@ const AddNewProduct: React.FC = () => {
     // Store blob img URLs from Local Document by URL.creatObjectURL()
    const [ uploadedImg, setUploadedImg ] = useState<string[]>([]);
    const [ imgAWSUrl, setImgAWSUrl ] = useState<string[]>([]);
+   const [ thumbnailImgURL, setThumbnailImgURL] = useState<string>('');
+   const [ deletedImgKey, setDeletedImgKey] = useState<{'key': string}[]>();
+
+    // Checking getting productId from Table then Display Edit Product
+    useEffect(() => {
+        if(productId){
+            setProductFormTitle('Edit')
+            getProductById(productId);
+        }
+
+        async function getProductById(productId: string) {
+            setProductFormStatus('EDIT');
+
+            // Get Product Data by product ID
+            const seletedProduct = await getProduct(productId)
+            // console.log(seletedProduct);
+            let pageTitle = 'Edit: ' + seletedProduct.title;
+            setProductFormTitle(pageTitle)
+            setTitle(seletedProduct.title)
+            setDescription(seletedProduct.description)
+            setPrice(seletedProduct.price)
+            setIsPrice(seletedProduct.onSale)
+            setSalePrice(seletedProduct.salePrice)
+            setQuantity(seletedProduct.quantity)
+            setSku(seletedProduct.sku)
+            setThumbnailImgURL(seletedProduct.thumbnailImgURL)
+            setImgAWSUrl(seletedProduct.imgURLlists)
+            setCategories(seletedProduct.categories)
+            
+            setUploadedImg(seletedProduct.imgURLlists);
+
+            if(seletedProduct.onSale){
+                const checkBox = document.getElementById('toggleCheckbox')!;
+                const originalPrice = document.querySelector<HTMLElement>('.original-price')!;
+                const salePrice = document.getElementById('sale-price')!;
+                const toggleSlider = document.getElementById('toggle-slider')!;
+                // const toggleSliderBefore = document.getElementById('toggle-slider::before')!;
+                
+                checkBox.dataset.check = 'checked';
+                originalPrice.style.textDecoration = 'line-through';
+                salePrice.style.display = 'flex';
+
+                // Controll Variable in CSS in _toggleSwitch.scss
+                toggleSlider.style.setProperty('--slider-background', 'black');
+                toggleSlider.style.setProperty("--left-location", "16px");
+            }
+        }
+    }, [productId])
 
     const checkBox = () =>{
         const checkBox = document.getElementById('toggleCheckbox')!;
         const originalPrice = document.querySelector<HTMLElement>('.original-price')!;
         const salePrice = document.getElementById('sale-price')!;
+        const toggleSlider = document.getElementById('toggle-slider')!;
 
-        // console.log(checkBox.dataset.check);
         if(checkBox.dataset.check === 'checked'){
             checkBox.dataset.check = '';
             originalPrice.style.textDecoration = '';
             salePrice.style.display = 'none';
+
+            // Controll Variable in CSS in _toggleSwitch.scss
+            toggleSlider.style.setProperty("--slider-background", "#ccc");
+            toggleSlider.style.setProperty("--left-location", "1px");
         }else{
             checkBox.dataset.check = 'checked';
             originalPrice.style.textDecoration = 'line-through';
             salePrice.style.display = 'flex';
+
+            // Controll Variable in CSS in _toggleSwitch.scss
+            toggleSlider.style.setProperty("--slider-background", "black");
+            toggleSlider.style.setProperty("--left-location", "16px");
         }
     }
 
@@ -116,7 +180,7 @@ const AddNewProduct: React.FC = () => {
     // When clicking Save, then take all information of product and post the infomation in DB(Products).
     // Send new product data to Backend
     async function onClickSaveBtn() {
-        // Post product data to Product DB. 
+        // Post product data to Product DB.
         const response = await postNewProduct({
             'title': title,
             'description': description,
@@ -129,7 +193,7 @@ const AddNewProduct: React.FC = () => {
             'sku': sku, 
             'categories': categories
         });
-        console.log(response);
+        // console.log(response);
         const warningAddproductInputEl = document.getElementById('warning-addproduct-input')!;
         
         // Display Warning notice if there is no title.
@@ -151,12 +215,40 @@ const AddNewProduct: React.FC = () => {
         }else{
             window.location.reload();
         }
+    }
 
-        
+    async function onClickUpdateBtn() {
+        // console.log('update');
+        // console.log(productId);
+        // console.log(deletedImgKey);
+        if(deletedImgKey){
+            // console.log(deletedImgKey)
+            deletedImgKey.forEach(async key => {
+                // console.log(key);
+               await deleteS3Img(key);
+            })
+        }
+        const updatedProductData = {
+            'title': title,
+            'description': description,
+            'thumbnailImgURL': imgAWSUrl[0],
+            'imgURLlists': imgAWSUrl,
+            'price': price, 
+            'onSale': isPrice,
+            'salePrice': salePrice,
+            'quantity': quantity,
+            'sku': sku, 
+            'categories': categories
+        }
+
+        await putProduct(productId!, updatedProductData);
+        // console.log(response);
+
+        window.location.reload();
     }
 
     function onClickCancelBtn() {
-        const modalEl = document.getElementById('addNewProduct')!;
+        const modalEl = document.getElementById('productForm')!;
         modalEl.style.display = "none";
 
         // Active Scrollable Body
@@ -207,34 +299,71 @@ const AddNewProduct: React.FC = () => {
       setUploadedImg([...uploadedImg, ...fileUploaded]);
     };
 
+    // TODO: move it to util/API
     const s3GetUploadUrl = async () =>{
         const urlRaw = await fetch("/api/aws/getFileUploadURL");
         const url = await urlRaw.json();
         return url;
     }
 
+    const onClickDeleteS3Img = async (event: any) => {
+        const index = event.target.dataset.imageIndex;
+        const getS3Key = event.target.dataset.s3key.split("amazonaws.com/")[1];
+        
+        // setUploadedImg
+        let tempImgArray = [...uploadedImg];
+        tempImgArray.splice(index, 1);
+        setImgAWSUrl(tempImgArray);
+        setUploadedImg(tempImgArray);
+
+        if(deletedImgKey){
+            setDeletedImgKey([...deletedImgKey, {'key': getS3Key}])
+        }else{
+            setDeletedImgKey([{'key': getS3Key}]);
+        }
+        // const response = await deleteS3Img({'key': getS3Key});
+        // console.log(response);
+    }
+
+    // TODO: move it to util/API
+    const deleteS3Img = async (key: {key: string}) =>{
+        // const response = await fetch("/api/aws/deleteS3Img");
+        const response = await fetch("/api/aws/deleteS3Img", {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(key)
+        });
+        const response02 = await response.json();
+        return response02;
+    }
+
     return (
         <>
         <div className="card">
-            <div className="card-header addNewProduct-header">
-                <button onClick={onClickSaveBtn}>Save</button>
-                <div>Add New Product</div>
+            <div className="card-header productForm-header">
+                {productFormStatus === 'POST'?
+                    <button onClick={onClickSaveBtn}>Save</button>
+                    : <button onClick={onClickUpdateBtn}>Update</button>
+                }
+                <div>{productFormTitle}</div>
                 <button onClick={onClickCancelBtn}>Cancel</button>
             </div>
             <div id="warning-addproduct-input">
                     <p>{errMessage}</p>
             </div>
-            <div className="card-body addNewProduct-body">
-                <div className="addNewProduct-body-item">
-                    <input className="addNewProduct-title" placeholder="Add Product Name" value={title} onChange={(e) => setTitle(e.target.value)} required />
+            <div className="card-body productForm-body">
+                <div className="productForm-body-item">
+                    <input className="productForm-title" placeholder="Add Product Name" value={title} onChange={(e) => setTitle(e.target.value)} required />
                 </div>
-                <div className="addNewProduct-body-item">
-                    <input className="addNewProduct-description" placeholder="Add description..." value={description} onChange={(e) => setDescription(e.target.value)} />
+                <div className="productForm-body-item">
+                    <input className="productForm-description" placeholder="Add description..." value={description} onChange={(e) => setDescription(e.target.value)} />
                 </div>
                 <input type="file" style={{"display": "none"}} id="upload-img-input" accept="image/gif, image/jpeg, image/png" multiple onChange={handleChange} />
                 {uploadedImg.length === 0 ? 
-                    <div className="addNewProduct-body-item addNewProduct-img-box">
-                        <div className="addNewProduct-img-border" onClick={handleClick}>
+                    <div className="productForm-body-item productForm-img-box">
+                        <div className="productForm-img-border" onClick={handleClick}>
                             <div><i className="fas fa-upload"></i></div>
                             <div>ADD IMAGES</div>
                         </div>
@@ -243,11 +372,15 @@ const AddNewProduct: React.FC = () => {
                 {uploadedImg.length === 0 ? <></> :
                     <div id="multiple-image-upload">
                         {uploadedImg.map((img, index) => {
-                            return (
-                                <div className="dragTest"  data-draggable="true" key={index}>
+                            return (<div className="uploaded-images dragMenu"  data-draggable="true" key={index}>
+                                <div>
                                     <img src={img} alt="uploaded-product" width="110px" height="110px" />
                                 </div>
-                            )
+                                <div id="img-delete-btn">
+                                    <button onClick={onClickDeleteS3Img} data-image-index={index} data-s3key={img}>X</button>
+                                </div>
+                                
+                            </div>)
                         })}
                         {uploadedImg.length < 12?
                         <label className="file-upload-label" onClick={handleClick}>
@@ -256,14 +389,14 @@ const AddNewProduct: React.FC = () => {
                         }
                     </div>
                 }
-                <div className="addNewProduct-body-item">
+                <div className="productForm-body-item">
                     <p>Pricing</p>
-                    <div className="addNewProduct-body-item-body">
-                        <div className="addNewProduct-body-item-body-items">
+                    <div className="productForm-body-item-body">
+                        <div className="productForm-body-item-body-items">
                             <label>Price</label>
-                            <input className="original-price" placeholder='$0.00' onChange={(e) => setPrice(e.target.value)} onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} />
+                            <input className="original-price" placeholder='$0.00' value={price} onChange={(e) => setPrice(e.target.value)} onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} />
                         </div>
-                        <div className="addNewProduct-body-item-body-items">
+                        <div className="productForm-body-item-body-items">
                             <label>On Sale</label>
                             <label className="switch">
                                 <input id="toggleCheckbox" type="checkbox" data-check="" onClick={checkBox} onChange={(e) => {
@@ -275,34 +408,34 @@ const AddNewProduct: React.FC = () => {
                                     }
                                     }
                                 } />
-                                <span className="slider round"></span>
+                                <span className="slider round" id="toggle-slider"></span>
                             </label>
                         </div>
-                        <div className="addNewProduct-body-item-body-items" id="sale-price">
+                        <div className="productForm-body-item-body-items" id="sale-price">
                             <label>Sale Price</label>
-                            <input placeholder='$0.00' onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} onChange={(e) => setSalePrice(e.target.value)} />
+                            <input placeholder='$0.00' value={salePrice} onFocus={focusOnPriceInput} onBlur={focusOutPriceInput} onKeyPress={handleInputeydown} onChange={(e) => setSalePrice(e.target.value)} />
                         </div>
                     </div>
                 </div>
-                <div  className="addNewProduct-body-item">
+                <div  className="productForm-body-item">
                     <p>Inventory</p>
-                    <div className="addNewProduct-body-item-body">
-                        <div className="addNewProduct-body-item-body-items">
+                    <div className="productForm-body-item-body">
+                        <div className="productForm-body-item-body-items">
                             <label>Quantity</label>
-                            <input placeholder='0' type='number' min="0" onChange={(e) => setQuantity(e.target.value)}/>
+                            <input placeholder='0' type='number' min="0" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
                         </div>
-                        <div className="addNewProduct-body-item-body-items">
+                        <div className="productForm-body-item-body-items">
                             <label>SKU</label>
-                            <input placeholder='360W001'  onChange={(e) => setSku(e.target.value)} />
+                            <input placeholder='360W001'  value={sku} onChange={(e) => setSku(e.target.value)} />
                         </div>
                     </div>
                 </div>
-                <div  className="addNewProduct-body-item">
+                <div  className="productForm-body-item">
                     <p>Categories</p>
-                    <div className="addNewProduct-body-item-body">
-                        <div className="addNewProduct-body-item-body-items addNewProduct-body-item-body-items-last-child">
+                    <div className="productForm-body-item-body">
+                        <div className="productForm-body-item-body-items productForm-body-item-body-items-last-child">
                             {categories? 
-                                categories.map((category, index) => <p className="addNewProduct-categories-item" key={index}>{category}</p>) :""
+                                categories.map((category, index) => <p className="productForm-categories-item" key={index}>{category}</p>) :""
                             }
                             <button onClick={clickModalBtn}>ADD</button>
                         </div>
@@ -310,9 +443,16 @@ const AddNewProduct: React.FC = () => {
                 </div>
             </div>
         </div>
-        <ModalBoxAdmin pullCategories={pullCategories} />
+        {productFormStatus === 'EDIT' ?
+        <ProductFormModalBox pullCategories={pullCategories} categoriesSeletedProduct={categories} />
+        : <ProductFormModalBox pullCategories={pullCategories} />
+        }
+        {/* {productFormStatus === 'EDIT' ?
+        console.log("Here : ", categories)
+        : console.log(categories)
+        } */}
         </>
     )
 };
 
-export default AddNewProduct;
+export default AdminProductForm;

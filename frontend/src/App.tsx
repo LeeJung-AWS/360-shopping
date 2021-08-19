@@ -1,5 +1,5 @@
 import AdminPage from './pages/AdminPage';
-import Footer from './components/Footer';
+// import Footer from './components/Footer';
 
 function App() {
   return (

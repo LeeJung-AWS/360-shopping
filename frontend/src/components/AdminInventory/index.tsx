@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react';
 
 // import productForm from "../AddNewProduct";
 
-import ProductForm from '../ProductForm';
-import Table from '../Table';
+import AdminProductForm from '../AdminProductForm';
+import AdminProductTable from '../AdminProductTable';
 
 import { getProducts, deleteProduct, deleteS3Img } from "../../utils/API";
 
@@ -18,7 +18,7 @@ interface productListDataDype{
     'price': string
 }
 
-const Inventory: React.FC = () => {
+const AdminInventory: React.FC = () => {
 
     const [ productList, setProductList] = useState<productListDataDype[] | undefined>(undefined);
     const [ filteredProductList, setFilteredProductList] = useState<productListDataDype[] | undefined>(undefined);
@@ -319,10 +319,10 @@ const Inventory: React.FC = () => {
             </div>
         </div>
 
-        <Table tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={filteredProductList? (filteredProductList.length > 0 ? filteredProductList : undefined): undefined} onClickCheckInventory={onClickCheckInventory} sortingByTableHeader={sortingByTableHeader} handleProductForm={handleProductForm} />
+        <AdminProductTable tHeads={["","","","PRODUCT", "STOCK", "PRICE"]} tBodys={filteredProductList? (filteredProductList.length > 0 ? filteredProductList : undefined): undefined} onClickCheckInventory={onClickCheckInventory} sortingByTableHeader={sortingByTableHeader} handleProductForm={handleProductForm} />
         <div className="modal" id="productForm">
             <div className="modal-content" id="productForm-content">
-                <ProductForm productId={currentProductID} />    
+                <AdminProductForm productId={currentProductID} />    
             </div>    
         </div>
         <div id="bar-menu-inventory">
@@ -348,4 +348,4 @@ const Inventory: React.FC = () => {
     </>);
 };
 
-export default Inventory;
+export default AdminInventory;
