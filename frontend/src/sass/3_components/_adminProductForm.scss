@@ -168,7 +168,34 @@
     margin-top: 32px;
 }
 
+#thumbnail-box{
+    display: flex;
+    align-items: center;
 
+    #thumbnail-upload-icon{
+        flex: 0 0 10%;
+        color:rgb(150, 150, 150);    
+    }
+
+    #thumbnail-image-text{
+        flex: 0 0 80%;
+        font-size: 0.9rem;
+        // display: flex;
+        // justify-content: flex-start;
+    }
+
+    #thumbnail-close-btn{
+        opacity: 100%;
+    }
+    #thumbnail-close-btn:hover{
+        color: red;
+        background-color: white;
+    }
+
+}
+#thumbnail-box:hover{
+    cursor: pointer;
+}
 
 .uploaded-images{
     position: relative;

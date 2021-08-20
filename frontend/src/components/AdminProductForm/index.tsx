@@ -32,9 +32,10 @@ const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
    const [categories, setCategories] = useState<string[] | undefined>(undefined);
 
     // Store blob img URLs from Local Document by URL.creatObjectURL()
+    // const [ uploadedThumbnail, setUploadedThumbnail ] = useState<string | undefined>('');
    const [ uploadedImg, setUploadedImg ] = useState<string[]>([]);
    const [ imgAWSUrl, setImgAWSUrl ] = useState<string[]>([]);
-   const [ thumbnailImgURL, setThumbnailImgURL] = useState<string>('');
+   const [ thumbnailImgURL, setThumbnailImgURL] = useState<string|undefined>(undefined);
    const [ deletedImgKey, setDeletedImgKey] = useState<{'key': string}[]>();
 
     // Checking getting productId from Table then Display Edit Product
@@ -59,6 +60,7 @@ const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
             setSalePrice(seletedProduct.salePrice)
             setQuantity(seletedProduct.quantity)
             setSku(seletedProduct.sku)
+            // setUploadedThumbnail(seletedProduct.thumbnailImgURL)
             setThumbnailImgURL(seletedProduct.thumbnailImgURL)
             setImgAWSUrl(seletedProduct.imgURLlists)
             setCategories(seletedProduct.categories)
@@ -181,10 +183,14 @@ const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
     // Send new product data to Backend
     async function onClickSaveBtn() {
         // Post product data to Product DB.
+        let thumbnailImg = imgAWSUrl[0];
+        if(thumbnailImgURL){
+            thumbnailImg = thumbnailImgURL;
+        }
         const response = await postNewProduct({
             'title': title,
             'description': description,
-            'thumbnailImgURL': imgAWSUrl[0],
+            'thumbnailImgURL': thumbnailImg,
             'imgURLlists': imgAWSUrl,
             'price': price, 
             'onSale': isPrice,
@@ -228,10 +234,16 @@ const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
                await deleteS3Img(key);
             })
         }
+
+        let thumbnailImg = imgAWSUrl[0];
+        if(thumbnailImgURL){
+            thumbnailImg = thumbnailImgURL;
+        }
+
         const updatedProductData = {
             'title': title,
             'description': description,
-            'thumbnailImgURL': imgAWSUrl[0],
+            'thumbnailImgURL': thumbnailImg,
             'imgURLlists': imgAWSUrl,
             'price': price, 
             'onSale': isPrice,
@@ -339,6 +351,47 @@ const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
         return response02;
     }
 
+    const thumbnailBoxClick = () => {
+        const thumbnailImgEl = document.getElementById('thumbnail-img-input')!;
+        thumbnailImgEl.click();
+    }
+
+    const handleThumbnailInputChange = async(event:any) => {
+        // console.log(event.target.files[0]);
+        // console.log(URL.createObjectURL(event.target.files[0]))
+        // const thumbnailCloseBtnEl = document.getElementById('thumbnail-close-btn')!;
+        // thumbnailCloseBtnEl.style.opacity = '100%';        
+
+        // setUploadedThumbnail(URL.createObjectURL(event.target.files[0]));
+
+         // Get S3-UploadUrl
+         const s3UploadUrl = await s3GetUploadUrl();
+        
+         // Upload Img to AWS S3
+         await fetch(s3UploadUrl, {
+             method: "PUT",
+             headers: {
+               "Content-Type": "multipart/form-data"
+             },
+             body: event.target.files[0]
+         })
+         
+         setThumbnailImgURL(s3UploadUrl.split('?')[0]);
+
+    }
+
+    const onClickThumbnailCloseBtn = async(event: any) =>{
+        // setUploadedThumbnail(undefined);
+        // setThumbnailImgURL(undefined);
+        // const thumbnailCloseBtnEl = document.getElementById('thumbnail-close-btn')!;
+        // thumbnailCloseBtnEl.style.opacity = '0%'; 
+        let s3Key = event.target.dataset.s3key.split("amazonaws.com/")[1]
+
+        await deleteS3Img({'key': s3Key});
+
+        setThumbnailImgURL(undefined);
+    }
+
     return (
         <>
         <div className="card">
@@ -369,24 +422,40 @@ const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
                         </div>
                     </div>
                 :<></>}
-                {uploadedImg.length === 0 ? <></> :
-                    <div id="multiple-image-upload">
-                        {uploadedImg.map((img, index) => {
-                            return (<div className="uploaded-images dragMenu"  data-draggable="true" key={index}>
+                {uploadedImg.length === 0 ? <></> 
+                    :<div>
+                        <div id="multiple-image-upload">
+                            {uploadedImg.map((img, index) => {
+                                return (<div className="uploaded-images dragMenu"  data-draggable="true" key={index}>
+                                    <div>
+                                        <img src={img} alt="uploaded-product" width="110px" height="110px" />
+                                    </div>
+                                    <div id="img-delete-btn">
+                                        <button onClick={onClickDeleteS3Img} data-image-index={index} data-s3key={img}>X</button>
+                                    </div>
+
+                                </div>)
+                            })}
+                            {uploadedImg.length < 12?
+                            <label className="file-upload-label" onClick={handleClick}>
+                                <i className="fas fa-plus"></i>
+                            </label>:<></>
+                            }
+                        </div>
+                        <div className="productForm-body-item-body">
+                            <div className="productForm-body-item-body-items" id="thumbnail-box">
+                                <div id="thumbnail-upload-icon"  onClick={thumbnailBoxClick}>
+                                    {thumbnailImgURL? <img src={thumbnailImgURL} width='30px' height='30px' alt='thumbnail' /> : <i className="fas fa-upload"></i>}
+                                    <input type="file" style={{"display": "none"}} id="thumbnail-img-input" accept="image/gif, image/jpeg, image/png" onChange={handleThumbnailInputChange} />
+                                </div>
+                                <div id="thumbnail-image-text"  onClick={thumbnailBoxClick}>
+                                    <p>Thumbnail image</p>
+                                </div>
                                 <div>
-                                    <img src={img} alt="uploaded-product" width="110px" height="110px" />
+                                    {thumbnailImgURL? <button id="thumbnail-close-btn" data-s3key={thumbnailImgURL} onClick={onClickThumbnailCloseBtn}>x</button> : <></>}
                                 </div>
-                                <div id="img-delete-btn">
-                                    <button onClick={onClickDeleteS3Img} data-image-index={index} data-s3key={img}>X</button>
-                                </div>
-                                
-                            </div>)
-                        })}
-                        {uploadedImg.length < 12?
-                        <label className="file-upload-label" onClick={handleClick}>
-                            <i className="fas fa-plus"></i>
-                        </label>:<></>
-                        }
+                            </div>
+                        </div>    
                     </div>
                 }
                 <div className="productForm-body-item">
@@ -447,10 +516,6 @@ const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
         <ProductFormModalBox pullCategories={pullCategories} categoriesSeletedProduct={categories} />
         : <ProductFormModalBox pullCategories={pullCategories} />
         }
-        {/* {productFormStatus === 'EDIT' ?
-        console.log("Here : ", categories)
-        : console.log(categories)
-        } */}
         </>
     )
 };
