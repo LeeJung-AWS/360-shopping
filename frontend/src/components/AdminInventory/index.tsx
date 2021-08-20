@@ -197,11 +197,15 @@ const AdminInventory: React.FC = () => {
             amount++;
             productIdArr.push(productId);
 
-            s3key.forEach(key => {
-                if(key !== ""){
-                    tempS3keys.push({'key': key.split("amazonaws.com/")[1]})
-                }
-            })
+            // Taking all S3key from the product data
+            if(s3key.length > 0){
+                // console.log('s3key ', s3key)
+                s3key.forEach(key => {
+                    if(key !== ""){
+                        tempS3keys.push({'key': key.split("amazonaws.com/")[1]})
+                    }
+                })
+            }
 
         }else{
             if(amount === 1) {
@@ -210,23 +214,21 @@ const AdminInventory: React.FC = () => {
             }
             amount--;
             productIdArr.splice(productIdArr.indexOf(productId), 1);
-
+            let tempFilteredS3Key:{'key':string}[] = [];
             s3key.forEach(key => {
-                console.log(tempS3keys.indexOf({'key': key.split("amazonaws.com/")[1]}))
+                tempFilteredS3Key = tempS3keys.filter(selectedKey => selectedKey.key !== key.split("amazonaws.com/")[1]);
+                // console.log(tempS3keys.indexOf({'key': key.split("amazonaws.com/")[1]}))
                 // if(key !== ""){
                     // tempS3keys.splice(tempS3keys.indexOf({'key': key.split("amazonaws.com/")[1]}), 1)
                 // }
             })
+            tempS3keys = tempFilteredS3Key;
         }
 
         setSelectedProductId(productIdArr);
         setAmountOfSelectedProduct(amount);
+        setSelectedS3key([...tempS3keys]);
 
-        if(selectedS3key){
-            setSelectedS3key([...selectedS3key, ...tempS3keys]);
-        }else{
-            setSelectedS3key([...tempS3keys]);
-        }
         // console.log(selectedProductId)
         console.log(tempS3keys);
     } 
