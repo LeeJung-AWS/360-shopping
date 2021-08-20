@@ -3,8 +3,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-// import productForm from "../AddNewProduct";
-
 import AdminProductForm from '../AdminProductForm';
 import AdminProductTable from '../AdminProductTable';
 
@@ -69,21 +67,6 @@ const AdminInventory: React.FC = () => {
 
     function addProductOnClick() {
         handleProductForm();
-        // const productFormEl = document.getElementById('productForm')!;
-        // productFormEl.style.display = 'block';
-        // productFormEl.style.padding = '10px';
-
-        // const productFormContentEl = document.getElementById('productForm-content')!;
-        // productFormContentEl.style.width = '90%';
-        // productFormContentEl.style.height = '100%';
-        // productFormContentEl.style.padding = '0';
-
-        // let productFormContentChildNodeEl = productFormContentEl.firstChild as HTMLElement;
-        // productFormContentChildNodeEl.style.margin = '0';
-
-        // // block Scrollable Body
-        // document.body.style.overflowY = 'hidden';
-
     }
 
     // When the user clicks anywhere outside of the modal, close it
