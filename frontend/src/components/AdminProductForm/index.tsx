@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 import ProductFormModalBox from './ProductFormModalBox';
 
-import { postNewProduct, getProduct,  putProduct } from '../../utils/API';
+import { postNewProduct, getProduct,  putProduct, s3GetUploadUrl, deleteS3Img } from '../../utils/API';
 import { NumberComma } from '../../utils/helpers';
 
 interface productFormData {
@@ -311,12 +311,12 @@ const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
       setUploadedImg([...uploadedImg, ...fileUploaded]);
     };
 
-    // TODO: move it to util/API
-    const s3GetUploadUrl = async () =>{
-        const urlRaw = await fetch("/api/aws/getFileUploadURL");
-        const url = await urlRaw.json();
-        return url;
-    }
+    // // TODO: move it to util/API
+    // const s3GetUploadUrl = async () =>{
+    //     const urlRaw = await fetch("/api/aws/getFileUploadURL");
+    //     const url = await urlRaw.json();
+    //     return url;
+    // }
 
     const onClickDeleteS3Img = async (event: any) => {
         const index = event.target.dataset.imageIndex;
@@ -337,19 +337,19 @@ const AdminProductForm: React.FC<productFormData> = ( {productId} ) => {
         // console.log(response);
     }
 
-    // TODO: move it to util/API
-    const deleteS3Img = async (key: {key: string}) =>{
-        // const response = await fetch("/api/aws/deleteS3Img");
-        const response = await fetch("/api/aws/deleteS3Img", {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json' 
-            },
-            body: JSON.stringify(key)
-        });
-        const response02 = await response.json();
-        return response02;
-    }
+    // // TODO: move it to util/API
+    // const deleteS3Img = async (key: {key: string}) =>{
+    //     // const response = await fetch("/api/aws/deleteS3Img");
+    //     const response = await fetch("/api/aws/deleteS3Img", {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json' 
+    //         },
+    //         body: JSON.stringify(key)
+    //     });
+    //     const response02 = await response.json();
+    //     return response02;
+    // }
 
     const thumbnailBoxClick = () => {
         const thumbnailImgEl = document.getElementById('thumbnail-img-input')!;
