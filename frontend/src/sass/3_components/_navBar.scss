@@ -1,5 +1,5 @@
 .navBar-header{
-    #admin-page-btn{
+    #navBar-page-btn{
         text-decoration: none;
         padding:0.5rem 1.5rem 0.5rem 0.5rem;
         color: white;
@@ -14,14 +14,14 @@
     color: $text-color;
 }
 
-#mobile-menu {
+#navBar-mobile-menu {
     position: absolute;
     top: 0.5rem;
     right: 2rem;
     z-index: 2;
 }
 
-#mobile-Links{
+#navBar-mobile-Links{
     display: block;
     position: absolute;
     bottom: 0rem;
@@ -43,7 +43,7 @@
         
     }
 
-    a:nth-of-type(5) { 
+    a:last-child { 
         border-bottom: 0.5px solid;
     }   
 }
@@ -83,7 +83,7 @@
         padding: 0;
     }
 
-    .navBar-header #admin-page-btn {
+    .navBar-header #navBar-page-btn {
         width: 100%;
         text-align: center;
         font-size: 1.5rem;
@@ -98,7 +98,7 @@
         display: none;
     }
     
-    #mobile-Links{
+    #navBar-mobile-Links{
         display: none!important;
     }
     
@@ -106,13 +106,13 @@
 
 /* 992px and Greater than 992px */
 @media screen and (min-width: 992px) {
-    .adminNav-header {
+    .navBar-header {
         padding: 0 6% 0 0;
         flex-direction: row;
         align-items: center;
     }
 
-    .adminNav-header #admin-page-btn {
+    .navBar-header #navBar-page-btn {
         width: fit-content;
         border-radius: 0 10px 10px 0;
     }
