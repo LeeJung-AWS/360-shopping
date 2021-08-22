@@ -39,7 +39,7 @@ const Navbar: React.FC<NavbarDatatype> = ({header, links, linkTitle}) => {
         <div id="navBar-mobile-Links">
             {links.map((link, index) => {
                 return(
-                    <Link to={`/${link}`} onClick={onclickMenu}>{linkTitle[index]}</Link>
+                    <Link to={`/${link}`} key={link} onClick={onclickMenu}>{linkTitle[index]}</Link>
                 )
             })}
         </div>
@@ -47,7 +47,7 @@ const Navbar: React.FC<NavbarDatatype> = ({header, links, linkTitle}) => {
             <ul>
                 {links.map((link, index) => {
                     return(
-                        <li>
+                        <li key={linkTitle[index]}>
                             <Link to={`/${link}`} onClick={onclickMenu}>{linkTitle[index]}</Link>
                         </li>
                     )
