@@ -1,12 +1,12 @@
-import AdminPage from './pages/AdminPage';
-// import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+// import AdminPage from './pages/AdminPage';
 
 function App() {
   return (
-    <div>
-      <AdminPage />
-      {/* <Footer /> */}
-    </div>
+    <>
+      <HomePage />
+      {/* <AdminPage /> */}
+    </>
   );
 }
 
