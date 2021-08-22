@@ -1,0 +1,119 @@
+.navBar-header{
+    #admin-page-btn{
+        text-decoration: none;
+        padding:0.5rem 1.5rem 0.5rem 0.5rem;
+        color: white;
+        background-color: $tertiary;
+        border-radius: 0 10px 10px 0;
+    }
+}
+
+/* Mobile Menu */
+.navBar-mobile a{
+    font-size: 2.5rem;
+    color: $text-color;
+}
+
+#mobile-menu {
+    position: absolute;
+    top: 0.5rem;
+    right: 2rem;
+    z-index: 2;
+}
+
+#mobile-Links{
+    display: block;
+    position: absolute;
+    bottom: 0rem;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.95);
+    width: 100%;
+    height: 0;
+    text-align: center;
+    font-size: 32px;
+    overflow-x: hidden;
+    transition: all 0.3s ease-out;
+
+    a { 
+        color: $tertiary;
+        padding: 1rem 0;
+        text-decoration: none;
+        display: block;
+        border-top: 0.5px solid;
+        
+    }
+
+    a:nth-of-type(5) { 
+        border-bottom: 0.5px solid;
+    }   
+}
+
+/* Desktop Menu */
+.navBar-desktop {
+    display: none;
+}
+
+.navBar-desktop ul{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+}
+
+.navBar-desktop li{
+    height: 6rem;
+    padding: 2.0rem 0;
+}
+
+.navBar-desktop a {
+    text-decoration: none;
+    padding: 5px 10px;
+    color: $text-color;
+    font-size: 1.1rem;
+}
+
+.navBar-desktop ul li:hover {
+  border-bottom: 0.2rem solid rgb(100, 100, 100);
+}
+
+/* 768px and Greater than 768px */
+@media screen and (min-width: 768px) {
+    .navBar-header {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .navBar-header #admin-page-btn {
+        width: 100%;
+        text-align: center;
+        font-size: 1.5rem;
+        border-radius: 0;
+    }
+
+    .navBar-desktop {
+        display: block;
+    }
+
+    .navBar-mobile{
+        display: none;
+    }
+    
+    #mobile-Links{
+        display: none!important;
+    }
+    
+}
+
+/* 992px and Greater than 992px */
+@media screen and (min-width: 992px) {
+    .adminNav-header {
+        padding: 0 6% 0 0;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .adminNav-header #admin-page-btn {
+        width: fit-content;
+        border-radius: 0 10px 10px 0;
+    }
+}
