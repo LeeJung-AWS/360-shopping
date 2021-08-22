@@ -1,8 +1,13 @@
-// Style: sass/layout/_adminNav.scss
+// Style: sass/layout/_navBar.scss
 
 import { Link } from "react-router-dom";
 
-const AdminNav: React.FC = () => {
+interface NavbarDatatype {
+    header: string;
+    links: string[];
+}
+
+const Navbar: React.FC<NavbarDatatype> = ({header, links}) => {
 
     // In Mobile Size, display or hide Navigation Menu
     const mobileNavClick = () => {
@@ -25,27 +30,31 @@ const AdminNav: React.FC = () => {
     }
 
     return (
-    <header className="adminNav-header">
-        <Link id="admin-page-btn" to="/">360-Shopping</Link>
-        <nav className="adminNav-mobile">
+    <header className="navBar-header">
+        <Link id="admin-page-btn" to="/">{header}</Link>
+        <nav className="navBar-mobile">
             <a href="#navBar" id="mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></a>
         </nav>
         <div id="mobile-Links">
-                <Link to="/login" onClick={onclickMenu}>Login</Link>
-                <Link to="/contact" onClick={onclickMenu}>Contact Us</Link>
-            </div>
-        <nav className="adminNav-desktop">
+            {links.map(link => {
+                return(
+                    <Link to={`/${link}`} onClick={onclickMenu}>{link}</Link>
+                )
+            })}
+        </div>
+        <nav className="navBar-desktop">
             <ul>
-                <li>
-                    <Link to="/login">Login</Link>
-                </li>
-                <li>
-                    <Link to="/contact">Contact Us</Link>
-                </li>
+                {links.map(link => {
+                    return(
+                        <li>
+                            <Link to={`/${link}`}>{link}</Link>
+                        </li>
+                    )
+                })}
             </ul>
         </nav>
     </header>
     );
 };
 
-export default AdminNav;
+export default Navbar;
