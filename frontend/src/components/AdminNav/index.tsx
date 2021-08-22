@@ -36,9 +36,13 @@ const AdminNav: React.FC = () => {
                 <Link to="/adminPage/orderHistory" onClick={onclickMenu}>Order history</Link>
                 <Link to="/adminPage/messages" onClick={onclickMenu}>Messages</Link>
                 <Link to="/adminPage/printReports" onClick={onclickMenu}>Print reports</Link>
+                <Link to="/" style={{color:"red"}} onClick={onclickMenu}>Home Page</Link>
             </div>
         <nav className="adminNav-desktop">
             <ul>
+                <li>
+                    <Link to="/" style={{color:"red"}} >Home Page</Link>
+                </li>
                 <li>
                     <Link to="/adminPage/marketing">Marketing</Link>
                 </li>
