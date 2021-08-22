@@ -52,6 +52,34 @@ const Navbar: React.FC<NavbarDatatype> = ({header, links, linkTitle}) => {
                         </li>
                     )
                 })}
+                <li className='dropdown'>
+                    <Link to='/test'><i className="far fa-user dropbtn" ></i></Link>
+                    <div className="dropdown-content">
+                        <div className="hello-userName">Hello User</div>
+                        <Link to ="/">Sign Out</Link>
+                        <Link to="#">My Orders</Link>
+                        <div className="myHr"></div>
+                        <Link to="#">My Message</Link>
+                        <Link to="#">Recently Viewed</Link>
+                        <Link to="/sign">Sign In / Register</Link>
+                    </div>
+                </li>
+                <li className='dropdown'>
+                    <Link to='/test'><i className="fas fa-shopping-cart"></i> 0</Link>
+                    <div className="dropdown-content">
+                        {/* <Link to="#">CART BOX</Link> */}
+                        <span style={{"color":"rgb(100, 100, 100)"}}>
+                            <span>Shopping Bag is Empty</span>
+                            Welcome back! If you had items in your shopping bag, we have saved them for you. You can <Link to="/sign" style={{"float":"right"}}>SIGN IN</Link>now to see them, or whenever you're ready to check out.
+                        </span>
+                    </div>
+                </li>
+                <li className='dropdown'>
+                    <Link to="/"><i className="far fa-heart"></i> 0</Link>
+                    <div className="dropdown-content">
+                        <Link to="#">Favorite Item</Link>
+                    </div>
+                </li>
             </ul>
         </nav>
     </header>
