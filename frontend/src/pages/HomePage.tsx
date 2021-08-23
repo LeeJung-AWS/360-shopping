@@ -11,32 +11,31 @@ import SignForm from "../components/SignForm";
 const HomePage: React.FC = () => {
 
     return(<Router>
-        <Switch>
-            <Route exact path="/">
-                <Navbar />
-                <SignForm />
-                <main className="row">
-                    <section className="card">
-                        <div className="card-header">
-                            <h4>HOME PAGE</h4>
-                        </div>
-                        <div className="card-body">
-                            <p>Home Page Information</p>
-                        </div>
-                    </section>
-                </main>
-                <Footer />
-            </Route>
-            <Route exact path="/login">
-                <p>login</p>
-            </Route>
-            <Route exact path="/contact">
-                <p>contact</p>
-            </Route>
-            <Route exact path="/adminPage">
-                <AdminPage />
-            </Route>
-        </Switch>
+        <Navbar />
+        <main className="row">
+            <Switch>
+                <Route exact path="/">
+                        <section className="card">
+                            <div className="card-header">
+                                <h4>HOME PAGE</h4>
+                            </div>
+                            <div className="card-body">
+                                <p>Home Page Information</p>
+                            </div>
+                        </section>
+                </Route>
+                <Route exact path="/signForm">
+                    <SignForm />
+                </Route>
+                <Route exact path="/contact">
+                    <p>contact</p>
+                </Route>
+                <Route exact path="/adminPage">
+                    <AdminPage />
+                </Route>
+            </Switch>
+        </main>
+        <Footer />
     </Router>)
 
 }

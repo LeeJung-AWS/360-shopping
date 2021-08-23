@@ -9,7 +9,7 @@ const SignForm: React.FC = () => {
         console.log("sign in form")
     }
     return(<>
-    <div className="card">
+    <section className="card">
         <div className="card-header">
             <div className="signIn-register">
                 <div className="signIn-register-left">
@@ -61,14 +61,14 @@ const SignForm: React.FC = () => {
                             <div className="caution-confirm-password" >
                                 <span style={{ "color": "red" }}>Your passwords do not match, please try again.</span>
                             </div>
-                            <button className="custom-margin-signIn-register submit" >REGISTER</button>
                             <button className="custom-margin-signIn-register submit" disabled>REGISTER</button>
+                            {/* <button className="custom-margin-signIn-register submit" disabled>REGISTER</button> */}
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </>)}
 
 export default SignForm;
