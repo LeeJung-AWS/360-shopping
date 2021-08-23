@@ -30,14 +30,14 @@ const Navbar: React.FC = () => {
         <Link id="navBar-page-btn" to="/">360-Shopping</Link>
         <nav className="navBar-mobile">
             <Link to='/cart'><i className="fas fa-shopping-cart" id="mobile-cart-menu"></i></Link>
-            <Link to="" id="navBar-mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></Link>
+            <Link to="#" id="navBar-mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></Link>
         </nav>
         <div id="navBar-mobile-Links">
             <Link to='/women' onClick={onclickMenu}>WOMEN</Link>
             <Link to='/kids' onClick={onclickMenu}>KIDS</Link>
             <Link to='/men' onClick={onclickMenu}>MEN</Link>
             <Link to='/beauty' onClick={onclickMenu}>BEAUTY</Link>
-            <Link to='/login' onClick={onclickMenu}>LOGIN</Link>
+            <Link to='/signForm' onClick={onclickMenu}>LOGIN</Link>
             <Link to='/adminPage' style={{color:"red"}}  onClick={onclickMenu}>ADMIN PAGE</Link>
         </div>
         <nav className="navBar-desktop">
