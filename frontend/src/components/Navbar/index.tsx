@@ -63,12 +63,13 @@ const Navbar: React.FC = () => {
                     <Link to='/test'><i className="far fa-user" ></i></Link>
                     <div className="dropdown-content">
                         <div className="hello-userName">Hello User</div>
-                        <Link to ="/">Sign Out</Link>
+                        <Link to="#">Your Profile</Link>
                         <div className="myHr"></div>
                         <Link to="#">My Orders</Link>
-                        <Link to="#">My Message</Link>
+                        <Link to="#">Your Messages</Link>
                         <Link to="#">Recently Viewed</Link>
                         <Link to="/sign">Sign In / Register</Link>
+                        <Link to ="/">Sign Out</Link>
                     </div>
                 </li>
                 <li className='dropdown'>
