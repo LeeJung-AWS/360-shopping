@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import AdminPage from "./AdminPage";
+import SignForm from "../components/SignForm";
 
 const HomePage: React.FC = () => {
 
@@ -13,6 +14,7 @@ const HomePage: React.FC = () => {
         <Switch>
             <Route exact path="/">
                 <Navbar />
+                <SignForm />
                 <main className="row">
                     <section className="card">
                         <div className="card-header">
