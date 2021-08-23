@@ -61,8 +61,8 @@ const SignForm: React.FC = () => {
                             <div className="caution-confirm-password" >
                                 <span style={{ "color": "red" }}>Your passwords do not match, please try again.</span>
                             </div>
-                            <button className="custom-margin-signIn-register submit" >REGISTER</button>
                             <button className="custom-margin-signIn-register submit" disabled>REGISTER</button>
+                            {/* <button className="custom-margin-signIn-register submit" disabled>REGISTER</button> */}
                         </form>
                     </div>
                 </div>
