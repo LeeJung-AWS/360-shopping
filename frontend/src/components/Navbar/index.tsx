@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
                         <Link to="#">My Orders</Link>
                         <Link to="#">My Message</Link>
                         <Link to="#">Recently Viewed</Link>
-                        <Link to="/sign">Sign In / Register</Link>
+                        <Link to="/signForm">Sign In / Register</Link>
                     </div>
                 </li>
                 <li className='dropdown'>

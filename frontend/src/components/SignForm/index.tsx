@@ -9,7 +9,7 @@ const SignForm: React.FC = () => {
         console.log("sign in form")
     }
     return(<>
-    <div className="card">
+    <section className="card">
         <div className="card-header">
             <div className="signIn-register">
                 <div className="signIn-register-left">
@@ -68,7 +68,7 @@ const SignForm: React.FC = () => {
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </>)}
 
 export default SignForm;
