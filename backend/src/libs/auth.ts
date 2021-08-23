@@ -5,9 +5,8 @@ import { Request, Response, NextFunction} from 'express';
 const secret = 'mysecretsshhhhh';
 const expiration = '2h';
 
-module.exports = {
   // function for our authenticated routes
-  authMiddleware: function (req:Request, res:Response, next:NextFunction) {
+export const authMiddleware = (req:Request, res:Response, next:NextFunction) => {
     // allows token to be sent via  req.query or headers
     let token = req.query.token || req.headers.authorization;
 
@@ -21,6 +20,7 @@ module.exports = {
 
     // verify token and get user data out of it
     try {
+        // console.log(token)
       const decoded = jwt.verify(<string>token, secret, { maxAge: expiration });
       (<any>req).user = (<any>decoded).data;
     } catch {
@@ -30,10 +30,10 @@ module.exports = {
 
     // send to next endpoint
     next();
-  },
-  signToken: function ({ username, email, _id }:{username: string, email:string, _id:string}) {
+}
+
+export const signToken = ({ username, email, _id }:{username: string, email:string, _id:string}) => {
     const payload = { username, email, _id };
 
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
-  },
-};
+}
