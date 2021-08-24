@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import { validateEmail, validatePassword } from '../../../utils/helpers';
+import { createUser } from "../../../utils/API";
+import Auth from '../../../utils/auth';
 
 interface userFormDataType {
     'username': string 
@@ -73,7 +75,20 @@ const SignUp: React.FC = () => {
         event.preventDefault();
 
         console.log(userFormData)
+        try {
+            const response = await createUser(userFormData);
 
+            if (!response.ok) {
+                throw new Error('something went wrong!');
+            }
+
+            const { token, user } = await response.json();
+            console.log(user);
+            Auth.login(token);
+        }
+        catch(err) {
+            console.error(err);
+        }
     }
     return(
         <div id="signUp">
