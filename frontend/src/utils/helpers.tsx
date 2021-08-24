@@ -27,3 +27,51 @@ export function capitalizeFirstLetter(string: string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
   }
 }
+
+export function validateEmail(email: string) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+export function validatePassword(password: string) {
+    // let isSpecial = "~`!#$%^&*+=-[]\\';,/{}|\":<>?@";
+    // let isNumbers = "0123456789";
+    let lowerCaseLetters = /[a-z]/g;
+    let numbers = /[0-9]/g;
+    let special = /[^A-Za-z0-9]/g;
+    let returnObj = {'display': 'block', 'char8': 'red', 'specialChar': 'red', 'number': 'red', 'letter': 'red'}
+
+    if (password.length >= 8) {
+        returnObj.char8 = '#00c200';
+    }else{
+        returnObj.char8 = 'red';
+    }
+
+    if(password.match(lowerCaseLetters)){
+        returnObj.letter = '#00c200';
+    }else{
+        returnObj.letter = 'red';
+    }
+
+    if(password.match(numbers)){
+        returnObj.number = '#00c200';
+    }else{
+        returnObj.number = 'red';
+    }
+
+    if(password.match(special)){
+        returnObj.specialChar = '#00c200';
+    }else{
+        returnObj.specialChar = 'red';
+    }
+
+    if(returnObj.char8 === '#00c200'
+    && returnObj.specialChar === '#00c200'
+    && returnObj.number === '#00c200'
+    && returnObj.letter === '#00c200'){
+        returnObj = {...returnObj, 'display': 'none'}
+        return returnObj;
+    }else{
+        return returnObj;
+    }
+}
