@@ -31,6 +31,7 @@ export const userCreate: RequestHandler = async (req, res, next) => {     // exp
 }
 
 export const login:RequestHandler = async (req, res, next) => {
+  // console.log(req.body);
     const user:any = await User.findOne({ $or: [{ username: req.body.username }, { email: req.body.email }] });
     if (!user) {
       return res.status(400).json({ message: "Can't find this user" });
@@ -42,5 +43,7 @@ export const login:RequestHandler = async (req, res, next) => {
       return res.status(400).json({ message: 'Wrong password!' });
     }
     const token = signToken(user);
+    // console.log(user)
+    // console.log(token)
     res.json({ token, user });
 }
