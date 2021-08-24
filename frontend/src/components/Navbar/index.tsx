@@ -1,10 +1,20 @@
 // Style: sass/layout/_navBar.scss
-
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 
+import Auth from '../../utils/auth';
+import { capitalizeFirstLetter } from '../../utils/helpers';
 
 const Navbar: React.FC = () => {
+    const [ userName, setUserName ] = useState('');
 
+    useEffect(() => {
+        if(Auth.getToken()){
+            // console.log('test');
+            let userProfile: any = Auth.getProfile()
+            setUserName(capitalizeFirstLetter(userProfile.data.username))
+        }
+    },[userName])
     // In Mobile Size, display or hide Navigation Menu
     const mobileNavClick = () => {
         const navBarmobileLinksEl = document.getElementById('navBar-mobile-Links')!;  // The exclamation mark means a developer knows there is a button element.( The value is not null )
@@ -16,7 +26,6 @@ const Navbar: React.FC = () => {
             navBarmobileLinksEl.style.height = '100%';
             navBarmobileLinksEl.style.padding = '6rem 2rem';
           }
-        
     }
 
     function onclickMenu () {
@@ -33,12 +42,19 @@ const Navbar: React.FC = () => {
             <Link to="#" id="navBar-mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></Link>
         </nav>
         <div id="navBar-mobile-Links">
+            {Auth.loggedIn() 
+            ? 
+            <>
             <Link to='/women' onClick={onclickMenu}>WOMEN</Link>
             <Link to='/kids' onClick={onclickMenu}>KIDS</Link>
             <Link to='/men' onClick={onclickMenu}>MEN</Link>
-            <Link to='/beauty' onClick={onclickMenu}>BEAUTY</Link>
-            <Link to='/signForm' onClick={onclickMenu}>LOGIN</Link>
-            <Link to='/adminPage' style={{color:"red"}}  onClick={onclickMenu}>ADMIN PAGE</Link>
+            <Link to='/beauty' onClick={onclickMenu}>BEAUTY</Link> 
+            <Link to='#' onClick={Auth.logout}>LOGOUT</Link> 
+            {userName==='Admin'?<Link to='/adminPage' style={{color:"red"}}  onClick={onclickMenu}>ADMIN PAGE</Link>:<></>}
+            </>
+            : 
+            <Link to='/signForm' onClick={onclickMenu}>LOGIN/SIGNUP</Link>}
+            
         </div>
         <nav className="navBar-desktop">
             <ul>
@@ -54,22 +70,27 @@ const Navbar: React.FC = () => {
                 <li>
                     <Link to='/beauty' onClick={onclickMenu}>BEAUTY</Link>
                 </li>
-                <li>
+                {userName==='Admin'?<li>
                     <Link to='/adminPage' style={{color:"red"}} onClick={onclickMenu}>ADMIN PAGE</Link>
-                </li>
+                </li>: <></>}
             </ul>
             <ul>
                 <li className='dropdown'>
                     <Link to='/test'><i className="far fa-user" ></i></Link>
                     <div className="dropdown-content">
-                        <div className="hello-userName">Hello User</div>
-                        <Link to="#">Your Profile</Link>
+                        {Auth.loggedIn() ?<>
+                        <div className="hello-userName">Hello, {userName}</div>
                         <div className="myHr"></div>
+                        <Link to="#">Your Profile</Link>
                         <Link to="#">My Orders</Link>
                         <Link to="#">Your Messages</Link>
                         <Link to="#">Recently Viewed</Link>
+                        <Link to="#" onClick={Auth.logout}>Sign Out</Link> 
+                        </>
+                        :
                         <Link to="/signForm">Sign In / Register</Link>
-                        <Link to ="/">Sign Out</Link>
+                        
+                    }
                     </div>
                 </li>
                 <li className='dropdown'>
