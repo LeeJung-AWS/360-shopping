@@ -87,12 +87,12 @@
     }
 }
 
-.caution-username{
+#caution-username{
     font-size: 11px;
     margin-top: 3px;
 }
 
-.caution-password{
+#caution-password{
     display: none;
     color: rgb(100, 100, 100);
     margin-top:10px;
@@ -102,7 +102,15 @@
     }
 }
 
-.caution-confirm-password{
+#caution-email-validation{
+    color: rgb(100, 100, 100);
+    font-size: 11px;
+    margin-top: 3px;
+    span{
+        display: block;
+    }
+}
+#caution-confirm-password{
     color: rgb(100, 100, 100);
     font-size: 11px;
     margin-top: 3px;

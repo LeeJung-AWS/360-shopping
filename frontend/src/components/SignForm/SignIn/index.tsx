@@ -32,10 +32,10 @@ const SignIn: React.FC = () => {
             setShowAlert(true);
           }
       
-          setUserFormData({
-            username: '',
-            password: '',
-          });
+        //   setUserFormData({
+        //     username: '',
+        //     password: '',
+        //   });
     }
 
     return(
