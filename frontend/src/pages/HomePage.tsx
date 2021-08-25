@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 // import AdminPage from "./AdminPage";
 import SignForm from "../components/SignForm";
+import DisplayProducts from "../components/DisplayProducts";
 
 interface ChildProps {
     setAdminPageState: () => void
@@ -19,14 +20,7 @@ const HomePage: React.FC<ChildProps> = ({setAdminPageState}) => {
         <main className="row">
             <Switch>
                 <Route exact path="/">
-                        <section className="card">
-                            <div className="card-header">
-                                <h4>HOME PAGE</h4>
-                            </div>
-                            <div className="card-body">
-                                <p>Home Page Information</p>
-                            </div>
-                        </section>
+                    <DisplayProducts />
                 </Route>
                 <Route exact path="/signForm">
                     <SignForm />
