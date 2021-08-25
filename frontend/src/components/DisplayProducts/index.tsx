@@ -1,6 +1,8 @@
 // Style : sass/components/_displayProducts.scss
 import { useState } from "react";
 
+import SignForm from "../SignForm";
+
 import { NumberComma } from "../../utils/helpers";
 import Auth from '../../utils/auth';
 
@@ -163,15 +165,38 @@ function onClickFavoriteBtn(event: any) {
         //TODO: Store Favorited Product into the user by ID
 
     }else{
-        // TODO: Show signin modal
-        console.log("Show signin Modal")
+        // Show signin modal
+        console.log("Show signin Modal");
+        const displayProductModalEl = document.getElementById('displayProduct-modal')!;
+        displayProductModalEl.style.display = 'block';
+
+        // block Scrollable Body
+        document.body.style.overflowY = 'hidden';
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event: any) {
+            if (event.target === displayProductModalEl) {   
+                displayProductModalEl.style.display = 'none';
+    
+                // Active Scrollable Body
+                document.body.style.overflowY = 'auto';
+            }
+        }
     }
 
 
     // TODO: Add the product on favorite DB
 }
 
-    return (
+function onClickModalCloseBtn() {
+    const displayProductModalEl = document.getElementById('displayProduct-modal')!;
+    displayProductModalEl.style.display = 'none';
+    
+    // Active Scrollable Body
+    document.body.style.overflowY = 'auto';
+}
+
+    return (<>
         <section className="products-lists-container">
             <section className="products-lists">
                 {dummyProductLists.map(product => {
@@ -199,7 +224,14 @@ function onClickFavoriteBtn(event: any) {
                 )
                 })}
             </section>
-        </section>)
+        </section>
+        <section className='modal' id="displayProduct-modal">
+            <div className='modal-content' id='displayProduct-modal-content'>
+                <button id="displayProduct-modal-content-closebtn" onClick={onClickModalCloseBtn}>Close</button>
+                <SignForm />
+            </div>
+        </section>
+    </>)
 }
 
 export default DisplayProducts;
