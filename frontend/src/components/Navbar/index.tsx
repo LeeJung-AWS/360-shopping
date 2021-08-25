@@ -11,6 +11,7 @@ interface ChildProps {
 
 const Navbar: React.FC<ChildProps> = ({ setAdminPageState }) => {
     const [ userName, setUserName ] = useState('');
+    const [ currentPage ,setCurrentPage ] = useState('');
 
     useEffect(() => {
         if(Auth.getToken()){
@@ -46,9 +47,13 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState }) => {
         setAdminPageState();
     }
 
+    function onClickDesktopNavMenu(event: any) {
+        setCurrentPage(event.target.dataset.name)
+    }
+
     return (
     <header className="navBar-header">
-        <Link id="navBar-page-btn" to="/">360-Shopping</Link>
+        <Link id="navBar-page-btn" to="/" data-name='main' onClick={onClickDesktopNavMenu}>360-Shopping</Link>
         <nav className="navBar-mobile">
             <Link to='/cart'><i className="fas fa-shopping-cart" id="mobile-cart-menu"></i></Link>
             <Link to="#" id="navBar-mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></Link>
@@ -70,17 +75,17 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState }) => {
         </div>
         <nav className="navBar-desktop">
             <ul>
-                <li>
-                    <Link to='/women'>WOMEN</Link>
+                <li className={currentPage === 'women' ? 'active-desktop-nav-menu': ''} >
+                    <Link to='/women' data-name='women' onClick={onClickDesktopNavMenu}>WOMEN</Link>
                 </li>
-                <li>
-                    <Link to='/kids'>KIDS</Link>
+                <li className={currentPage === 'kids' ? 'active-desktop-nav-menu': ''}>
+                    <Link to='/kids' data-name='kids' onClick={onClickDesktopNavMenu}>KIDS</Link>
                 </li>
-                <li>
-                    <Link to='/men'>MEN</Link>
+                <li className={currentPage === 'men' ? 'active-desktop-nav-menu': ''}>
+                    <Link to='/men' data-name='men' onClick={onClickDesktopNavMenu}>MEN</Link>
                 </li>
-                <li>
-                    <Link to='/beauty'>BEAUTY</Link>
+                <li className={currentPage === 'beauty' ? 'active-desktop-nav-menu': ''}>
+                    <Link to='/beauty' data-name='beauty' onClick={onClickDesktopNavMenu}>BEAUTY</Link>
                 </li>
                 {userName==='Admin'?<li>
                     <Link to='/adminPage' style={{color:"red"}} onClick={onClickAdminLink}>ADMIN PAGE</Link>
