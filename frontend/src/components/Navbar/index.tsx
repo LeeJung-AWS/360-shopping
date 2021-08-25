@@ -5,7 +5,11 @@ import { Link } from "react-router-dom";
 import Auth from '../../utils/auth';
 import { capitalizeFirstLetter } from '../../utils/helpers';
 
-const Navbar: React.FC = () => {
+interface ChildProps {
+    setAdminPageState: () => void
+}
+
+const Navbar: React.FC<ChildProps> = ({ setAdminPageState }) => {
     const [ userName, setUserName ] = useState('');
 
     useEffect(() => {
@@ -28,10 +32,18 @@ const Navbar: React.FC = () => {
           }
     }
 
-    function onclickMenu () {
+    function onclickMenu (event: any) {
         const navBarmobileLinksEl = document.getElementById('navBar-mobile-Links')!;
         navBarmobileLinksEl.style.height = '0';
         navBarmobileLinksEl.style.padding = '0';
+        // console.log(event.target.textContent)
+        if(event.target.textContent === 'ADMIN PAGE'){
+            setAdminPageState();
+        }
+    }
+
+    function onClickAdminLink() {
+        setAdminPageState();
     }
 
     return (
@@ -59,19 +71,19 @@ const Navbar: React.FC = () => {
         <nav className="navBar-desktop">
             <ul>
                 <li>
-                    <Link to='/women' onClick={onclickMenu}>WOMEN</Link>
+                    <Link to='/women'>WOMEN</Link>
                 </li>
                 <li>
-                    <Link to='/kids' onClick={onclickMenu}>KIDS</Link>
+                    <Link to='/kids'>KIDS</Link>
                 </li>
                 <li>
-                    <Link to='/men' onClick={onclickMenu}>MEN</Link>
+                    <Link to='/men'>MEN</Link>
                 </li>
                 <li>
-                    <Link to='/beauty' onClick={onclickMenu}>BEAUTY</Link>
+                    <Link to='/beauty'>BEAUTY</Link>
                 </li>
                 {userName==='Admin'?<li>
-                    <Link to='/adminPage' style={{color:"red"}} onClick={onclickMenu}>ADMIN PAGE</Link>
+                    <Link to='/adminPage' style={{color:"red"}} onClick={onClickAdminLink}>ADMIN PAGE</Link>
                 </li>: <></>}
             </ul>
             <ul>

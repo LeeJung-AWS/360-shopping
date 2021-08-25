@@ -8,7 +8,11 @@ import AdminTabMenu from '../components/AdminTabMenu';
 import ContentsTopMenu from '../components/AdminTabMenu/ContentsTopMenu';
 import AdminInventory from '../components/AdminInventory';
 
-const AdminPage: React.FC = () => {
+interface ChildProps {
+    setAdminPageState: () => void
+}
+
+const AdminPage: React.FC<ChildProps> = ({ setAdminPageState }) => {
      // Dummy Graph Data
      // TODO: retrieve data (DataType : Objects inside Array) for analyzing graph from DB
     const revenueContents = {
@@ -65,8 +69,9 @@ const AdminPage: React.FC = () => {
         }
     ]
 
-    return <Router>
-            <AdminNav />
+    return (<Router>
+    <AdminNav setAdminPageState={setAdminPageState}/>
+        <main className="row">
             <Switch>
                 <Route exact path="/adminPage">
                     <main className="adminPage-row">
@@ -107,7 +112,9 @@ const AdminPage: React.FC = () => {
                     <p>printReports Page</p>
                 </Route>
             </Switch>
-        </Router>
+        </main>
+    </Router>
+    )
 }
 
 export default AdminPage;

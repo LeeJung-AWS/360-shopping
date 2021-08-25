@@ -5,13 +5,17 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // Components
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import AdminPage from "./AdminPage";
+// import AdminPage from "./AdminPage";
 import SignForm from "../components/SignForm";
 
-const HomePage: React.FC = () => {
+interface ChildProps {
+    setAdminPageState: () => void
+}
+const HomePage: React.FC<ChildProps> = ({setAdminPageState}) => {
 
-    return(<Router>
-        <Navbar />
+    return(
+    <Router>
+        <Navbar setAdminPageState={setAdminPageState} />
         <main className="row">
             <Switch>
                 <Route exact path="/">
@@ -30,13 +34,14 @@ const HomePage: React.FC = () => {
                 <Route exact path="/contact">
                     <p>contact</p>
                 </Route>
-                <Route exact path="/adminPage">
+                {/* <Route exact path="/adminPage">
                     <AdminPage />
-                </Route>
+                </Route> */}
             </Switch>
         </main>
         <Footer />
-    </Router>)
+    </Router>
+    )
 
 }
 

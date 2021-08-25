@@ -2,7 +2,11 @@
 
 import { Link } from "react-router-dom";
 
-const AdminNav: React.FC = () => {
+interface ChildProps {
+    setAdminPageState: () => void
+}
+
+const AdminNav: React.FC<ChildProps> = ({ setAdminPageState }) => {
 
     // In Mobile Size, display or hide Navigation Menu
     const mobileNavClick = () => {
@@ -18,10 +22,17 @@ const AdminNav: React.FC = () => {
         
     }
 
-    function onclickMenu () {
+    function onclickMenu (event: any) {
         const mobileLinksEl = document.getElementById('mobile-Links')!;
         mobileLinksEl.style.height = '0';
         mobileLinksEl.style.padding = '0';
+        if(event.target.textContent === 'Home Page'){
+            setAdminPageState();
+        }
+    }
+
+    function onClickAdminLink() {
+        setAdminPageState();
     }
 
     return (
@@ -36,12 +47,12 @@ const AdminNav: React.FC = () => {
                 <Link to="/adminPage/orderHistory" onClick={onclickMenu}>Order history</Link>
                 <Link to="/adminPage/messages" onClick={onclickMenu}>Messages</Link>
                 <Link to="/adminPage/printReports" onClick={onclickMenu}>Print reports</Link>
-                <Link to="/" style={{color:"red"}} onClick={onclickMenu}>Home Page</Link>
+                <Link to="/" style={{color:"red"}} onClick={onclickMenu} >Home Page</Link>
             </div>
         <nav className="adminNav-desktop">
             <ul>
                 <li>
-                    <Link to="/" style={{color:"red"}} >Home Page</Link>
+                    <Link to="/" style={{color:"red"}} onClick={onClickAdminLink} >Home Page</Link>
                 </li>
                 <li>
                     <Link to="/adminPage/marketing">Marketing</Link>
