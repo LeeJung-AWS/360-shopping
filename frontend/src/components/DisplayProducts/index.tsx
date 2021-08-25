@@ -1,6 +1,8 @@
 // Style : sass/components/_displayProducts.scss
 import { useState } from "react";
+
 import { NumberComma } from "../../utils/helpers";
+import Auth from '../../utils/auth';
 
 const DisplayProducts: React.FC = () => {
     const dummyProductLists = [
@@ -144,15 +146,28 @@ function onClickAddToCartBtn(event: any) {
 
 function onClickFavoriteBtn(event: any) {
     // TODO: Check if loggedin if not, Show signin modal
-    const productId:string = event.target.parentNode.parentNode.parentNode.dataset.id;
-    console.log(productId);
-    if(favoritedProduct){
-        setFavoritedProduct([...favoritedProduct, productId])
+    if(Auth.loggedIn()){
+        const productId:string = event.target.parentNode.parentNode.parentNode.dataset.id;
+    
+        let tempFavoritedProducts = favoritedProduct || [];
+        if(tempFavoritedProducts.includes(productId)){
+            tempFavoritedProducts.splice(tempFavoritedProducts.indexOf(productId), 1);
+        }else{
+            tempFavoritedProducts.push(productId)
+        }
+        // console.log(tempFavoritedProducts);
+        if(tempFavoritedProducts){
+            setFavoritedProduct([...tempFavoritedProducts])
+        }
+
+        //TODO: Store Favorited Product into the user by ID
+
     }else{
-        setFavoritedProduct([productId])
+        // TODO: Show signin modal
+        console.log("Show signin Modal")
     }
-    console.log(favoritedProduct)
-    // TODO: Changed into filled heart icon 
+
+
     // TODO: Add the product on favorite DB
 }
 
