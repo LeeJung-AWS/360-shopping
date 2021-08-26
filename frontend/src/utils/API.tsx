@@ -74,6 +74,18 @@ export const loginUser = (userData: any) => {
     });
 };
 
+export const updateUser = async (id: string, data = {}) =>{
+    try{
+        const res = await fetch('/api/user/' + id, {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json"}
+        })
+        return res.json();
+    }catch(err) {
+        return err;
+    }
+}
 
 // <---------------- User API ----------------
 // ----------------------------------------------

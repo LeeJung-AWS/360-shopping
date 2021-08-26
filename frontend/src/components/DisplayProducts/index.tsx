@@ -5,7 +5,7 @@ import SignForm from "../SignForm";
 
 import { NumberComma } from "../../utils/helpers";
 import Auth from '../../utils/auth';
-import { getProducts } from "../../utils/API";
+import { getProducts, getMe, updateUser } from "../../utils/API";
 
 import dummyProductImg from '../../assets/img/dummy-product-img.png';
 
@@ -27,6 +27,7 @@ interface productDataType {
 
 const DisplayProducts: React.FC = () => {
     const [ allproductLists, setAllproductLists ] = useState<productDataType[] | undefined>();
+    const [ favoritedProduct, setFavoritedProduct ] = useState<string[] | undefined>();
 
     useEffect( () => {
         getAllProducts();
@@ -35,11 +36,22 @@ const DisplayProducts: React.FC = () => {
     async function getAllProducts() {
         const productLists = await getProducts();
         setAllproductLists(productLists);
-        console.log(productLists);
+        
+        // Check if there are favorite products.
+        if(Auth.loggedIn()){
+            const userToken: any = Auth.getToken();
+            // console.log(userToken);
+
+            const userData = await getMe(userToken);
+            const userDataJson = await userData.json()
+            // console.log(userDataJson);
+            if(userDataJson.favoriteProduct.length > 0){
+                setFavoritedProduct([...userDataJson.favoriteProduct])
+            }
+        }
     }
 
-    const [ favoritedProduct, setFavoritedProduct ] = useState<string[] | undefined>();
-
+    
     function onClickProduct(event: any) {
         const productId = event.target.parentNode.parentNode.dataset.id;
         console.log(productId);
@@ -53,7 +65,7 @@ const DisplayProducts: React.FC = () => {
         // TODO: Increase a number of Cart
     }
 
-    function onClickFavoriteBtn(event: any) {
+    async function onClickFavoriteBtn(event: any) {
         // Check if loggedin if not, Show signin modal
         if(Auth.loggedIn()){
             const productId:string = event.target.parentNode.parentNode.parentNode.dataset.id;
@@ -69,8 +81,16 @@ const DisplayProducts: React.FC = () => {
                 setFavoritedProduct([...tempFavoritedProducts])
             }
 
-            //TODO: Store Favorited Product into the user by ID
-
+            // Store Favorited Product into the user by ID
+            const currentUser: any = Auth.getProfile();
+            // console.log(currentUser.data._id);
+            try {
+                await updateUser(currentUser.data._id, {"favoriteProduct": tempFavoritedProducts})
+            }catch (err) {
+                console.log(err);
+            }
+            
+            
         }else{
             // Show signin modal
             console.log("Show signin Modal");
@@ -98,7 +118,7 @@ const DisplayProducts: React.FC = () => {
     function onClickModalCloseBtn() {
         const displayProductModalEl = document.getElementById('displayProduct-modal')!;
         displayProductModalEl.style.display = 'none';
-        
+
         // Active Scrollable Body
         document.body.style.overflowY = 'auto';
     }

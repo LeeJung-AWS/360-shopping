@@ -47,3 +47,18 @@ export const login:RequestHandler = async (req, res, next) => {
     // console.log(token)
     res.json({ token, user });
 }
+
+export const updateUser: RequestHandler = (req, res, next) => {     // export const testController = (req: Request, res: Response, next: NextFunction) => {
+  User.findByIdAndUpdate(
+    req.params.id, 
+    { $set: req.body },
+    { new: true },          // Allow Returning Updated Data
+
+    (err, edited) => {
+      if(err){
+          res.status(400).json(err);
+      }else{
+          res.status(200).json(edited);
+      }
+    }
+)}
