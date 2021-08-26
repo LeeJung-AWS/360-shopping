@@ -11,6 +11,7 @@ import dummyProductImg from '../../assets/img/dummy-product-img.png';
 
 interface ChildProps {
     getFavoriteProducts: () => Promise<void>
+    getCartProducts: () => void
 }
  
 interface productDataType {
@@ -28,7 +29,7 @@ interface productDataType {
     "productCreated": string
 }
 
-const DisplayProducts: React.FC<ChildProps> = ( { getFavoriteProducts } ) => {
+const DisplayProducts: React.FC<ChildProps> = ( { getFavoriteProducts, getCartProducts } ) => {
     const [ allproductLists, setAllproductLists ] = useState<productDataType[] | undefined>();
     const [ favoritedProduct, setFavoritedProduct ] = useState<string[] | undefined>();
 
@@ -64,8 +65,19 @@ const DisplayProducts: React.FC<ChildProps> = ( { getFavoriteProducts } ) => {
     function onClickAddToCartBtn(event: any) {
         event.stopPropagation();
         const productId = event.target.parentNode.parentNode.dataset.id;
-        console.log(productId);
-        // TODO: Increase a number of Cart
+        // console.log(productId);
+
+        // Increase a number of Cart
+        let allProductsInCart = '';
+        if(localStorage.getItem('cart')){
+            let tempCartData = localStorage.getItem('cart')!;
+            allProductsInCart = tempCartData + ',' + productId;
+        }else{
+            allProductsInCart = productId;
+        }
+        localStorage.setItem('cart', allProductsInCart);
+
+        getCartProducts();
     }
 
     async function onClickFavoriteBtn(event: any) {
@@ -86,7 +98,7 @@ const DisplayProducts: React.FC<ChildProps> = ( { getFavoriteProducts } ) => {
 
             // Store Favorited Product into the user by ID
             const currentUser: any = Auth.getProfile();
-            // console.log(currentUser.data._id);
+            // Add favorite product on User DB
             try {
                 await updateUser(currentUser.data._id, {"favoriteProduct": tempFavoritedProducts})
             }catch (err) {
@@ -113,9 +125,6 @@ const DisplayProducts: React.FC<ChildProps> = ( { getFavoriteProducts } ) => {
                 }
             }
         }
-
-
-        // TODO: Add the product on favorite DB
     }
 
     function onClickModalCloseBtn() {
