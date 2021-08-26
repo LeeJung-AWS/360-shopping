@@ -19,10 +19,18 @@ interface ChildProps {
 const HomePage: React.FC<ChildProps> = ({setAdminPageState}) => {
 
     const [ favoritedProducts, setFavoriteProducts ] = useState<string[] | undefined>();
+    const [ cartProducts, setCartProducts ] = useState<string[] | undefined>();
 
     useEffect(() => {
         getFavoriteProducts();
     }, [])
+
+    async function getCartProducts() {
+        let tempCart = localStorage.getItem('cart');
+        if(tempCart){
+            setCartProducts([...tempCart.split(",")])
+        }
+    }
 
     async function getFavoriteProducts() {
         // Check if there are favorite products.
@@ -43,11 +51,11 @@ const HomePage: React.FC<ChildProps> = ({setAdminPageState}) => {
 
     return(
     <Router>
-        <Navbar setAdminPageState={setAdminPageState} favoritedProducts={favoritedProducts} />
+        <Navbar setAdminPageState={setAdminPageState} favoritedProducts={favoritedProducts} cartProducts={cartProducts} />
         <main className="row">
             <Switch>
                 <Route exact path="/">
-                    <DisplayProducts getFavoriteProducts={getFavoriteProducts} />
+                    <DisplayProducts getFavoriteProducts={getFavoriteProducts} getCartProducts={getCartProducts} />
                 </Route>
                 <Route exact path="/signForm">
                     <SignForm />

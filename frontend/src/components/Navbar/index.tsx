@@ -8,9 +8,10 @@ import { capitalizeFirstLetter } from '../../utils/helpers';
 interface ChildProps {
     setAdminPageState: () => void,
     favoritedProducts: string[] | undefined
+    cartProducts: string[] | undefined
 }
 
-const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts }) => {
+const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, cartProducts }) => {
     const [ userName, setUserName ] = useState('');
     const [ currentPage ,setCurrentPage ] = useState('');
 
@@ -56,7 +57,14 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts }) 
     <header className="navBar-header">
         <Link id="navBar-page-btn" to="/" data-name='main' onClick={onClickDesktopNavMenu}>360-Shopping</Link>
         <nav className="navBar-mobile">
-            <Link to='/cart'><i className="fas fa-shopping-cart" id="mobile-cart-menu"></i></Link>
+            <Link to='/cart'>
+                <i className="fas fa-shopping-cart" id="mobile-cart-menu"> 
+                {cartProducts ? 
+                <span className="mobile-cart-menu-number"> {cartProducts.length} </span>: 
+                <span className="mobile-cart-menu-number-zero"> </span> 
+                }
+                </i> 
+            </Link>
             <Link to="#" id="navBar-mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></Link>
         </nav>
         <div id="navBar-mobile-Links">
@@ -112,7 +120,7 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts }) 
                     </div>
                 </li>
                 <li className='dropdown'>
-                    <Link to='/test'><i className="fas fa-shopping-cart"></i> 0</Link>
+                    <Link to='/test'><i className="fas fa-shopping-cart"></i> {cartProducts ? cartProducts.length : 0}</Link>
                     <div className="dropdown-content">
                         <span>
                             <span>Shopping Bag is Empty</span>
