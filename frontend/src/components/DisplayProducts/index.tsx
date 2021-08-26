@@ -9,6 +9,9 @@ import { getProducts, getMe, updateUser } from "../../utils/API";
 
 import dummyProductImg from '../../assets/img/dummy-product-img.png';
 
+interface ChildProps {
+    getFavoriteProducts: () => Promise<void>
+}
  
 interface productDataType {
     "imgURLlists": string[],
@@ -25,7 +28,7 @@ interface productDataType {
     "productCreated": string
 }
 
-const DisplayProducts: React.FC = () => {
+const DisplayProducts: React.FC<ChildProps> = ( { getFavoriteProducts } ) => {
     const [ allproductLists, setAllproductLists ] = useState<productDataType[] | undefined>();
     const [ favoritedProduct, setFavoritedProduct ] = useState<string[] | undefined>();
 
@@ -90,7 +93,7 @@ const DisplayProducts: React.FC = () => {
                 console.log(err);
             }
             
-            
+            getFavoriteProducts()!;
         }else{
             // Show signin modal
             console.log("Show signin Modal");

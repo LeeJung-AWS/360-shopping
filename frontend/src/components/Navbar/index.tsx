@@ -6,10 +6,11 @@ import Auth from '../../utils/auth';
 import { capitalizeFirstLetter } from '../../utils/helpers';
 
 interface ChildProps {
-    setAdminPageState: () => void
+    setAdminPageState: () => void,
+    favoritedProducts: string[] | undefined
 }
 
-const Navbar: React.FC<ChildProps> = ({ setAdminPageState }) => {
+const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts }) => {
     const [ userName, setUserName ] = useState('');
     const [ currentPage ,setCurrentPage ] = useState('');
 
@@ -120,7 +121,7 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState }) => {
                     </div>
                 </li>
                 <li className='dropdown'>
-                    <Link to="/"><i className="far fa-heart"></i> 0</Link>
+                    <Link to="/"><i className="far fa-heart"></i> { favoritedProducts ? favoritedProducts.length : 0}</Link>
                     <div className="dropdown-content">
                         <Link to="#">Favorite Item</Link>
                     </div>
