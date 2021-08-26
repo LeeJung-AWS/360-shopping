@@ -9,7 +9,7 @@ import { getProducts, getMe, updateUser } from "../../utils/API";
 
 import dummyProductImg from '../../assets/img/dummy-product-img.png';
 
-
+ 
 interface productDataType {
     "imgURLlists": string[],
     "salePrice": number,
