@@ -9,6 +9,7 @@ interface UserType{
     address: string;
     phone: string;
     userCreated: Date;
+    favoriteProduct: string[];
 }
 
 // Create a Schema corresponding to the document interface.
@@ -19,7 +20,8 @@ const UserSchema = new Schema<UserType>({
   password: { type: String, required: "password is Required" },
   address: { type: String, required: false },
   phone: { type: String, required: false },
-  userCreated: { type: Date, default: Date.now }
+  userCreated: { type: Date, default: Date.now },
+  favoriteProduct: [ {type: String, required: false} ]
 });
 
 

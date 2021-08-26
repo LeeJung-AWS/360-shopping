@@ -1,5 +1,5 @@
 import { Router } from 'express'; 
-import { getSingleUser, userCreate, login } from '../../controllers/users';
+import { getSingleUser, userCreate, login, updateUser } from '../../controllers/users';
 
 const router = Router();
 // import middleware
@@ -10,5 +10,6 @@ import { authMiddleware } from '../../libs/auth';
 router.route('/').post(userCreate).put(authMiddleware);
 router.route('/login').post(login);
 router.route('/me').get(authMiddleware, getSingleUser);
+router.put("/:id", updateUser);
 
 export default router;
