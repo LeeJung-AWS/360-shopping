@@ -28,6 +28,12 @@
     z-index: 3;
 }
 
+#mobile-cart-menu:hover{
+    .dropdown-content{
+        display: block;
+    }
+}
+
 .mobile-cart-menu-number-zero{
     font-size: 1rem;
 }

@@ -6,6 +6,7 @@ import BriefProductsLists from '../BriefProductLists';
 
 import Auth from '../../utils/auth';
 import { capitalizeFirstLetter } from '../../utils/helpers';
+import { getProducts } from '../../utils/API';
 
 interface ChildProps {
     setAdminPageState: () => void,
@@ -13,9 +14,26 @@ interface ChildProps {
     cartProducts: string[] | undefined
 }
 
+interface ProductDataType {
+    _id: string;
+    title: string;
+    description: string;
+    thumbnailImgURL: string;
+    imgURLlists: string[];
+    price: number;
+    onSale: boolean;
+    salePrice: number;
+    quantity: number;
+    sku: string;
+    categories: string[];
+    productCreated: Date;
+}
+
 const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, cartProducts }) => {
     const [ userName, setUserName ] = useState('');
     const [ currentPage ,setCurrentPage ] = useState('');
+    const [ favoriteProductData, setFavoriteProductData ] = useState<ProductDataType[]>();
+
 
     useEffect(() => {
         if(Auth.getToken()){
@@ -55,17 +73,37 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, ca
         setCurrentPage(event.target.dataset.name)
     }
 
+    useEffect(() =>{
+        console.log(favoritedProducts)
+        if(favoritedProducts){
+            getFavoriteProducts();
+        }
+    }, [favoritedProducts])
+    
+    async function getFavoriteProducts() {
+        console.log(favoritedProducts)
+        let productlists: ProductDataType[] = await getProducts();
+        let myProduct: ProductDataType[] = productlists.filter(product => favoritedProducts?.indexOf(product._id) !== -1);
+        setFavoriteProductData(myProduct)
+    }
+
     return (
     <header className="navBar-header">
         <Link id="navBar-page-btn" to="/" data-name='main' onClick={onClickDesktopNavMenu}>360-Shopping</Link>
         <nav className="navBar-mobile">
-            <Link to='/cart'>
-                <i className="fas fa-shopping-cart" id="mobile-cart-menu"> 
-                {cartProducts ? 
-                <span className="mobile-cart-menu-number"> {cartProducts.length} </span>: 
-                <span className="mobile-cart-menu-number-zero"> </span> 
-                }
-                </i> 
+            <Link to='#'>
+                <i className="fas fa-shopping-cart navBar-mobile-cart" id="mobile-cart-menu"> 
+                    {cartProducts ? 
+                    <span className="mobile-cart-menu-number"> {cartProducts.length} </span>: 
+                    <span className="mobile-cart-menu-number-zero"> </span> 
+                    }
+                    <div className="dropdown-content dropdown-content-cart">
+                            {cartProducts 
+                            ? <BriefProductsLists /> 
+                            :<p style={{textAlign: "center"}}>Shopping Bag is Empty.</p>
+                            }
+                    </div> 
+                </i>
             </Link>
             <Link to="#" id="navBar-mobile-menu" onClick={mobileNavClick}><i className="fas fa-bars"></i></Link>
         </nav>
@@ -122,7 +160,7 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, ca
                     </div>
                 </li>
                 <li className='dropdown'>
-                    <Link to='/test'><i className="fas fa-shopping-cart"></i> {cartProducts ? cartProducts.length : 0}</Link>
+                    <Link to='#'><i className="fas fa-shopping-cart"></i> {cartProducts ? cartProducts.length : 0}</Link>
                     <div className="dropdown-content dropdown-content-cart">
                         {cartProducts 
                         ? <BriefProductsLists /> 
@@ -131,10 +169,10 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, ca
                     </div>
                 </li>
                 <li className='dropdown'>
-                    <Link to="/"><i className="far fa-heart"></i> { favoritedProducts ? favoritedProducts.length : 0}</Link>
+                    <Link to="#"><i className="far fa-heart"></i> { favoritedProducts ? favoritedProducts.length : 0}</Link>
                     <div className="dropdown-content dropdown-content-favorite">
                         { favoritedProducts 
-                        ? <BriefProductsLists /> 
+                        ? (favoriteProductData ? <BriefProductsLists favoriteProductData={favoriteProductData} /> : 'Loading...')
                         : <p style={{textAlign: "center"}}>Time to find your favorite items</p>
                         }
                     </div>
