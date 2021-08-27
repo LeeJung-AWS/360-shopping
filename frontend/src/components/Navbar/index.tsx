@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 
+import BriefProductsLists from '../BriefProductLists';
+
 import Auth from '../../utils/auth';
 import { capitalizeFirstLetter } from '../../utils/helpers';
 
@@ -103,7 +105,7 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, ca
             <ul>
                 <li className='dropdown'>
                     <Link to='/test'><i className="far fa-user" ></i></Link>
-                    <div className="dropdown-content">
+                    <div className="dropdown-content dropdown-content-account">
                         {Auth.loggedIn() ?<>
                         <div className="hello-userName">Hello, {userName}</div>
                         <div className="myHr"></div>
@@ -121,17 +123,20 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, ca
                 </li>
                 <li className='dropdown'>
                     <Link to='/test'><i className="fas fa-shopping-cart"></i> {cartProducts ? cartProducts.length : 0}</Link>
-                    <div className="dropdown-content">
-                        <span>
-                            <span>Shopping Bag is Empty</span>
-                            Welcome back! If you had items in your shopping bag, we have saved them for you. You can <Link to="/sign" style={{"float":"right"}}>SIGN IN</Link>now to see them, or whenever you're ready to check out.
-                        </span>
+                    <div className="dropdown-content dropdown-content-cart">
+                        {cartProducts 
+                        ? <BriefProductsLists /> 
+                        :<p style={{textAlign: "center"}}>Shopping Bag is Empty.</p>
+                        }
                     </div>
                 </li>
                 <li className='dropdown'>
                     <Link to="/"><i className="far fa-heart"></i> { favoritedProducts ? favoritedProducts.length : 0}</Link>
-                    <div className="dropdown-content">
-                        <Link to="#">Favorite Item</Link>
+                    <div className="dropdown-content dropdown-content-favorite">
+                        { favoritedProducts 
+                        ? <BriefProductsLists /> 
+                        : <p style={{textAlign: "center"}}>Time to find your favorite items</p>
+                        }
                     </div>
                 </li>
             </ul>
