@@ -31,6 +31,11 @@
     align-items: center;
     
 }
+
+.product-list-body-info-quantity-btn-controll{
+    display: flex;
+}
+
 .product-list-body-info-quantity-btn-left{
     border: none;
     background-color: white;
@@ -52,9 +57,10 @@
     border-top: 1px solid rgb(230, 230, 230);
     border-bottom: 1px solid rgb(230, 230, 230);
     
-    padding: 3px 8px;
+    width: 30px;
+    padding: 3px 5px;
 
-    font-size: 1rem;
+    text-align: center;
 }
 
 .product-list-body-info-quantity-btn-right{
