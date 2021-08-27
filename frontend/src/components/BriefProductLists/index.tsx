@@ -24,7 +24,7 @@ interface ChildProps{
 
 const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
     const [ quantityOfProduct, setQuantityOfProduct] = useState<{[k: string]: number}>();
-
+    const [ totalPrice, setTotalPrice ] = useState<number>(0);
     useEffect(() => {
         let tempQuantityOfProduct:{[k: string]: number} = {};
 
@@ -36,14 +36,14 @@ const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
     }, [favoriteProductData])
 
     function increaser(event: any) {
-        console.log("increaser")
+        // console.log("increaser")
         let productID:string = event.target.parentNode.dataset.id;
         // console.log(productID)
         let tempQuantityOfProduct:{[k: string]: number} = {};
         tempQuantityOfProduct = {...quantityOfProduct};
         
         tempQuantityOfProduct[productID]++;
-        
+
         setQuantityOfProduct(tempQuantityOfProduct)
     }
 
@@ -57,6 +57,15 @@ const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
             tempQuantityOfProduct[productID]--;
         }
         setQuantityOfProduct(tempQuantityOfProduct)
+    }
+
+    function calculateSubTotal(productId: string, quantityOftheProduct: number, productPrice: number) {
+        // console.log(quantityOftheProduct * productPrice);
+        // let tempTotalPrice = totalPrice;
+        // quantityOftheProduct * productPrice;
+        // console.log(tempTotalPrice);
+        // setTotalPrice(totalPrice + (quantityOftheProduct * productPrice));
+        return (NumberComma(quantityOftheProduct * productPrice))
     }
 
     return (<section className="container-box product-list">
@@ -78,8 +87,8 @@ const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
                                     <input className="product-list-body-info-quantity-btn-center" value={quantityOfProduct? quantityOfProduct[product._id] : "0"} />
                                     <button className="product-list-body-info-quantity-btn-right" onClick={increaser}>+</button>
                                 </div>
-                                <div>Total: <b>US${quantityOfProduct? NumberComma(quantityOfProduct[product._id] * product.price): "null"}</b></div>
-                            </div>
+                                <div>Total: <b>US${quantityOfProduct? calculateSubTotal(product._id, quantityOfProduct[product._id], product.price): "null"}</b></div>
+                             </div>
                         </div>
                     </div>
             )
