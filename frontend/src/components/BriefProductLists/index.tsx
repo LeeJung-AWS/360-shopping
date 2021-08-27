@@ -23,14 +23,13 @@ interface ChildProps{
 }
 
 const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
-    console.log(favoriteProductData);
-    const [ quantityOfProduct, setQuantityOfProduct] = useState<{[k: string]: string}>();
+    const [ quantityOfProduct, setQuantityOfProduct] = useState<{[k: string]: number}>();
 
     useEffect(() => {
-        let tempQuantityOfProduct:{[k: string]: string} = {};
+        let tempQuantityOfProduct:{[k: string]: number} = {};
 
         favoriteProductData?.map(item => {
-            return tempQuantityOfProduct[item._id] = '1';
+            return tempQuantityOfProduct[item._id] = 1;
         })
 
         setQuantityOfProduct(tempQuantityOfProduct);
@@ -38,17 +37,26 @@ const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
 
     function increaser(event: any) {
         console.log("increaser")
-        console.log(event.target)
+        let productID:string = event.target.parentNode.dataset.id;
+        // console.log(productID)
+        let tempQuantityOfProduct:{[k: string]: number} = {};
+        tempQuantityOfProduct = {...quantityOfProduct};
+        
+        tempQuantityOfProduct[productID]++;
+        
+        setQuantityOfProduct(tempQuantityOfProduct)
     }
 
     function decreaser(event: any) {
-        console.log("decreaser")
+        // console.log("decreaser")
         let productID:string = event.target.parentNode.dataset.id;
-        console.log(productID)
-        let temp:{[k: string]: string} = {};
-        temp[productID] = '5';
-        console.log(temp);
-        setQuantityOfProduct(temp)
+        // console.log(productID)
+        let tempQuantityOfProduct:{[k: string]: number} = {};
+        tempQuantityOfProduct = {...quantityOfProduct};
+        if(tempQuantityOfProduct[productID] > 0){
+            tempQuantityOfProduct[productID]--;
+        }
+        setQuantityOfProduct(tempQuantityOfProduct)
     }
 
     return (<section className="container-box product-list">
@@ -70,7 +78,7 @@ const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
                                     <input className="product-list-body-info-quantity-btn-center" value={quantityOfProduct? quantityOfProduct[product._id] : "0"} />
                                     <button className="product-list-body-info-quantity-btn-right" onClick={increaser}>+</button>
                                 </div>
-                                <div>Total: <b>US${quantityOfProduct? NumberComma(parseInt(quantityOfProduct[product._id]) * product.price): "null"}</b></div>
+                                <div>Total: <b>US${quantityOfProduct? NumberComma(quantityOfProduct[product._id] * product.price): "null"}</b></div>
                             </div>
                         </div>
                     </div>
