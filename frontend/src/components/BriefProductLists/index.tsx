@@ -23,32 +23,49 @@ interface ChildProps{
 }
 
 const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
-    console.log(favoriteProductData);
-    const [ quantityOfProduct, setQuantityOfProduct] = useState<{[k: string]: string}>();
-
+    const [ quantityOfProduct, setQuantityOfProduct] = useState<{[k: string]: number}>();
+    const [ totalPrice, setTotalPrice ] = useState<number>(0);
     useEffect(() => {
-        let tempQuantityOfProduct:{[k: string]: string} = {};
+        let tempQuantityOfProduct:{[k: string]: number} = {};
 
         favoriteProductData?.map(item => {
-            return tempQuantityOfProduct[item._id] = '1';
+            return tempQuantityOfProduct[item._id] = 1;
         })
 
         setQuantityOfProduct(tempQuantityOfProduct);
     }, [favoriteProductData])
 
     function increaser(event: any) {
-        console.log("increaser")
-        console.log(event.target)
+        // console.log("increaser")
+        let productID:string = event.target.parentNode.dataset.id;
+        // console.log(productID)
+        let tempQuantityOfProduct:{[k: string]: number} = {};
+        tempQuantityOfProduct = {...quantityOfProduct};
+        
+        tempQuantityOfProduct[productID]++;
+
+        setQuantityOfProduct(tempQuantityOfProduct)
     }
 
     function decreaser(event: any) {
-        console.log("decreaser")
+        // console.log("decreaser")
         let productID:string = event.target.parentNode.dataset.id;
-        console.log(productID)
-        let temp:{[k: string]: string} = {};
-        temp[productID] = '5';
-        console.log(temp);
-        setQuantityOfProduct(temp)
+        // console.log(productID)
+        let tempQuantityOfProduct:{[k: string]: number} = {};
+        tempQuantityOfProduct = {...quantityOfProduct};
+        if(tempQuantityOfProduct[productID] > 0){
+            tempQuantityOfProduct[productID]--;
+        }
+        setQuantityOfProduct(tempQuantityOfProduct)
+    }
+
+    function calculateSubTotal(productId: string, quantityOftheProduct: number, productPrice: number) {
+        // console.log(quantityOftheProduct * productPrice);
+        // let tempTotalPrice = totalPrice;
+        // quantityOftheProduct * productPrice;
+        // console.log(tempTotalPrice);
+        // setTotalPrice(totalPrice + (quantityOftheProduct * productPrice));
+        return (NumberComma(quantityOftheProduct * productPrice))
     }
 
     return (<section className="container-box product-list">
@@ -70,8 +87,8 @@ const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
                                     <input className="product-list-body-info-quantity-btn-center" value={quantityOfProduct? quantityOfProduct[product._id] : "0"} />
                                     <button className="product-list-body-info-quantity-btn-right" onClick={increaser}>+</button>
                                 </div>
-                                <div>Total: <b>US${quantityOfProduct? NumberComma(parseInt(quantityOfProduct[product._id]) * product.price): "null"}</b></div>
-                            </div>
+                                <div>Total: <b>US${quantityOfProduct? calculateSubTotal(product._id, quantityOfProduct[product._id], product.price): "null"}</b></div>
+                             </div>
                         </div>
                     </div>
             )
