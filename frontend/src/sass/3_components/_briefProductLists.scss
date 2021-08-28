@@ -4,6 +4,7 @@
 
 .product-list-body{
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: 0.5rem;
     border-bottom: 1px solid rgb(230, 230, 230);
 
@@ -12,6 +13,13 @@
         line-height: 3;
         margin-left: 1rem;
     }
+}
+
+.product-list-body-info-title{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 290px;
 }
 
 .product-list-body-info-unitprice{
@@ -31,6 +39,14 @@
     align-items: center;
     
 }
+
+.cross-price {
+    text-decoration: line-through;
+    font-size: 12px;
+    color:$secondary;
+    margin-left: 0.2rem;
+}
+
 
 .product-list-body-info-quantity-btn-controll{
     display: flex;
@@ -77,6 +93,7 @@
 
     cursor: pointer;
 }
+
 .total-price{
     text-align: right;
     margin-top: 2rem;
