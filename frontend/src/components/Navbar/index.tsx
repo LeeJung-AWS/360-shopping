@@ -74,14 +74,14 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, ca
     }
 
     useEffect(() =>{
-        console.log(favoritedProducts)
+        // console.log(favoritedProducts)
         if(favoritedProducts){
             getFavoriteProducts();
         }
     }, [favoritedProducts])
-    
+
     async function getFavoriteProducts() {
-        console.log(favoritedProducts)
+        // console.log(favoritedProducts)
         let productlists: ProductDataType[] = await getProducts();
         let myProduct: ProductDataType[] = productlists.filter(product => favoritedProducts?.indexOf(product._id) !== -1);
         setFavoriteProductData(myProduct)
