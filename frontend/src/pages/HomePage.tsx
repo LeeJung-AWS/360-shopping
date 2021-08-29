@@ -36,7 +36,7 @@ const HomePage: React.FC<ChildProps> = ({setAdminPageState}) => {
         // Check if there are favorite products.
         if(Auth.loggedIn()){
             const userToken: any = Auth.getToken();
-            console.log(userToken);
+            // console.log(userToken);
 
             const userData = await getMe(userToken);
             const userDataJson = await userData.json()
@@ -51,7 +51,7 @@ const HomePage: React.FC<ChildProps> = ({setAdminPageState}) => {
 
     return(
     <Router>
-        <Navbar setAdminPageState={setAdminPageState} favoritedProducts={favoritedProducts} cartProducts={cartProducts} />
+        <Navbar setAdminPageState={setAdminPageState} favoritedProducts={favoritedProducts} cartProducts={cartProducts} getFavoriteProducts={getFavoriteProducts} />
         <main className="row">
             <Switch>
                 <Route exact path="/">
