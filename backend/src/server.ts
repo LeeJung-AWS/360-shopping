@@ -2,6 +2,8 @@ import express, { Request, Response, NextFunction}  from 'express';
 import routes from './routes';
 // import routesTest from './routes/routesTest';
 
+const db = require('./config/connection');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -23,6 +25,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 // Start the API server
-app.listen(PORT, () =>
-  console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`)
-);
+db.once('open', () => {
+  app.listen(PORT, () =>
+    console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`)
+  );
+});

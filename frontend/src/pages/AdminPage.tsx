@@ -4,11 +4,15 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // Components
 import AdminNav from '../components/AdminNav';
-import Tabmenu from '../components/TabMenu';
-import ContentsTopMenu from '../components/TabMenu/ContentsTopMenu';
-import AddNewProduct from "../components/AddNewProduct";
+import AdminTabMenu from '../components/AdminTabMenu';
+import ContentsTopMenu from '../components/AdminTabMenu/ContentsTopMenu';
+import AdminInventory from '../components/AdminInventory';
 
-const AdminPage: React.FC = () => {
+interface ChildProps {
+    setAdminPageState: () => void
+}
+
+const AdminPage: React.FC<ChildProps> = ({ setAdminPageState }) => {
      // Dummy Graph Data
      // TODO: retrieve data (DataType : Objects inside Array) for analyzing graph from DB
     const revenueContents = {
@@ -65,12 +69,13 @@ const AdminPage: React.FC = () => {
         }
     ]
 
-    return <Router>
-            <AdminNav />
+    return (<Router>
+    <AdminNav setAdminPageState={setAdminPageState}/>
+        <main className="row">
             <Switch>
                 <Route exact path="/adminPage">
                     <main className="adminPage-row">
-                        <Tabmenu header="Sales" tabMenuInformation={tabMenuInformation}/>
+                        <AdminTabMenu header="Sales" tabMenuInformation={tabMenuInformation}/>
                         <section className="adminPage-col card">
                             <div className="card-header">
                                 <h4>Awaiting Shipments</h4>
@@ -94,8 +99,8 @@ const AdminPage: React.FC = () => {
                 <Route exact path="/adminPage/marketing">
                     <p>Marketing Page</p>
                 </Route>
-                <Route exact path="/adminPage/addNewInventory">
-                    <AddNewProduct />
+                <Route exact path="/adminPage/inventory">
+                    <AdminInventory />
                 </Route>
                 <Route exact path="/adminPage/orderHistory">
                     <p>orderHistory Page</p>
@@ -107,7 +112,9 @@ const AdminPage: React.FC = () => {
                     <p>printReports Page</p>
                 </Route>
             </Switch>
-        </Router>
+        </main>
+    </Router>
+    )
 }
 
 export default AdminPage;
