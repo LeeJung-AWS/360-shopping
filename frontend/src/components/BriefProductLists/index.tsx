@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { NumberComma } from '../../utils/helpers';
 
+import Auth from '../../utils/auth';
+import { getProducts, getMe, updateUser } from "../../utils/API";
+
 interface ProductDataType {
     _id: string;
     title: string;
@@ -20,9 +23,11 @@ interface ProductDataType {
 
 interface ChildProps{
     favoriteProductData?: ProductDataType[] 
+    favoriteProductID?: string[]
+    getFavoriteProductFuncFromHomePage?: () => Promise<void>
 }
 
-const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
+const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData, favoriteProductID, getFavoriteProductFuncFromHomePage }) => {
     const [ quantityOfProduct, setQuantityOfProduct] = useState<{[k: string]: number}>();
     const [ unitPrice, setUnitPrice] = useState<{[k: string]: number}>();
     const [ subTotalPrice, setSubTotalPrice] = useState<{[k: string]: number}>();
@@ -116,6 +121,40 @@ const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
         setTotalPrice(totalPrice);
     }
 
+    async function onClickDeleteIcon(event: any){
+        const productId:string = event.target.dataset.id;
+
+        if(Auth.loggedIn()){
+            // console.log(favoriteProductID);
+            let tempFavoritedProducts = favoriteProductID || [];
+            if(tempFavoritedProducts.includes(productId)){
+                tempFavoritedProducts.splice(tempFavoritedProducts.indexOf(productId), 1);
+            }
+            // else{
+            //     tempFavoritedProducts.push(productId)
+            // }
+            console.log(tempFavoritedProducts);
+            // if(tempFavoritedProducts){
+            //     setFavoritedProduct([...tempFavoritedProducts])
+            // }
+
+            // Store Favorited Product into the user by ID
+            const currentUser: any = Auth.getProfile();
+            // Add favorite product on User DB
+            try {
+                await updateUser(currentUser.data._id, {"favoriteProduct": tempFavoritedProducts})
+            }catch (err) {
+                console.log(err);
+            }
+        }
+
+        if(getFavoriteProductFuncFromHomePage){
+            getFavoriteProductFuncFromHomePage();
+        }
+
+
+    }   
+
     return (<section className="container-box product-list">
         {favoriteProductData?.map(product => {
             return(
@@ -132,7 +171,9 @@ const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
                                                         <span className={product.onSale ? "cross-price" : ""}>{NumberComma(product.price)}</span>
                                 </div>
                                 
-                                <div className="product-list-body-info-unitprice-icon"><i className="far fa-trash-alt"></i></div>
+                                <div className="product-list-body-info-unitprice-icon">
+                                    <i className="far fa-trash-alt" data-id={product._id} onClick={onClickDeleteIcon}></i>
+                                </div>
                             </div>
                             <div className="product-list-body-info-quantity-btn">
                                 <div className="product-list-body-info-quantity-btn-controll" data-id={product._id}>
@@ -142,7 +183,6 @@ const BriefProductsLists: React.FC<ChildProps> = ({ favoriteProductData }) => {
                                 </div>
                                 {/* subTotalPrice */}
                                 <div>Total: <b>US${subTotalPrice? subTotalPrice[product._id]: "null"}</b></div>
-                                {/* <div>Total: <b>US${subTotalPrice? NumberComma(subTotalPrice[product._id]): "null"}</b></div> */}
                              </div>
                         </div>
                     </div>

@@ -9,9 +9,10 @@ import { capitalizeFirstLetter } from '../../utils/helpers';
 import { getProducts } from '../../utils/API';
 
 interface ChildProps {
-    setAdminPageState: () => void,
+    setAdminPageState: () => void
     favoritedProducts: string[] | undefined
     cartProducts: string[] | undefined
+    getFavoriteProducts: () => Promise<void>
 }
 
 interface ProductDataType {
@@ -29,7 +30,7 @@ interface ProductDataType {
     productCreated: Date;
 }
 
-const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, cartProducts }) => {
+const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, cartProducts , getFavoriteProducts}) => {
     const [ userName, setUserName ] = useState('');
     const [ currentPage ,setCurrentPage ] = useState('');
     const [ favoriteProductData, setFavoriteProductData ] = useState<ProductDataType[]>();
@@ -74,13 +75,13 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, ca
     }
 
     useEffect(() =>{
-        // console.log(favoritedProducts)
+        console.log(favoritedProducts)
         if(favoritedProducts){
-            getFavoriteProducts();
+            getFavoriteProductDATA();
         }
     }, [favoritedProducts])
 
-    async function getFavoriteProducts() {
+    async function getFavoriteProductDATA() {
         // console.log(favoritedProducts)
         let productlists: ProductDataType[] = await getProducts();
         let myProduct: ProductDataType[] = productlists.filter(product => favoritedProducts?.indexOf(product._id) !== -1);
@@ -172,7 +173,7 @@ const Navbar: React.FC<ChildProps> = ({ setAdminPageState, favoritedProducts, ca
                     <Link to="#"><i className="far fa-heart"></i> { favoritedProducts ? favoritedProducts.length : 0}</Link>
                     <div className="dropdown-content dropdown-content-favorite">
                         { favoritedProducts 
-                        ? (favoriteProductData ? <BriefProductsLists favoriteProductData={favoriteProductData} /> : 'Loading...')
+                        ? (favoriteProductData ? <BriefProductsLists favoriteProductData={favoriteProductData} favoriteProductID={favoritedProducts} getFavoriteProductFuncFromHomePage={getFavoriteProducts} /> : 'Loading...')
                         : <p style={{textAlign: "center"}}>Time to find your favorite items</p>
                         }
                     </div>
